@@ -23,7 +23,7 @@ exports.handler = async (event) => {
         // Handle /start command
         if (text && text.toLowerCase().startsWith('/start')) {
             const userName = message.from.username || 'User';
-            const welcomeMessage = `Welcome ${userName} to BUFFY DUROV! 🐩`;
+            const welcomeMessage = `Welcome ${userName} to Simlex Bot! 🐩`;
 
             // Send a reply to the user
             await sendTelegramMessage(chatId, welcomeMessage);
