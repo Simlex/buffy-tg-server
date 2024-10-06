@@ -1,8 +1,10 @@
 const axios = require('axios');
 require('dotenv').config(); // Load environment variables
+const TelegramBot = require('node-telegram-bot-api');
 
 const TELEGRAM_TOKEN = process.env.TELEGRAM_TOKEN;
 const TELEGRAM_API_URL = `https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendMessage`;
+const bot = new TelegramBot(TELEGRAM_TOKEN, { polling: true });
 
 // Netlify function handler
 exports.handler = async (event) => {
@@ -25,8 +27,9 @@ exports.handler = async (event) => {
             const userName = message.from.username || 'User';
             const welcomeMessage = `Welcome ${userName} to BUFFY DUROV! 🐩`;
 
+            await bot.sendMessage(chatId, 'Welcome to the bot!');
             // Send a reply to the user
-            await sendTelegramMessage(chatId, welcomeMessage);
+            // await sendTelegramMessage(chatId, welcomeMessage);
         } else {
             // Echo message
             await sendTelegramMessage(chatId, `You said: ${text}`);
