@@ -1,0 +1,11 @@
+{
+    "name": "my-telegram-bot",
+    "version": "1.0.0",
+    "scripts": {
+        "start": "netlify dev"
+    },
+    "dependencies": {
+        "axios": "^0.21.1",
+        "dotenv": "^10.0.0"
+    }
+}
