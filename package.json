@@ -5,11 +5,14 @@
         "start": "netlify dev"
     },
     "dependencies": {
-        "@types/node": "^22.7.4",
         "@types/node-telegram-bot-api": "^0.64.7",
         "axios": "^0.21.1",
         "dotenv": "^10.0.0",
-        "node-telegram-bot-api": "^0.66.0",
+        "node-telegram-bot-api": "^0.66.0"
+    },
+    "devDependencies": {
+        "@types/node": "^22.7.4",
+        "ts-node": "^10.9.2",
         "typescript": "^5.6.2"
     }
 }
