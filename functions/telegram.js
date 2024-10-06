@@ -1,19 +1,15 @@
 const axios = require('axios');
 require('dotenv').config(); // Load environment variables
-const TelegramBot = require('node-telegram-bot-api');
 
 const TELEGRAM_TOKEN = process.env.TELEGRAM_TOKEN;
 const TELEGRAM_API_URL = `https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendMessage`;
-const BOT_USERNAME = "SimlexBot";
-
-const bot = new TelegramBot(TOKEN, { polling: true });
 
 // Netlify function handler
 exports.handler = async (event) => {
     try {
         const body = JSON.parse(event.body);
         const message = body.message;
-
+        
         if (!message) {
             return {
                 statusCode: 200,
@@ -27,18 +23,7 @@ exports.handler = async (event) => {
         // Handle /start command
         if (text && text.toLowerCase().startsWith('/start')) {
             const userName = message.from.username || 'User';
-            // const welcomeMessage = `Welcome ${userName} to Simlex Bot! 🐩`;
-            const welcomeMessage = `Welcome ${userName} to BUFFY DUROV! 🐩 Tap to watch your balance rise.\n\n` +
-        `Explore BUFFY DUROV on TON, the dog-themed platform that rewards you for playing. Don’t miss our daily trivia on our X! triviaLink\n\n` +
-        `Points accumulated convert to $BUVEL tokens for all players.\n\n` +
-        `Invite friends and family for more $BUVEL rewards! More woof buddies🐩, more earnings.\n\n` +
-        `——————————————————\n\n` +
-        `Исследуйте BUFFY DUROV 🐩 на платформе TON и зарабатывайте токены $BUVEL.\n\n` +
-        `Приглашайте друзей для получения \nдополнительных наград $BUVEL.\n\n` +
-        `💲 Don't waste your time – make every second count. Tap and earn with our Time Farm app!\n\n` +
-        `We have some exciting news! We’re launching our Telegram mini app, so you can start accumulating points right now from your phone or desktop! ` +
-        `And who knows what incredible rewards will soon be available...\n\n` +
-        `🚀 Open the app every 4 hours to claim your points. Start now to get ready for future campaigns.`;
+            const welcomeMessage = `Welcome ${userName} to BUFFY DUROV! 🐩`;
 
             // Send a reply to the user
             await sendTelegramMessage(chatId, welcomeMessage);
