@@ -25,7 +25,7 @@ exports.handler = async (event) => {
             const userName = message.from.username || 'User';
             // const welcomeMessage = `Welcome ${userName} to Simlex Bot! 🐩`;
             const welcomeMessage = `Welcome ${userName} to BUFFY DUROV! 🐩 Tap to watch your balance rise.\n\n` +
-        `Explore BUFFY DUROV on TON, the dog-themed platform that rewards you for playing. Don’t miss our daily trivia on our X! ${triviaLink}\n\n` +
+        `Explore BUFFY DUROV on TON, the dog-themed platform that rewards you for playing. Don’t miss our daily trivia on our X! triviaLink\n\n` +
         `Points accumulated convert to $BUVEL tokens for all players.\n\n` +
         `Invite friends and family for more $BUVEL rewards! More woof buddies🐩, more earnings.\n\n` +
         `——————————————————\n\n` +
