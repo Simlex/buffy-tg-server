@@ -26,7 +26,7 @@ exports.handler = async (event) => {
             const welcomeMessage = `Welcome ${userName} to BUFFY DUROV! 🐩`;
 
             // Send a reply to the user
-            await sendTelegramMessageWithButtons(chatId, welcomeMessage);
+            await sendTelegramMessage(chatId, welcomeMessage);
         } else {
             // Echo message
             await sendTelegramMessage(chatId, `You said: ${text}`);
