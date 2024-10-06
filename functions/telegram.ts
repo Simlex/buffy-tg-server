@@ -2,14 +2,14 @@ import axios from "axios";
 // import { dotenv } from "dotenv";
 import TelegramBot from "node-telegram-bot-api";
 
-const TELEGRAM_TOKEN = process.env.TELEGRAM_TOKEN;
+const TELEGRAM_TOKEN = process.env.TELEGRAM_TOKEN!;
 const TELEGRAM_API_URL = `https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendMessage`;
 const BOT_USERNAME = "SimlexBot";
 
 const bot = new TelegramBot(TELEGRAM_TOKEN, { polling: true });
 
 // Netlify function handler
-exports.handler = async (event) => {
+exports.handler = async (event: any) => {
   try {
     const body = JSON.parse(event.body);
     const message = body.message;
@@ -65,7 +65,7 @@ exports.handler = async (event) => {
 };
 
 // Function to send a message via Telegram Bot API
-async function sendTelegramMessage(chatId, text) {
+async function sendTelegramMessage(chatId: string, text: string) {
   try {
     await axios.post(TELEGRAM_API_URL, {
       chat_id: chatId,
