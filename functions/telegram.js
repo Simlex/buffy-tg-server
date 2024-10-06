@@ -56,25 +56,3 @@ async function sendTelegramMessage(chatId, text) {
         console.error('Error sending message:', error);
     }
 }
-
-// Function to send a message with inline buttons via Telegram Bot API
-async function sendTelegramMessageWithButtons(chatId, text) {
-    const inlineKeyboard = {
-        reply_markup: JSON.stringify({
-            inline_keyboard: [
-                [{ text: 'Start now 🐩', callback_data: 'start' }],
-                [{ text: 'Join BUFFY DUROV Community 💎', url: 'http://t.me/BuffyDurov' }]
-            ]
-        })
-    };
-
-    try {
-        await axios.post(TELEGRAM_API_URL, {
-            chat_id: chatId,
-            text: text,
-            ...inlineKeyboard,
-        });
-    } catch (error) {
-        console.error('Error sending message:', error);
-    }
-}
