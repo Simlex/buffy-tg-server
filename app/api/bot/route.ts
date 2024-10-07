@@ -1,5 +1,4 @@
 // /pages/api/telegram-webhook.ts
-import { NextApiRequest, NextApiResponse } from "next";
 import { NextRequest, NextResponse } from "next/server";
 
 const TELEGRAM_API_URL = `https://api.telegram.org/bot${process.env.TELEGRAM_BOT_TOKEN}`;
@@ -107,4 +106,5 @@ export async function POST(req: NextRequest, res: NextResponse) {
   }
 }
 // curl -F "url=https://c039-41-184-55-233.ngrok-free.app/api/bot" https://api.telegram.org/bot7321219493:AAHKXfqUa68bcqkhdLrUF_Eqo4AeDvLNfbk/setWebhook
+// curl -F "url=https://buffy-bot.netlify.app/api/bot" https://api.telegram.org/bot7321219493:AAHKXfqUa68bcqkhdLrUF_Eqo4AeDvLNfbk/setWebhook
 // curl "https://api.telegram.org/bot7321219493:AAHKXfqUa68bcqkhdLrUF_Eqo4AeDvLNfbk/getWebhookInfo"
