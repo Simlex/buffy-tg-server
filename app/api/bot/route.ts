@@ -19,24 +19,24 @@ const sendMessage = async (chatId: number, text: string, options = {}) => {
   return res.json();
 };
 
-const sendPhoto = async (
-  chatId: number,
-  { photo, caption }: { photo: string; caption: string }
-) => {
-  const res = await fetch(`${TELEGRAM_API_URL}/sendPhoto`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      chat_id: chatId,
-      photo,
-      caption,
-    }),
-  });
+// const sendPhoto = async (
+//   chatId: number,
+//   { photo, caption }: { photo: string; caption: string }
+// ) => {
+//   const res = await fetch(`${TELEGRAM_API_URL}/sendPhoto`, {
+//     method: "POST",
+//     headers: {
+//       "Content-Type": "application/json",
+//     },
+//     body: JSON.stringify({
+//       chat_id: chatId,
+//       photo,
+//       caption,
+//     }),
+//   });
 
-  return res.json();
-};
+//   return res.json();
+// };
 
 const sendPhotoWithButtons = async (
   chatId: number,
