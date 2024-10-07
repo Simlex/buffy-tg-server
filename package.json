@@ -9,28 +9,30 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "react": "^18",
-    "react-dom": "^18",
-    "next": "14.2.14",
     "@prisma/client": "^5.16.1",
     "axios": "^1.7.2",
     "framer-motion": "^11.2.12",
     "lodash": "^4.17.21",
     "moment": "^2.30.1",
+    "next": "14.2.14",
     "nextjs-toploader": "^1.6.12",
     "prisma": "^5.16.1",
+    "react": "^18",
+    "react-dom": "^18",
     "sass": "^1.77.6",
     "telegraf": "^4.16.3"
   },
   "devDependencies": {
-    "typescript": "^5",
+    "@types/lodash": "^4.17.6",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
+    "@typescript-eslint/eslint-plugin": "^8.8.0",
+    "@typescript-eslint/parser": "^8.8.0",
+    "eslint": "^8.57.1",
+    "eslint-config-next": "14.2.14",
     "postcss": "^8",
     "tailwindcss": "^3.4.1",
-    "eslint": "^8",
-    "eslint-config-next": "14.2.14",
-    "@types/lodash": "^4.17.6"
+    "typescript": "^5"
   }
 }

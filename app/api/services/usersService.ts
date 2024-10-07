@@ -189,27 +189,27 @@ export async function updateUserPoints(req: NextRequest) {
   return { message: "Successfully updated user's point", data: updatedUser };
 }
 
-async function fetchUserByUserId(userId: string) {
-  const user = await prisma.users.findUnique({
-    where: {
-      id: userId,
-    },
-  });
+// async function fetchUserByUserId(userId: string) {
+//   const user = await prisma.users.findUnique({
+//     where: {
+//       id: userId,
+//     },
+//   });
 
-  // If user is not found, return 404
-  if (!user) {
-    return {
-      error: ApplicationError.UserWithIdNotFound.Text,
-      errorCode: ApplicationError.UserWithIdNotFound.Code,
-      statusCode: StatusCodes.NotFound,
-    };
-  }
+//   // If user is not found, return 404
+//   if (!user) {
+//     return {
+//       error: ApplicationError.UserWithIdNotFound.Text,
+//       errorCode: ApplicationError.UserWithIdNotFound.Code,
+//       statusCode: StatusCodes.NotFound,
+//     };
+//   }
 
-  // If user is found, return it
-  return { user };
-}
+//   // If user is found, return it
+//   return { user };
+// }
 
-export async function fetchLeaderboard(req: NextRequest) {
+export async function fetchLeaderboard() {
   // Fetch all users
   const users = await prisma.users.findMany({
     orderBy: {

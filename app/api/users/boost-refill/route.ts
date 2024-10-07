@@ -1,9 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import { validateRequestMethod } from "../../services/reusable-services/requestMethodValidator";
 import {
-    fetchBoostRefillEndTime,
+  fetchBoostRefillEndTime,
   updateBoostRefillEndTime,
-  updateFreeDailyBoosters,
 } from "../../services/usersService";
 import { customNextResponseError } from "../../utils/customNextResponseError";
 import { StatusCodes } from "@/app/models/IStatusCodes";
