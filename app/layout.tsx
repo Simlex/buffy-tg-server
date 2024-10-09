@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 import { Outfit } from 'next/font/google'
 import './globals.scss';
-import Layout from './components/Layout';
+import Layout, { WrappedLayout } from './components/Layout';
 import GlobalProvider from './Provider';
 
 const dmSans = Outfit({ subsets: ['latin'] })
@@ -26,9 +26,9 @@ export default async function RootLayout({
 
             <GlobalProvider>
                 <body className={`${dmSans.className} p-6 bg-gradient-to-b from-slate-800 to-black to-slate-0`}>
-                    <Layout>
+                    <WrappedLayout>
                         {children}
-                    </Layout>
+                    </WrappedLayout>
                 </body>
             </GlobalProvider>
         </html>

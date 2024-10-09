@@ -1,5 +1,5 @@
 "use client"
-import { FunctionComponent, ReactElement, ReactNode, useState, useEffect, useContext, useCallback, useMemo } from "react";
+import { FunctionComponent, ReactElement, ReactNode, useState, useEffect, useContext, useCallback, useMemo, Suspense } from "react";
 import CustomImage from "./ui/image";
 import images from "@/public/images";
 import { motion } from "framer-motion";
@@ -137,7 +137,7 @@ const Layout: FunctionComponent<LayoutProps> = ({ children }): ReactElement => {
                 twitterTaskDone: false,
                 level: 1,
                 username: userName == 'None' || !userName ? generate8RandomCharacters() : userName
-            }; 
+            };
 
             handleCreateUser(userInfo);
 
@@ -292,3 +292,13 @@ const Layout: FunctionComponent<LayoutProps> = ({ children }): ReactElement => {
 }
 
 export default Layout;
+
+export const WrappedLayout = ({ children }: LayoutProps) => {
+    return (
+        <Suspense fallback={<div>Loading...</div>}>
+            <Layout>
+                {children}
+            </Layout>
+        </Suspense>
+    );
+};
