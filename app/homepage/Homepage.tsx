@@ -1,7 +1,7 @@
 "use client"
-import { ReactElement, FunctionComponent, useState, useContext, useMemo, useEffect, useCallback } from "react"
+import { ReactElement, FunctionComponent, useState, useContext, useMemo, useEffect } from "react"
 import images from "@/public/images";
-import { AnimatePresence, motion } from "framer-motion"
+import { motion } from "framer-motion"
 import CustomImage from "../components/ui/image";
 import { Icons } from "../components/ui/icons";
 import { metrics } from "../constants/userMetrics";
@@ -11,21 +11,20 @@ import { PointsUpdateRequest } from "../models/IPoints";
 import { Metrics } from "../enums/IMetrics";
 import { sessionLimit } from "../constants/user";
 
-interface HomepageProps {
+// interface HomepageProps {
 
-}
+// }
 
-const Homepage: FunctionComponent<HomepageProps> = (): ReactElement => {
+const Homepage: FunctionComponent = (): ReactElement => {
 
     const updateUserPoints = useUpdateUserPoints();
 
     const {
-        userProfileInformation, fetchUserProfileInformation, updateUserProfileInformation,
+        userProfileInformation, fetchUserProfileInformation,
         timesClickedPerSession, updateTimesClickedPerSession,
     } = useContext(ApplicationContext) as ApplicationContextData;
 
     const [taps, setTaps] = useState<number>(0);
-    const [isBoostTimeRetrieved, setIsBoostTimeRetrieved] = useState(false);
 
     async function handleUpdateUserPoints() {
 
@@ -80,7 +79,7 @@ const Homepage: FunctionComponent<HomepageProps> = (): ReactElement => {
             return "text-white/60";
         }
     };
-    const [isClicked, setIsClicked] = useState(false);
+    
     const [clicks, setClicks] = useState<{ id: number, x: number, y: number }[]>([]);
 
     const handleAnimationEnd = (id: number) => {
@@ -171,7 +170,7 @@ const Homepage: FunctionComponent<HomepageProps> = (): ReactElement => {
                                 const card = e.currentTarget;
                                 const rect = card.getBoundingClientRect();
                                 // Iterate through each touch point
-                                Array.from(e.touches).forEach((touch, index) => {
+                                Array.from(e.touches).forEach((touch) => {
                                     const x = touch.clientX - rect.left - rect.width / 2;
                                     const y = touch.clientY - rect.top - rect.height / 2;
 

@@ -1,13 +1,12 @@
 import images from "@/public/images";
-import Image from "next/image";
 import { FunctionComponent, ReactElement } from "react";
 import CustomImage from "../components/ui/image";
 
-interface NftProps {
+// interface NftProps {
 
-}
+// }
 
-const Nft: FunctionComponent<NftProps> = (): ReactElement => {
+const Nft: FunctionComponent = (): ReactElement => {
     return (
         <main className="flex min-h-screen flex-col items-center py-14">
             <div className="w-56 h-56 rounded-xl relative overflow-hidden mb-10">

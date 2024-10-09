@@ -1,11 +1,11 @@
 import { FunctionComponent, ReactElement } from "react";
 import TaskPage from "./TaskPage";
 
-interface TaskProps {
+// interface TaskProps {
     
-}
+// }
  
-const Task: FunctionComponent<TaskProps> = ():ReactElement => {
+const Task: FunctionComponent = ():ReactElement => {
     return ( 
         <TaskPage />
      );

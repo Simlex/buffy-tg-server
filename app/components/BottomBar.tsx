@@ -7,11 +7,11 @@ import { usePathname } from "next/navigation";
 import { motion } from "framer-motion";
 import { ApplicationContext, ApplicationContextData } from "../context/ApplicationContext";
 
-interface BottomBarProps {
+// interface BottomBarProps {
 
-}
+// }
 
-const BottomBar: FunctionComponent<BottomBarProps> = (): ReactElement => {
+const BottomBar: FunctionComponent = (): ReactElement => {
 
     const pathname = usePathname();
 

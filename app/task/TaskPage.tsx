@@ -12,9 +12,9 @@ import { Task, TaskType } from "../enums/ITask";
 import { referralMetrics } from "../constants/referralMetrics";
 import { BonusClaimRequest } from "../models/IReferral";
 
-interface TaskPageProps {
+// interface TaskPageProps {
 
-}
+// }
 
 interface TaskStatusProps {
     status: boolean;
@@ -24,7 +24,7 @@ const TaskStatus: FunctionComponent<TaskStatusProps> = ({ status }) => {
     return (<p className={`text-sm ${status ? "text-green-300/80" : "text-white/60"}`}>{status ? "Done" : "Not done"}</p>);
 }
 
-const TaskPage: FunctionComponent<TaskPageProps> = (): ReactElement => {
+const TaskPage: FunctionComponent = (): ReactElement => {
 
     const updateUserPoints = useUpdateUserPoints();
     const claimReferralBonus = useClaimReferralBonus();

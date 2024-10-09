@@ -1,15 +1,13 @@
 "use client"
 import { FunctionComponent, ReactElement, useContext, useMemo, useState } from "react";
-import CustomImage from "../components/ui/image";
-import images from "@/public/images";
 import { ApplicationContext, ApplicationContextData } from "../context/ApplicationContext";
 import Button from "../components/ui/button";
 
-interface ReferPageProps {
+// interface ReferPageProps {
 
-}
+// }
 
-const ReferPage: FunctionComponent<ReferPageProps> = (): ReactElement => {
+const ReferPage: FunctionComponent = (): ReactElement => {
 
     const { userProfileInformation } = useContext(ApplicationContext) as ApplicationContextData;
     const [isLinkCopied, setIsLinkCopied] = useState(false);

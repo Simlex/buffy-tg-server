@@ -5,7 +5,6 @@ import images from "@/public/images";
 import { motion } from "framer-motion";
 import Topbar from "./Topbar";
 import BottomBar from "./BottomBar";
-import NextTopLoader from "nextjs-toploader";
 import { ApplicationContext, ApplicationContextData } from "../context/ApplicationContext";
 import { useRouter, useSearchParams } from "next/navigation";
 import { UserProfileInformation } from "../models/IUser";
@@ -114,10 +113,10 @@ const Layout: FunctionComponent<LayoutProps> = ({ children }): ReactElement => {
 
     function generate8RandomCharacters() {
         // generate 8 random characters involving letters and numbers
-        let characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+        const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
         let result = '';
         for (let i = 0; i < 8; i++) {
-            let randomIndex = Math.floor(Math.random() * characters.length);
+            const randomIndex = Math.floor(Math.random() * characters.length);
             result += characters[randomIndex];
         }
         return result;
@@ -190,9 +189,6 @@ const Layout: FunctionComponent<LayoutProps> = ({ children }): ReactElement => {
                 const currentTime = new Date(Date.now() + 60 * 60 * 1000);
                 const boostRefillEndTime = toUTCDate(new Date(new Date(response?.data.data.boostRefillEndTime).getTime() - 0));
 
-                console.log("🚀 ~ .then ~ boostRefillEndTime:", boostRefillEndTime.toISOString());
-                console.log("🚀 ~ .then ~ currentTime:", currentTime.toISOString());
-
                 if (boostRefillEndTime < currentTime) {
                     updateTimesClickedPerSession(0);
                     return;
@@ -215,7 +211,6 @@ const Layout: FunctionComponent<LayoutProps> = ({ children }): ReactElement => {
     // hook to fetch the user's boost refill end time
     useEffect(() => {
         if (userProfileInformation && !isBoostTimeRetrieved) {
-            console.log("TIME TO RETRIEVE")
             handleFetchUserBoostRefillEndTime(userProfileInformation.userId);
         }
     }, [userProfileInformation, isBoostTimeRetrieved]);
@@ -227,7 +222,6 @@ const Layout: FunctionComponent<LayoutProps> = ({ children }): ReactElement => {
         if (timesClickedPerSession === 0) return;
 
         let endTime: Date | null = null;
-        const currentTime = toUTCDate(new Date(Date.now() + 60 * 60 * 1000));
 
         const remainingTicks = timesClickedPerSession;
         endTime = toUTCDate(new Date(Date.now() + remainingTicks * DEBOUNCE_DELAY_FOR_SESSION));

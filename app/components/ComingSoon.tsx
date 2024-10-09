@@ -2,11 +2,11 @@ import { ReactElement, FunctionComponent } from "react"
 import CustomImage from "./ui/image";
 import images from "@/public/images";
 
-interface ComingSoonProps {
+// interface ComingSoonProps {
 
-}
+// }
 
-const ComingSoon: FunctionComponent<ComingSoonProps> = (): ReactElement => {
+const ComingSoon: FunctionComponent = (): ReactElement => {
     return (
         <div className="my-8">
             <span className="w-56 h-56 relative block mb-3">

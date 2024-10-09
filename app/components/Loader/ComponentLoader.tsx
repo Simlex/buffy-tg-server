@@ -1,5 +1,4 @@
-import { CSSProperties, FunctionComponent, ReactElement } from 'react';
-import styles from './Loader.module.scss';
+import { FunctionComponent, ReactElement } from 'react';
 
 interface ComponentLoaderProps {
     className?: string;

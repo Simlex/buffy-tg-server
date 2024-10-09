@@ -31,7 +31,6 @@ type AppProviderProps = {
 };
 
 const AppProvider: FunctionComponent<AppProviderProps> = ({ children }) => {
-    const fetchUserInformation = useFetchUserInformation();
 
     // Define state for customer data
     const [userProfileInformation, setUserProfileInformation] = useState<UserProfileInformation | null>(null);
@@ -44,7 +43,7 @@ const AppProvider: FunctionComponent<AppProviderProps> = ({ children }) => {
     const [showUserLoginPrompt, setShowUserLoginPrompt] = useState(false);
 
     // Define function to display toast
-    const displayToast = (message: string, type: "success" | "error" | "info" | "warning") => {
+    const displayToast = (message: string) => {
         alert(message);
     };
 

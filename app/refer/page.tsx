@@ -1,11 +1,11 @@
 import { FunctionComponent, ReactElement } from "react";
 import ReferPage from "./ReferPage";
 
-interface ReferProps {
+// interface ReferProps {
 
-}
+// }
 
-const Refer: FunctionComponent<ReferProps> = (): ReactElement => {
+const Refer: FunctionComponent = (): ReactElement => {
     return (
         <ReferPage />
     );

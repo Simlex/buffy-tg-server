@@ -5,11 +5,11 @@ import { usePathname } from "next/navigation";
 import { ApplicationContext, ApplicationContextData } from "../context/ApplicationContext";
 import Link from "next/link";
 
-interface TopbarProps {
+// interface TopbarProps {
 
-}
+// }
 
-const Topbar: FunctionComponent<TopbarProps> = (): ReactElement => {
+const Topbar: FunctionComponent = (): ReactElement => {
 
     const pathname = usePathname();
     const { userProfileInformation } = useContext(ApplicationContext) as ApplicationContextData;

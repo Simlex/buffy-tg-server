@@ -18,11 +18,6 @@ export enum StatusCodes {
   NoContent = 204,
 
   /**
-   * The request was successful and the resource was deleted.
-   */
-  Deleted = 204,
-
-  /**
    * The request is malformed or invalid.
    */
   BadRequest = 400,

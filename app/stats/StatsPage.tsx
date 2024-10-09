@@ -1,21 +1,18 @@
 "use client"
 import { FunctionComponent, ReactElement, useState, useEffect } from "react";
-import CustomImage from "../components/ui/image";
-import images from "@/public/images";
 import { useFetchLeaderboard } from "../api/apiClient";
-import { metrics } from "../constants/userMetrics";
 import { useRouter } from "next/navigation";
 
-interface StatsPageProps {
+// interface StatsPageProps {
 
-}
+// }
 
 interface LeaderboardData {
     username: string;
     points: number;
 }
 
-const StatsPage: FunctionComponent<StatsPageProps> = (): ReactElement => {
+const StatsPage: FunctionComponent = (): ReactElement => {
 
     const fetchLeaderboard = useFetchLeaderboard();
     const router = useRouter();

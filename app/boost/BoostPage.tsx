@@ -11,11 +11,11 @@ import { MultiLevelRequest } from "../models/ILevel";
 import ComponentLoader from "../components/Loader/ComponentLoader";
 import { dailyBoostLimit } from "../constants/user";
 
-interface BoostPageProps {
+// interface BoostPageProps {
 
-}
+// }
 
-const BoostPage: FunctionComponent<BoostPageProps> = (): ReactElement => {
+const BoostPage: FunctionComponent = (): ReactElement => {
 
     const updateDailyBoosts = useUpdateDailyBoosts();
     const updateUserLevels = useUpdateUserLevels();

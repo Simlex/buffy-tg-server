@@ -12,7 +12,7 @@ export async function GET(req: NextRequest) {
   
     try {
       // Call the function to fetch leaderboard
-      const operation = await fetchLeaderboard(req);
+      const operation = await fetchLeaderboard();
   
       // Return the response
       return NextResponse.json(operation.data, { status: StatusCodes.Success });

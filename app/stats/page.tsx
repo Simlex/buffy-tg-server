@@ -1,11 +1,11 @@
 import { FunctionComponent, ReactElement } from "react";
 import StatsPage from "./StatsPage";
 
-interface StatsProps {
+// interface StatsProps {
     
-}
+// }
  
-const Stats: FunctionComponent<StatsProps> = ():ReactElement => {
+const Stats: FunctionComponent = ():ReactElement => {
     return ( 
         <StatsPage />
      );

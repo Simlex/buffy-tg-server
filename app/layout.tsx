@@ -26,7 +26,9 @@ export default async function RootLayout({
 
             <GlobalProvider>
                 <body className={`${dmSans.className} p-6 bg-gradient-to-b from-slate-800 to-black to-slate-0`}>
-                    <Layout children={children} />
+                    <Layout>
+                        {children}
+                    </Layout>
                 </body>
             </GlobalProvider>
         </html>
