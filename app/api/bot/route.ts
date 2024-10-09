@@ -96,7 +96,8 @@ export async function POST(req: NextRequest) {
         `;
 
         // Constructing the URL for the web app
-        const webAppUrl = `https://buffy-clicker.netlify.app?id=${user_id}&userName=${user_name}${
+        // const webAppUrl = `https://buffy-clicker.netlify.app?id=${user_id}&userName=${user_name}${
+        const webAppUrl = `https://buffy-tg-server.vercel.app?id=${user_id}&userName=${user_name}${
           //   referralId ? `&referralId=${referralId}` :
           ""
         }`;
