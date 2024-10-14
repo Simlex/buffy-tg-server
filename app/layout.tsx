@@ -27,7 +27,7 @@ export default async function RootLayout({
             <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" />
 
             <GlobalProvider>
-                <body className={`${dmSans.className} p-6 relative overflow-y-hidden bg-gradient-to-b from-slate-800 to-black to-slate-0`}>
+                <body className={`${dmSans.className} p-6 relative bg-gradient-to-b from-slate-800 to-black to-slate-0`}>
                     <div className='w-full h-full absolute top-0 left-0 pointer-events-none opacity-10 bg-[url(/images/bg-image.jpg)] bg-center bg-cover bg-fixed bg-no-repeat'></div>
                     <WrappedLayout>
                         {children}

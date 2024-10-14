@@ -2,9 +2,6 @@
 import { ReactElement, FunctionComponent, useState, useEffect, useRef } from "react"
 import Button from "../components/ui/button";
 import { motion } from "framer-motion";
-import images from "@/public/images";
-import Image from "next/image";
-import { image } from "framer-motion/client";
 
 
 const Homepage: FunctionComponent = (): ReactElement => {
@@ -100,7 +97,7 @@ const Homepage: FunctionComponent = (): ReactElement => {
                 animate={{
                     scale: isRollingDice ? 0.85 : 1
                 }}
-                className="container !rounded-full mx-auto p-4 pt-6 mb-8 md:p-6 lg:p-12 border-8 border-orange-400/20">
+                className={`container !rounded-full mx-auto p-4 pt-6 mb-8 md:p-6 lg:p-12 border-8 border-orange-400/20 ${isRollingDice ? '[box-shadow:0_0px_40px_5px_#ff954a7a,0_0px_0_0_#ff954a3c]' : ''}`}>
                 <div className="dice flex justify-center mb-4" ref={diceElement}>
                     <div className="face front"></div>
                     <div className="face back"></div>
@@ -113,10 +110,14 @@ const Homepage: FunctionComponent = (): ReactElement => {
             <Button
                 disabled={isRollingDice || rollsLeft == 0}
                 onClick={() => rollDice()}
-                className="!w-fit mb-3">
+                className="!w-fit mb-3 button !bg-orange-500 !text-white  cursor-pointer select-none
+                active:translate-y-2  active:[box-shadow:0_0px_0_0_#ff964a,0_0px_0_0_#ff954a3c]
+                active:border-b-[0px]
+                transition-all duration-150 [box-shadow:0_8px_0_0_#ff964a,0_15px_0_0_#ff954a3c]
+                !rounded-full border-[1px] border-orange-400">
                 <h2>Roll Dice</h2>
             </Button>
-            <p className="text-white">{rollsLeft} rolls left for today.</p>
+            <p className="text-white">{rollsLeft} {rollsLeft > 1 ? 'rolls' : 'roll'} left for today.</p>
         </main>
     );
 }
