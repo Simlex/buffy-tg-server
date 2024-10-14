@@ -4,19 +4,20 @@ import ComponentLoader from "../Loader/ComponentLoader";
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
     btnIcon?: React.ReactElement;
     minBtn?: boolean;
+    isLoading?: boolean;
 }
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
-    ({ className, type, btnIcon, minBtn, ...props }, ref) => {
+    ({ className, type, btnIcon, isLoading, minBtn, ...props }, ref) => {
         return (
             <button
                 type={type} 
-                className={`bg-primary text-white font-medium ${minBtn ? "py-2 px-4 text-xs" : "py-3 px-6 text-base"} rounded-full hover:bg-primary-foreground hover:text:bg-primary ${className}`}
+                className={`bg-white text-black font-medium ${minBtn ? "py-2 px-4 text-xs" : "py-3 px-6 text-base"} ${props.disabled ? "opacity-50" : "opacity-100"} rounded-xl w-full hover:bg-primary-foreground hover:text:bg-primary ${className}`}
                 ref={ref}
                 {...props}
             >
                 {btnIcon && <span>{btnIcon}</span>}
-                {props.disabled && <ComponentLoader />}
+                {isLoading && <ComponentLoader />}
                 {props.children}
             </button>
         );

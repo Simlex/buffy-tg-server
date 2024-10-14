@@ -13,6 +13,10 @@ import { splashScreenVariant } from "../animations/splashScreen";
 import { useCreateReferral, useCreateUser, useFetchUserBoostRefillEndTime, useUpdateBoostRefillEndTime } from "../api/apiClient";
 import { ReferralCreationRequest } from "../models/IReferral";
 import { debounce } from "lodash"
+import Button from "./ui/button";
+import Confetti from "react-confetti/dist/types/Confetti";
+import ReactConfetti from "react-confetti";
+import Image from "next/image";
 
 interface LayoutProps {
     children?: ReactNode;
@@ -255,29 +259,103 @@ const Layout: FunctionComponent<LayoutProps> = ({ children }): ReactElement => {
         };
     }, [timesClickedPerSession, isBoostTimeRetrieved]);
 
+    const [isShowingNewUserInfo, setIsShowingNewUserInfo] = useState(true);
+    const [isDisplayingYears, setIsDisplayingYears] = useState(true);
+
+    const viewLimit = (index: number) => {
+        if (index == 1) {
+            return 100;
+        }
+        return 100;
+    };
+
+    useEffect(() => {
+        if (isDisplayingYears) {
+            setTimeout(() => {
+                setIsDisplayingYears(false);
+            }, 15000);
+        }
+    }, [isDisplayingYears]);
+
+    // useEffect(() => {
+    //     if (isShowingNewUserInfo) {
+    //         if (isDisplayingYears) {
+    //             setTimeout(() => {
+    //                 setIsDisplayingYears(false);
+    //                 setTimeout(() => {
+    //                     setIsShowingNewUserInfo(false);
+    //                 }, 15000);
+    //             }, 15000);
+    //         };
+    //     }
+    // }, [isShowingNewUserInfo]);
+
     return (
         <motion.div
             initial="opened"
             animate={loaderIsVisible ? "opened" : "closed"}
         >
-            {/* <NextTopLoader
-                color="#ffffff"
-                initialPosition={0.08}
-                crawlSpeed={200}
-                height={3}
-                crawl={true}
-                showSpinner={false}
-                easing="ease"
-                speed={200}
-                shadow="0 0 10px #f1fa9e,0 0 5px #ceb0fa"
-            /> */}
-
             {!loaderIsVisible && (
-                <>
-                    <Topbar />
-                    {children}
-                    <BottomBar />
-                </>
+                isShowingNewUserInfo ?
+                    <>
+                        <ReactConfetti
+                            recycle={false}
+                            numberOfPieces={350}
+                            gravity={0.2}
+                            // style={{opacity: 0.5}}
+                            colors={['#FF69B4', '#33CC33', '#66CCCC', '#FFCC00']}
+                        />
+                        <main className="flex min-h-screen flex-col items-center py-20 pt-4 pb-16 select-none text-white">
+                            <div className="flex flex-row gap-2 w-full">
+                                <div className="w-full h-fit mb-8 overflow-hidden rounded-lg">
+                                    <span className={`h-1 block ${isDisplayingYears ? 'bg-white/100' : 'bg-white/50'}`} style={{ width: `${viewLimit(1)}%` }}></span>
+                                </div>
+                                <div className="w-full h-fit mb-8 overflow-hidden rounded-lg">
+                                    <span className={`h-1 block ${isDisplayingYears ? 'bg-white/50' : 'bg-white/100'}`} style={{ width: `${viewLimit(2)}%` }}></span>
+                                </div>
+                            </div>
+                            {
+                                isDisplayingYears ?
+                                    <>
+                                        <h2 className="text-3xl font-bold mb-2">Elite Member!</h2>
+                                        <p className="text-xl">You joined telegram</p>
+
+                                        <div className="flex flex-col items-center my-auto">
+                                            <span className="text-[160px] leading-none font-black">5</span>
+                                            <p className="text-2xl font-semibold">years ago</p>
+                                        </div>
+
+                                        <div className="mt-auto mb-3">
+                                            <p>Your account number is #233R3412009</p>
+                                            <p>You're in the Top 15% Telegram users 🔥</p>
+                                        </div>
+                                        <Button onClick={() => setIsDisplayingYears(false)}>
+                                            Next
+                                        </Button>
+                                    </> :
+                                    <>
+                                        <h2 className="text-3xl font-bold mb-2">That's incredible!</h2>
+                                        <p className="text-base text-center">Since signing up for Telegram, you've sent</p>
+
+                                        <div className="flex flex-col items-center my-auto">
+                                            <span className="text-[100px] leading-none font-black">24.0K</span>
+                                            <p className="text-2xl font-semibold">Messages</p>
+                                        </div>
+
+                                        <div className="mt-auto mb-3">
+                                        </div>
+                                        <Button onClick={() => setIsShowingNewUserInfo(false)}>
+                                            Continue
+                                        </Button>
+                                    </>
+                            }
+                        </main>
+                    </> :
+                    <main className="">
+                        <Topbar />
+                        {children}
+                        <BottomBar />
+                    </main>
             )}
 
             <motion.div

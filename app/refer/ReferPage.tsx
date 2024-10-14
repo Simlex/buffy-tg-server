@@ -38,7 +38,7 @@ const ReferPage: FunctionComponent = (): ReactElement => {
             <div className="flex flex-col items-center my-3 w-full mb-8">
                 <p className={`text-white text-center ${isLinkCopied ? "text-orange-400" : ""}`}>{userLink}</p>
                 <Button
-                    className={isLinkCopied ? "opacity-70" : "opacity-100 bg-orange-400 text-white w-32 mt-3"}
+                    className={isLinkCopied ? "opacity-70" : "opacity-100 bg-orange-400 text-dark-grey w-32 mt-3"}
                     onClick={() => copyLink(userLink)}>
                     {isLinkCopied ? "Copied!" : "Copy Link"}
                 </Button>

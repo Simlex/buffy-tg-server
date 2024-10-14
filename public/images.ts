@@ -10,6 +10,7 @@ import stats from "./images/stats.png";
 import splash from "./images/splash.png";
 import buffy_nft from "./images/buffy_nft.jpg";
 import nft_coin from "./images/nft_coin.png";
+import bg_image from "./images/bg-image.jpg";
 
 export default {
   avatar,
@@ -21,5 +22,6 @@ export default {
   stats,
   splash,
   buffy_nft,
-  nft_coin
+  nft_coin,
+  bg_image
 };

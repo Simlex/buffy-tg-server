@@ -1,221 +1,122 @@
 "use client"
-import { ReactElement, FunctionComponent, useState, useContext, useMemo, useEffect } from "react"
+import { ReactElement, FunctionComponent, useState, useEffect, useRef } from "react"
+import Button from "../components/ui/button";
+import { motion } from "framer-motion";
 import images from "@/public/images";
-import { motion } from "framer-motion"
-import CustomImage from "../components/ui/image";
-import { Icons } from "../components/ui/icons";
-import { metrics } from "../constants/userMetrics";
-import { ApplicationContext, ApplicationContextData } from "../context/ApplicationContext";
-import { useUpdateUserPoints } from "../api/apiClient";
-import { PointsUpdateRequest } from "../models/IPoints";
-import { Metrics } from "../enums/IMetrics";
-import { sessionLimit } from "../constants/user";
+import Image from "next/image";
+import { image } from "framer-motion/client";
 
-// interface HomepageProps {
-
-// }
 
 const Homepage: FunctionComponent = (): ReactElement => {
 
-    const updateUserPoints = useUpdateUserPoints();
+    const [isRollingDice, setIsRollingDice] = useState(false);
+    const [randomNumber, setRandomNumber] = useState(0);
+    const [rollsLeft, setRollsLeft] = useState(5);
 
-    const {
-        userProfileInformation, fetchUserProfileInformation,
-        timesClickedPerSession, updateTimesClickedPerSession,
-    } = useContext(ApplicationContext) as ApplicationContextData;
+    const rollDice = () => {
+        setIsRollingDice(true);
 
-    const [taps, setTaps] = useState<number>(0);
+        // const random = Math.floor(Math.random() * 10);
+        const random = Math.random();
+        let number;
 
-    async function handleUpdateUserPoints() {
+        // if (random >= 1 && random <= 6) {
+        //     setRandomNumber(random);
+        // } else {
+        //     rollDice();
+        // }
 
-        // construct the data 
-        const data: PointsUpdateRequest = {
-            userId: userProfileInformation?.userId as string,
-            points: taps
-        };
+        if (random < 0.01) {
+            number = 6; // 1% chance
+        } else if (random < 0.51) {
+            number = 1; // 90% chance
+        } else if (random < 0.81) {
+            number = Math.random() < 0.5 ? 2 : 3; // 60% chance for 2 or 3
+        } else if (random < 0.91) {
+            number = Math.random() < 0.5 ? 4 : 5; // 50% chance for 4 or 5
+        } else {
+            number = 1; // Fallback to 1
+        }
 
-        await updateUserPoints(data)
-            .then(() => {
-                // console.log(response);
-                fetchUserProfileInformation();
-            })
-            .catch((error) => {
-                console.error(error);
-            });
+        setRandomNumber(number);
     };
 
-    useMemo(() => {
-        if (userProfileInformation) {
-            setTaps(userProfileInformation.points ?? 0);
-        }
-    }, [userProfileInformation]);
-
-    const DEBOUNCE_DELAY = 1000; // Adjust the delay as needed
+    const diceElement = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
-        if (taps === 0) return;
+        if (randomNumber == 0) return;
 
-        const timer = setTimeout(() => {
-            handleUpdateUserPoints();
-        }, DEBOUNCE_DELAY);
+        const animateDice = () => {
+            if (!diceElement.current) {
+                return;
+            }
 
-        return () => {
-            clearTimeout(timer);
+            diceElement.current.style.animation = 'rolling 4s ease-in-out';
+
+            setTimeout(() => {
+                if (!diceElement.current) {
+                    return;
+                }
+                switch (randomNumber) {
+                    case 1:
+                        diceElement.current.style.transform = 'rotateX(0deg) rotateY(0deg)';
+                        break;
+                    case 6:
+                        diceElement.current.style.transform = 'rotateX(180deg) rotateY(0deg)';
+                        break;
+                    case 2:
+                        diceElement.current.style.transform = 'rotateX(-90deg) rotateY(0deg)';
+                        break;
+                    case 5:
+                        diceElement.current.style.transform = 'rotateX(90deg) rotateY(0deg)';
+                        break;
+                    case 3:
+                        diceElement.current.style.transform = 'rotateX(0deg) rotateY(90deg)';
+                        break;
+                    case 4:
+                        diceElement.current.style.transform = 'rotateX(0deg) rotateY(-90deg)';
+                        break;
+                    default:
+                        break;
+                }
+                diceElement.current.style.animation = 'none';
+
+                setIsRollingDice(false);
+                setRandomNumber(0);
+                setRollsLeft(() => rollsLeft - 1);
+            }, 4050);
         };
-    }, [taps]);
 
-    function swapColorBasedOnStatus() {
-        if (metrics(taps)?.status === Metrics.NOOB) {
-            return "text-green-500/60";
-        } else if (metrics(taps)?.status === Metrics.BEGINNER) {
-            return "text-yellow-400/60";
-        } else if (metrics(taps)?.status === Metrics.INTERMEDIATE) {
-            return "text-red-200/60";
-        } else if (metrics(taps)?.status === Metrics.PRO) {
-            return "text-blue-300/60";
-        } else if (metrics(taps)?.status === Metrics.MASTER) {
-            return "text-purple-300/60";
-        } else if (metrics(taps)?.status === Metrics.LEGEND) {
-            return "text-white/60";
-        }
-    };
-    
-    const [clicks, setClicks] = useState<{ id: number, x: number, y: number }[]>([]);
-
-    const handleAnimationEnd = (id: number) => {
-        setClicks((prevClicks) => prevClicks.filter(click => click.id !== id));
-    };
-
-    // async function _handleUpdateBoostRefillEndTime(endTime: Date) {
-    //     await updateBoostRefillEndTime({ username: userProfileInformation?.username as string, refillEndTime: endTime })
-    //         .then((response) => {
-    //             console.log("Boost refill time updated", response);
-    //         })
-    //         .catch((error) => {
-    //             console.error("Error updating boost refill time", error);
-    //         });
-    // };
+        animateDice();
+    }, [randomNumber]);
 
     return (
-        <main className="flex min-h-screen flex-col items-center py-20 pb-32 select-none">
-            {
-                userProfileInformation &&
-                <>
-                    <div className="flex flex-col items-center mb-12">
-                        <div className="flex flex-row gap-2 items-center">
-                            <span className="w-7 h-7 relative grid place-items-center">
-                                <CustomImage src={images.coin} alt="Coin" />
-                            </span>
-                            <h1 className="text-[40px] text-white font-extrabold">{(taps).toLocaleString()}{metrics(taps)?.pointSuffix}</h1>
-                        </div>
-                        <div className="flex flex-row gap-3 items-center">
-                            <div className="flex flex-row gap-2 items-center">
-                                <span className="w-6 h-6 grid place-items-center">
-                                    <Icons.Trophy className="opacity-40" />
-                                </span>
-                                <p className={`${swapColorBasedOnStatus()} text-sm`}>{metrics(taps)?.status}</p>
-                            </div>
-                            <span className="h-4 w-[1px] bg-slate-50/50 block" />
-                            <div className="flex flex-row gap-2 items-center">
-                                <span className="w-6 h-6 grid place-items-center">
-                                    <Icons.Star />
-                                </span>
-                                <p className="text-white/60 text-sm">Level: {userProfileInformation.level}</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    {clicks.map((click) => (
-                        <div
-                            key={click.id}
-                            className="absolute text-4xl z-20 font-bold opacity-0 text-white pointer-events-none"
-                            style={{
-                                top: `${click.y - 42}px`,
-                                left: `${click.x - 28}px`,
-                                animation: `float 1s ease-out`
-                            }}
-                            onAnimationEnd={() => handleAnimationEnd(click.id)}
-                        >
-                            +{userProfileInformation.level}
-                        </div>
-                    ))}
-                    <div className="flex relative mb-12">
-                        <div className="absolute w-full h-full flex items-center justify-end z-20 pointer-events-none">
-                            {/* <AnimatePresence>
-                                {
-                                    isClicked &&
-                                    ([...Array(10)]).map((click, index) => (
-                                        <motion.div
-                                            key={`${Date.now()}${index}`}
-                                            initial={{ opacity: 1, y: 0 }}
-                                            animate={{ opacity: 0, y: -200 }}
-                                            exit={{ opacity: 0, y: -200 }}
-                                            transition={{ duration: 1 }}
-                                            // style={{ left: click.x, top: click.y }}
-                                            className="absolute z-20 text-lg text-white pr-6"
-                                        >
-                                            +{userProfileInformation.level}
-                                        </motion.div>
-                                    ))
-                                }
-                            </AnimatePresence> */}
-                        </div>
-
-                        <motion.span
-                            onTouchStart={(e) => {
-                                if (timesClickedPerSession === undefined) return;
-
-                                if ((sessionLimit * userProfileInformation.level) - timesClickedPerSession <= 0) return;
-
-                                const card = e.currentTarget;
-                                const rect = card.getBoundingClientRect();
-                                // Iterate through each touch point
-                                Array.from(e.touches).forEach((touch) => {
-                                    const x = touch.clientX - rect.left - rect.width / 2;
-                                    const y = touch.clientY - rect.top - rect.height / 2;
-
-                                    setClicks([...clicks, { id: Date.now(), x: touch.pageX, y: touch.pageY }]);
-                                    
-                                    card.style.transform = `perspective(1000px) rotateX(${-y / 10}deg) rotateY(${x / 10}deg)`;
-
-                                    setTaps(taps + (1 * userProfileInformation.level));
-    
-                                    updateTimesClickedPerSession(timesClickedPerSession + 1);
-                                });
-                                    
-                                setTimeout(() => {
-                                    card.style.transform = '';
-                                }, 100);
-
-                                // setIsClicked(!isClicked);
-                            }}
-                            whileTap={{
-                                // scale: 1.1,
-                                filter: "brightness(1.25)",
-                                transition: { duration: 0.1 }
-                            }}
-                            className="w-60 h-60 relative">
-                            <CustomImage priority src={images.clicker} alt="Durov" />
-                        </motion.span>
-                    </div>
-
-                    {
-                        timesClickedPerSession !== undefined &&
-                        <div className="flex flex-row items-center text-white mb-5">
-                            <p className="text-slate-400">Energy level:</p>&nbsp;
-                            <span className="text-base">{(sessionLimit * userProfileInformation.level) - timesClickedPerSession}/{(sessionLimit * userProfileInformation.level)}</span>
-                        </div>
-                    }
-
-                    {/* {
-                        userProfileInformation.referralCount ?
-                            <div className="flex flex-row items-center text-white">
-                                <p className="text-slate-400">Referral points:</p>&nbsp;
-                                <span className="text-xl">{(userProfileInformation.referralCount * 1000).toLocaleString()}</span>
-                            </div> : <></>
-                    } */}
-                </>
-            }
+        <main className="flex min-h-screen flex-col items-center py-20 pb-32 select-none relative">
+            <div className="flex flex-col items-center mb-10 z-10">
+                <p className="text-sm text-white/50">Total Points</p>
+                <h1 className="text-[40px] text-white font-extrabold">{'20,000k'}</h1>
+            </div>
+            <motion.div
+                animate={{
+                    scale: isRollingDice ? 0.85 : 1
+                }}
+                className="container !rounded-full mx-auto p-4 pt-6 mb-8 md:p-6 lg:p-12 border-8 border-orange-400/20">
+                <div className="dice flex justify-center mb-4" ref={diceElement}>
+                    <div className="face front"></div>
+                    <div className="face back"></div>
+                    <div className="face top"></div>
+                    <div className="face bottom"></div>
+                    <div className="face right"></div>
+                    <div className="face left"></div>
+                </div>
+            </motion.div>
+            <Button
+                disabled={isRollingDice || rollsLeft == 0}
+                onClick={() => rollDice()}
+                className="!w-fit mb-3">
+                <h2>Roll Dice</h2>
+            </Button>
+            <p className="text-white">{rollsLeft} rolls left for today.</p>
         </main>
     );
 }

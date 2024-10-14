@@ -24,30 +24,35 @@ const BottomBar: FunctionComponent = (): ReactElement => {
             href: "/refer"
         },
         {
-            title: "Task",
+            title: "Trivia",
             icon: images.task,
             href: "/task"
         },
         {
-            title: "Tap",
+            title: "Roll",
             icon: images.coin,
             href: "/"
         },
+        // {
+        //     title: "Boost",
+        //     icon: images.boost,
+        //     href: "/boost"
+        // },
         {
-            title: "Boost",
-            icon: images.boost,
-            href: "/boost"
+            title: "Wallet",
+            icon: images.nft_coin,
+            href: "/wallet"
         },
         {
             title: "Stats",
             icon: images.stats,
             href: "/stats"
         },
-        {
-            title: "NFT",
-            icon: images.nft_coin,
-            href: "/nft"
-        },
+        // {
+        //     title: "NFT",
+        //     icon: images.nft_coin,
+        //     href: "/nft"
+        // },
     ]
 
     return (

@@ -1,4 +1,5 @@
 // /pages/api/telegram-webhook.ts
+import { prisma } from "@/lib/prisma";
 import { NextRequest, NextResponse } from "next/server";
 
 const TELEGRAM_API_URL = `https://api.telegram.org/bot${process.env.TELEGRAM_BOT_TOKEN}`;
@@ -84,21 +85,52 @@ export async function POST(req: NextRequest) {
       const chatId = message.chat.id;
       const user_name = message.chat.username;
       const user_id = message.chat.id;
-      const text = message.text;
+      const text: string = message.text;
       const trivia_link = "https://x.com/BuffyDurov";
 
       // Check for commands
-      if (text === "/start") {
-        const messageText = `
+      if (text === "/start" || text.startsWith("/start")) {
+        const messageText = (refName?: string) => `
         Welcome ${
           user_name ?? ""
-        } to BUFFY DUROV! 🐩 Tap to watch your balance rise.\n\nExplore BUFFY DUROV on TON, the dog-themed platform that rewards you for playing. Don’t miss our daily trivia on our X! ${trivia_link}\n\nPoints accumulated convert to $BUVEL tokens for all players.\n\nInvite friends and family for more $BUVEL rewards! More woof buddies🐩, more earnings.\n\n——————————————————\n\nИсследуйте BUFFY DUROV 🐩 на платформе TON и зарабатывайте токены $BUVEL.\nПриглашайте друзей для получения\nдополнительные наград $BUVEL.
+        } to BUFFY DUROV! 🐩 ${refName ? `You were referred by ${refName}\n` : ' '}Tap to watch your balance rise.\n\nExplore BUFFY DUROV on TON, the dog-themed platform that rewards you for playing. Don’t miss our daily trivia on our X! ${trivia_link}\n\nPoints accumulated convert to $BUVEL tokens for all players.\n\nInvite friends and family for more $BUVEL rewards! More woof buddies🐩, more earnings.\n\n——————————————————\n\nИсследуйте BUFFY DUROV 🐩 на платформе TON и зарабатывайте токены $BUVEL.\nПриглашайте друзей для получения\nдополнительные наград $BUVEL.
         `;
+
+        // Split the text to extract the referral ID (if it exists)
+        const params = text.split(" ");
+        console.log("🚀 ~ text:", text)
+        const referralId = params[1] || null;
+        let referrerName: string | undefined;
+
+        if (referralId) {
+            await sendMessage(
+                chatId,
+                "Analyzing account..."
+            )
+            const referrer = await prisma.users.findUnique({
+                where: {
+                    referralCode: referralId,
+                    // AND:  {
+                    //     id: {
+                    //         not: `${user_id}`
+                    //     }
+                    // }
+                },
+                select: {
+                    username: true,
+                }
+            });
+
+            referrerName = referrer?.username;
+        }
+
+        // Log or use the referralId
+        console.log(`Referral ID: ${referralId}`);
 
         // Constructing the URL for the web app
         // const webAppUrl = `https://buffy-clicker.netlify.app?id=${user_id}&userName=${user_name}${
         const webAppUrl = `https://buffy-tg-server.vercel.app?id=${user_id}&userName=${user_name}${
-          //   referralId ? `&referralId=${referralId}` :
+          referralId ? `&referralId=${referralId}` : 
           ""
         }`;
 
@@ -107,7 +139,7 @@ export async function POST(req: NextRequest) {
           {
             photo:
               "https://res.cloudinary.com/dnrczexeg/image/upload/v1722264808/WhatsApp_Image_2024-07-29_at_14.14.57_08b79202_s6yygf.jpg",
-            caption: messageText,
+            caption: messageText(referrerName),
           },
           {
             reply_markup: {
@@ -203,6 +235,6 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Method not allowed" }, { status: 405 });
   }
 }
-// curl -F "url=https://c039-41-184-55-233.ngrok-free.app/api/bot" https://api.telegram.org/bot7321219493:AAHKXfqUa68bcqkhdLrUF_Eqo4AeDvLNfbk/setWebhook
+// curl -F "url=https://9746-102-89-22-219.ngrok-free.app/api/bot" https://api.telegram.org/bot7321219493:AAHKXfqUa68bcqkhdLrUF_Eqo4AeDvLNfbk/setWebhook
 // curl -F "url=https://buffy-tg-server.vercel.app/api/bot" https://api.telegram.org/bot7321219493:AAHKXfqUa68bcqkhdLrUF_Eqo4AeDvLNfbk/setWebhook
 // curl "https://api.telegram.org/bot7321219493:AAHKXfqUa68bcqkhdLrUF_Eqo4AeDvLNfbk/getWebhookInfo"

@@ -18,6 +18,7 @@
     "nextjs-toploader": "^1.6.12",
     "prisma": "^5.16.1",
     "react": "^18",
+    "react-confetti": "^6.1.0",
     "react-dom": "^18",
     "sass": "^1.77.6",
     "telegraf": "^4.16.3"
