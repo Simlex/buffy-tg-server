@@ -27,7 +27,7 @@ const BoostPage: FunctionComponent = (): ReactElement => {
         timeLeft
     } = useContext(ApplicationContext) as ApplicationContextData;
 
-    const userPoints = userProfileInformation?.points;
+    const userPoints = userProfileInformation?.totalPoints;
     const userLevel = userProfileInformation?.level;
     const nextLevelFee = userLevel && levels.find((level) => level.level === (userLevel + 1))?.fee;
     const highestLevel = levels[levels.length - 1].level;
