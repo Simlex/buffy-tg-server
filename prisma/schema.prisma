@@ -28,7 +28,14 @@ model Users {
     phone                       String?
     referralCode                String    @unique
     referralCount               Int       @default(0)
-    points                      Int       @default(0)
+
+    tapPoints                   Int       @default(0)
+    totalPoints                 Int       @default(0)
+    diceRollsPoints             Int       @default(0)
+    triviaPoints                Int       @default(0)
+    agePoints                   Int       @default(0)
+    messagesPoints              Int       @default(0)
+
     dailyFreeBoosters           Int       @default(4)
     dailyBoostersExp            DateTime?
     boostRefillEndTime          DateTime?
