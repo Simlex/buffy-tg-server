@@ -10,17 +10,11 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { UserProfileInformation } from "../models/IUser";
 import { StorageKeys } from "../constants/storageKeys";
 import { splashScreenVariant } from "../animations/splashScreen";
-import { useCreateReferral, useCreateUser, useFetchUserAccountMetrics, useFetchUserBoostRefillEndTime, useUpdateBoostRefillEndTime } from "../api/apiClient";
+import { useCreateReferral, useCreateUser, useFetchUserBoostRefillEndTime, useUpdateBoostRefillEndTime } from "../api/apiClient";
 import { ReferralCreationRequest } from "../models/IReferral";
 import { debounce } from "lodash"
-import Button from "./ui/button";
-import Confetti from "react-confetti/dist/types/Confetti";
-import ReactConfetti from "react-confetti";
-import Image from "next/image";
 import { Toaster } from "sonner";
 import Script from "next/script";
-import { getUserAccountAge } from "../utilities/mtprotoClient";
-import { userIdCreationMap } from "../constants/userMappings";
 import NewUserMetrics from "./IntroScreens/NewUserMetrics";
 
 interface LayoutProps {
@@ -31,9 +25,7 @@ const Layout: FunctionComponent<LayoutProps> = ({ children }): ReactElement => {
 
     const createUser = useCreateUser();
     const createReferral = useCreateReferral();
-    const updateBoostRefillEndTime = useUpdateBoostRefillEndTime();
     const fetchUserBoostRefillEndTime = useFetchUserBoostRefillEndTime();
-    const fetchUserAccountMetrics = useFetchUserAccountMetrics();
 
     const {
         userProfileInformation, fetchUserProfileInformation, updateUserProfileInformation,

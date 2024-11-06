@@ -27,13 +27,13 @@ export function useFetchUserInformation() {
   return fetchUserInformation;
 }
 
-export function useFetchUserAccountMetrics() {
-  async function fetchUserAccountMetrics(userId: string) {
-    return API.get(`${ApiRoutes.UsersAccount}?userId=${userId}`);
-  }
+// export function useFetchUserAccountMetrics() {
+//   async function fetchUserAccountMetrics(userId: string) {
+//     return API.get(`${ApiRoutes.UsersAccount}?userId=${userId}`);
+//   }
 
-  return fetchUserAccountMetrics;
-}
+//   return fetchUserAccountMetrics;
+// }
 
 export function useFetchUserInformationByUserName() {
   async function fetchUserInformationByUserName(data: {

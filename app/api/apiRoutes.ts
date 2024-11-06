@@ -27,7 +27,7 @@ export class ApiRoutes {
   /**
    * The route to Users Account endpoint
    */
-  static UsersAccount: string = "api/users/account";
+//   static UsersAccount: string = "api/users/account";
 
   /**
    * The route to Users Daily Boosts endpoint
