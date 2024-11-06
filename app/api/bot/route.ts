@@ -3,6 +3,8 @@ import { prisma } from "@/lib/prisma";
 import { NextRequest, NextResponse } from "next/server";
 
 const TELEGRAM_API_URL = `https://api.telegram.org/bot${process.env.TELEGRAM_BOT_TOKEN}`;
+const WEB_APP_URL = "https://buffy-tg-server.vercel.app";
+// const WEB_APP_URL = "https://2c10-41-184-8-14.ngrok-free.app";
 
 const sendMessage = async (chatId: number, text: string, options = {}) => {
   const res = await fetch(`${TELEGRAM_API_URL}/sendMessage`, {
@@ -129,7 +131,7 @@ export async function POST(req: NextRequest) {
 
         // Constructing the URL for the web app
         // const webAppUrl = `https://buffy-clicker.netlify.app?id=${user_id}&userName=${user_name}${
-        const webAppUrl = `https://buffy-tg-server.vercel.app?id=${user_id}&userName=${user_name}${
+        const webAppUrl = `${WEB_APP_URL}?id=${user_id}&userName=${user_name}${
           referralId ? `&referralId=${referralId}` : 
           ""
         }`;
@@ -235,6 +237,6 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Method not allowed" }, { status: 405 });
   }
 }
-// curl -F "url=https://9746-102-89-22-219.ngrok-free.app/api/bot" https://api.telegram.org/bot7321219493:AAHKXfqUa68bcqkhdLrUF_Eqo4AeDvLNfbk/setWebhook
+// curl -F "url=https://2c10-41-184-8-14.ngrok-free.app/api/bot" https://api.telegram.org/bot7321219493:AAHKXfqUa68bcqkhdLrUF_Eqo4AeDvLNfbk/setWebhook
 // curl -F "url=https://buffy-tg-server.vercel.app/api/bot" https://api.telegram.org/bot7321219493:AAHKXfqUa68bcqkhdLrUF_Eqo4AeDvLNfbk/setWebhook
 // curl "https://api.telegram.org/bot7321219493:AAHKXfqUa68bcqkhdLrUF_Eqo4AeDvLNfbk/getWebhookInfo"
