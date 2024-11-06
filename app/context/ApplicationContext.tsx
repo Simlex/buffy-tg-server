@@ -3,6 +3,7 @@ import { UserProfileInformation } from "../models/IUser";
 import { StorageKeys } from "../constants/storageKeys";
 import { fetchUserFromDb } from "../api/services/fetchUserFromDb";
 import { useFetchUserInformation } from "../api/apiClient";
+import { Game } from "../enums/Game";
 
 
 // Define the type for the context data
@@ -20,6 +21,8 @@ export type ApplicationContextData = {
     updateTimeLeft: (time: string) => void;
     timesClickedPerSession: number | undefined;
     updateTimesClickedPerSession: (times: number) => void;
+    selectedGame: Game;
+    updateSelectedGame: (game: Game) => void;
 };
 
 // Create a context with the specified data type
@@ -41,6 +44,9 @@ const AppProvider: FunctionComponent<AppProviderProps> = ({ children }) => {
 
     // Define state for displaying login prompt
     const [showUserLoginPrompt, setShowUserLoginPrompt] = useState(false);
+
+    // Define state for selected game
+    const [selectedGame, setSelectedGame] = useState<Game>(Game.Dice);
 
     // Define function to display toast
     const displayToast = (message: string) => {
@@ -84,6 +90,8 @@ const AppProvider: FunctionComponent<AppProviderProps> = ({ children }) => {
         updateTimeLeft: (time: string) => setTimeLeft(time),
         timesClickedPerSession,
         updateTimesClickedPerSession: (times: number) => setTimesClickedPerSession(times),
+        selectedGame,
+        updateSelectedGame: (game: Game) => setSelectedGame(game),
     };
 
     return (
