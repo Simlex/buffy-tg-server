@@ -12,7 +12,12 @@ export type UserProfileInformation = {
   phone?: string;
   referralCode?: string;
   referralCount?: number;
-  points?: number;
+  
+  diceRollsPoints: number;
+  tapPoints: number; 
+  totalPoints: number; 
+  triviaPoints: number;
+
   dailyFreeBoosters: number;
   dailyBoostersExp?: Date;
   boostRefillEndTime?: Date;
