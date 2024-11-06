@@ -101,7 +101,7 @@ export async function createReferral(req: NextRequest) {
         userId: user.userId,
       },
       data: {
-        points: {
+        totalPoints: {
           increment: 1000,
         },
         referralCount: {
@@ -175,7 +175,7 @@ export async function claimReferralBonus(req: NextRequest) {
         userId: userId,
       },
       data: {
-        points: {
+        totalPoints: {
           increment: equivBonus?.bonus || 0,
         },
         highestReferralBonusClaimed: referralCount,
