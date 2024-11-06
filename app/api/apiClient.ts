@@ -6,7 +6,7 @@ import { BonusClaimRequest, ReferralCreationRequest } from "../models/IReferral"
 import { MultiLevelRequest } from "../models/ILevel";
 
 export const API = axios.create({
-  baseURL: ApiRoutes.BASE_URL_DEV,
+  baseURL: ApiRoutes.BASE_URL_LIVE,
 });
 
 //#region user
