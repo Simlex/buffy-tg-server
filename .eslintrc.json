@@ -1,12 +1,8 @@
 {
   "extends": ["next/core-web-vitals", "next/typescript"],
   "rules": {
-    "@typescript-eslint/consistent-type-definitions": [
-      "error",
-      "type",
-      {
-        "allowInterfaces": true
-      }
-    ]
+    "rules": {
+    "@typescript-eslint/consistent-type-definitions": ["error", "interface"]
+  }
   }
 }

@@ -7,7 +7,7 @@ import { Game } from "../enums/Game";
 
 
 // Define the type for the context data
-export type ApplicationContextData = {
+export interface ApplicationContextData {
     isFetchingUserProfile: boolean;
     userProfileInformation: UserProfileInformation | null;
     updateUserProfileInformation: (user: UserProfileInformation) => void;
