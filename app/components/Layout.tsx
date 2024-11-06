@@ -10,13 +10,18 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { UserProfileInformation } from "../models/IUser";
 import { StorageKeys } from "../constants/storageKeys";
 import { splashScreenVariant } from "../animations/splashScreen";
-import { useCreateReferral, useCreateUser, useFetchUserBoostRefillEndTime, useUpdateBoostRefillEndTime } from "../api/apiClient";
+import { useCreateReferral, useCreateUser, useFetchUserAccountMetrics, useFetchUserBoostRefillEndTime, useUpdateBoostRefillEndTime } from "../api/apiClient";
 import { ReferralCreationRequest } from "../models/IReferral";
 import { debounce } from "lodash"
 import Button from "./ui/button";
 import Confetti from "react-confetti/dist/types/Confetti";
 import ReactConfetti from "react-confetti";
 import Image from "next/image";
+import { Toaster } from "sonner";
+import Script from "next/script";
+import { getUserAccountAge } from "../utilities/mtprotoClient";
+import { userIdCreationMap } from "../constants/userMappings";
+import NewUserMetrics from "./IntroScreens/NewUserMetrics";
 
 interface LayoutProps {
     children?: ReactNode;
@@ -28,6 +33,7 @@ const Layout: FunctionComponent<LayoutProps> = ({ children }): ReactElement => {
     const createReferral = useCreateReferral();
     const updateBoostRefillEndTime = useUpdateBoostRefillEndTime();
     const fetchUserBoostRefillEndTime = useFetchUserBoostRefillEndTime();
+    const fetchUserAccountMetrics = useFetchUserAccountMetrics();
 
     const {
         userProfileInformation, fetchUserProfileInformation, updateUserProfileInformation,
@@ -56,7 +62,7 @@ const Layout: FunctionComponent<LayoutProps> = ({ children }): ReactElement => {
         await createUser(userInfo)
             .then((response) => {
                 fetchUserProfileInformation();
-                console.log(response);
+                // console.log(response);
             })
             .catch((error) => {
                 console.error(error);
@@ -124,7 +130,7 @@ const Layout: FunctionComponent<LayoutProps> = ({ children }): ReactElement => {
             result += characters[randomIndex];
         }
         return result;
-    }
+    };
 
     // hook to create user profile
     useMemo(() => {
@@ -140,6 +146,10 @@ const Layout: FunctionComponent<LayoutProps> = ({ children }): ReactElement => {
                 telegramTaskDone: false,
                 twitterTaskDone: false,
                 level: 1,
+                tapPoints: 0,
+                diceRollsPoints: 0,
+                totalPoints: 0,
+                triviaPoints: 0,
                 username: userName == 'None' || !userName ? generate8RandomCharacters() : userName
             };
 
@@ -165,16 +175,18 @@ const Layout: FunctionComponent<LayoutProps> = ({ children }): ReactElement => {
         }
     }, [referralId, userProfileInformation]);
 
-    const handleUpdateBoostRefillEndTime = useCallback(debounce(async (userId: string, endTime: Date) => {
-        console.log("DB ACTION TRIGGERED!");
-        await updateBoostRefillEndTime({ userId, refillEndTime: endTime })
-            .then((response) => {
-                console.log("Boost refill time updated", response);
-            })
-            .catch((error) => {
-                console.error("Error updating boost refill time", error);
-            });
-    }, 1000), []);
+    const handleUpdateBoostRefillEndTime = useCallback(
+        debounce(async (userId: string, endTime: Date) => {
+            console.log("DB ACTION TRIGGERED!");
+            // await updateBoostRefillEndTime({ userId, refillEndTime: endTime })
+            //     .then((response) => {
+            //         console.log("Boost refill time updated", response);
+            //     })
+            //     .catch((error) => {
+            //         console.error("Error updating boost refill time", error);
+            //     });
+        }, 1000), []
+    );
 
     // Convert date to UTC
     function toUTCDate(date: Date): Date {
@@ -262,110 +274,72 @@ const Layout: FunctionComponent<LayoutProps> = ({ children }): ReactElement => {
     const [isShowingNewUserInfo, setIsShowingNewUserInfo] = useState(true);
     const [isDisplayingYears, setIsDisplayingYears] = useState(true);
 
-    const viewLimit = (index: number) => {
-        if (index == 1) {
-            return 100;
-        }
-        return 100;
-    };
-
     useEffect(() => {
-        if (isDisplayingYears) {
-            setTimeout(() => {
-                setIsDisplayingYears(false);
-            }, 15000);
-        }
-    }, [isDisplayingYears]);
+        // Check if Telegram WebApp is available
+        if (typeof window !== 'undefined' && window.Telegram?.WebApp) {
+            const tg = window.Telegram.WebApp;
+            // tg.BiometricManager.init();
 
-    // useEffect(() => {
-    //     if (isShowingNewUserInfo) {
-    //         if (isDisplayingYears) {
-    //             setTimeout(() => {
-    //                 setIsDisplayingYears(false);
-    //                 setTimeout(() => {
-    //                     setIsShowingNewUserInfo(false);
-    //                 }, 15000);
-    //             }, 15000);
-    //         };
-    //     }
-    // }, [isShowingNewUserInfo]);
+            // Initialize or customize WebApp UI
+            tg.setBackgroundColor('#000000');
+            tg.setHeaderColor('#000000');
+            tg.MainButton.text = "Click Me!";
+            tg.MainButton.hide();
+
+            // Example: Access user info
+            const user = tg.initDataUnsafe.user;
+            console.log("🚀 ~ telegram webapp user:", user)
+
+            // Add a click event to the main button
+            tg.MainButton.onClick(() => {
+                console.log("Main button clicked");
+                tg.close(); // Close the mini app
+            });
+        }
+    }, []); // Runs once after component mounts
 
     return (
-        <motion.div
-            initial="opened"
-            animate={loaderIsVisible ? "opened" : "closed"}
-        >
-            {!loaderIsVisible && (
-                isShowingNewUserInfo ?
-                    <>
-                        <ReactConfetti
-                            recycle={false}
-                            numberOfPieces={350}
-                            gravity={0.2}
-                            // style={{opacity: 0.5}}
-                            colors={['#FF69B4', '#33CC33', '#66CCCC', '#FFCC00']}
-                        />
-                        <main className="flex min-h-screen flex-col items-center py-20 pt-4 pb-16 select-none text-white">
-                            <div className="flex flex-row gap-2 w-full">
-                                <div className="w-full h-fit mb-8 overflow-hidden rounded-lg">
-                                    <span className={`h-1 block ${isDisplayingYears ? 'bg-white/100' : 'bg-white/50'}`} style={{ width: `${viewLimit(1)}%` }}></span>
-                                </div>
-                                <div className="w-full h-fit mb-8 overflow-hidden rounded-lg">
-                                    <span className={`h-1 block ${isDisplayingYears ? 'bg-white/50' : 'bg-white/100'}`} style={{ width: `${viewLimit(2)}%` }}></span>
-                                </div>
-                            </div>
-                            {
-                                isDisplayingYears ?
-                                    <>
-                                        <h2 className="text-3xl font-bold mb-2">Elite Member!</h2>
-                                        <p className="text-xl">You joined telegram</p>
-
-                                        <div className="flex flex-col items-center my-auto">
-                                            <span className="text-[160px] leading-none font-black">5</span>
-                                            <p className="text-2xl font-semibold">years ago</p>
-                                        </div>
-
-                                        <div className="mt-auto mb-3">
-                                            <p>Your account number is #233R3412009</p>
-                                            <p>You're in the Top 15% Telegram users 🔥</p>
-                                        </div>
-                                        <Button onClick={() => setIsDisplayingYears(false)}>
-                                            Next
-                                        </Button>
-                                    </> :
-                                    <>
-                                        <h2 className="text-3xl font-bold mb-2">That's incredible!</h2>
-                                        <p className="text-base text-center">Since signing up for Telegram, you've sent</p>
-
-                                        <div className="flex flex-col items-center my-auto">
-                                            <span className="text-[100px] leading-none font-black">24.0K</span>
-                                            <p className="text-2xl font-semibold">Messages</p>
-                                        </div>
-
-                                        <div className="mt-auto mb-3">
-                                        </div>
-                                        <Button onClick={() => setIsShowingNewUserInfo(false)}>
-                                            Continue
-                                        </Button>
-                                    </>
-                            }
-                        </main>
-                    </> :
-                    <main className="">
-                        <Topbar />
-                        {children}
-                        <BottomBar />
-                    </main>
-            )}
-
+        <>
             <motion.div
-                variants={splashScreenVariant}
-                className='w-[100vw] h-[100vh] fixed top-0 left-0 z-30 min-h-[100vh] grid place-items-center bg-white pointer-events-none'>
-                <div className='w-60 h-60 animate-pulse transition-all duration-150 ease-in-out object-contain relative'>
-                    <CustomImage src={images.splash} alt='logo' />
-                </div>
+                initial="opened"
+                animate={loaderIsVisible ? "opened" : "closed"}
+            >
+                <Toaster
+                    position='bottom-center'
+                    richColors
+                    closeButton
+                    toastOptions={{
+                        duration: 3000,
+                        unstyled: false,
+                    }}
+                />
+                {!loaderIsVisible && (
+                    isShowingNewUserInfo ?
+                        <NewUserMetrics
+                            isDisplayingYears={isDisplayingYears}
+                            setIsDisplayingYears={setIsDisplayingYears}
+                            setIsShowingNewUserInfo={setIsShowingNewUserInfo}
+                            userId={userId}
+                        /> :
+                        <main className="">
+                            <Topbar />
+                            {children}
+                            <BottomBar />
+                        </main>
+                )}
+
+                <motion.div
+                    variants={splashScreenVariant}
+                    className='w-[100vw] h-[100vh] fixed top-0 left-0 z-30 min-h-[100vh] grid place-items-center bg-white pointer-events-none'>
+                    <div className='w-60 h-60 animate-pulse transition-all duration-150 ease-in-out object-contain relative'>
+                        <CustomImage src={images.splash} alt='logo' />
+                    </div>
+                </motion.div>
             </motion.div>
-        </motion.div>
+            <Script
+                src="https://telegram.org/js/telegram-web-app.js"
+                strategy="beforeInteractive" />
+        </>
     );
 }
 
