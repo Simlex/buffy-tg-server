@@ -1,11 +1,7 @@
 import { FunctionComponent, ReactElement } from "react";
 import WalletPage from "./WalletPage";
-
-interface WalletProps {
-    
-}
  
-const Wallet: FunctionComponent<WalletProps> = ():ReactElement => {
+const Wallet: FunctionComponent = ():ReactElement => {
     return ( 
         <WalletPage />
      );

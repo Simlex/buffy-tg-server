@@ -3,19 +3,18 @@ import React, { useContext } from 'react'
 import { Icons } from '../components/ui/icons'
 import { RollsPurchasesConfig } from '../constants/purchases'
 import ConnectWalletModal from '../components/modal/ConnectWalletModal'
-import { SendTransactionRequest, TonConnectButton, TonConnectUIContext, useTonAddress, useTonConnectModal, useTonWallet } from '@tonconnect/ui-react'
+import { SendTransactionRequest, TonConnectUIContext, useTonAddress, useTonConnectModal, useTonWallet } from '@tonconnect/ui-react'
 import { Address, beginCell, toNano } from '@ton/ton';
 import { motion } from 'framer-motion'
 
-type Props = {}
-
-export default function WalletPage({ }: Props) {
+export default function WalletPage() {
     const tonConnectUI = useContext(TonConnectUIContext);
 
     const userFriendlyAddress = useTonAddress();
-    const rawAddress = useTonAddress(false);
-    const wallet = useTonWallet();
-    const { state, open, close } = useTonConnectModal(); // for opening and closing the modal
+    // const rawAddress = useTonAddress(false);
+    // const wallet = useTonWallet();
+    // const { state, open, close } = useTonConnectModal(); // for opening and closing the modal
+    const { open } = useTonConnectModal(); // for opening and closing the modal
 
     const [isModalVisible, setIsModalVisible] = React.useState(false);
 
