@@ -8,6 +8,7 @@ import { Task } from "@/app/enums/ITask";
 import { MultiLevelRequest } from "@/app/models/ILevel";
 import { levels } from "@/app/constants/levels";
 import { dailyBoostLimit } from "@/app/constants/user";
+import { Game } from "@/app/enums/Game";
 
 export async function createUser(req: NextRequest) {
   // Get the body of the request
@@ -77,7 +78,7 @@ export async function fetchUsers(req: NextRequest) {
   // Fetch all users
   const users = await prisma.users.findMany({
     orderBy: {
-      points: "desc",
+      totalPoints: "desc",
     },
   });
 
@@ -131,12 +132,16 @@ export async function updateUserPoints(req: NextRequest) {
       // if we get here, it means the user has not done the task...
 
       // increment the user's points
-      await incrementUserPoints(request.points, request.userId, user.points);
+      await incrementUserTotalPoints(
+        request.points,
+        request.userId,
+        user.totalPoints
+      );
 
       // update the user's telegram task status
       await prisma.users.update({
         where: {
-            userId: request.userId,
+          userId: request.userId,
         },
         data: {
           telegramTaskDone: true,
@@ -158,12 +163,16 @@ export async function updateUserPoints(req: NextRequest) {
       // if we get here, it means the user has not done the task...
 
       // increment the user's points
-      await incrementUserPoints(request.points, request.userId, user.points);
+      await incrementUserTotalPoints(
+        request.points,
+        request.userId,
+        user.totalPoints
+      );
 
       // update the user's telegram task status
       await prisma.users.update({
         where: {
-            userId: request.userId,
+          userId: request.userId,
         },
         data: {
           twitterTaskDone: true,
@@ -175,13 +184,63 @@ export async function updateUserPoints(req: NextRequest) {
     return { message: "Successfully updated user's point & task status" };
   }
 
+  // Check if the user provided a particular game
+  if (request.game) {
+    const specifiedGame = request.game;
+
+    // If the specified game is dice
+    if (specifiedGame === Game.Dice) {
+      await incrementUserTotalPoints(
+        request.points,
+        request.userId,
+        user.totalPoints
+      );
+
+      // update the user's dice task status
+      await prisma.users.update({
+        where: {
+          userId: request.userId,
+        },
+        data: {
+          diceRollsPoints: {
+            increment: request.points,
+          },
+        },
+      });
+    }
+
+    // If the specified game is tap
+    if (specifiedGame === Game.Tap) {
+      await incrementUserTotalPoints(
+        request.points,
+        request.userId,
+        user.totalPoints
+      );
+      
+      // update the user's tap task status
+      await prisma.users.update({
+        where: {
+          userId: request.userId,
+        },
+        data: {
+          tapPoints: {
+            increment: request.points,
+          },
+        },
+      });
+    }
+
+    // Return the response
+    return { message: "Successfully updated user's games points" };
+  }
+
   // Update the user's points
   const updatedUser = await prisma.users.update({
     where: {
-        userId: request.userId,
+      userId: request.userId,
     },
     data: {
-      points: request.points,
+      totalPoints: request.points,
     },
   });
 
@@ -214,7 +273,7 @@ export async function fetchLeaderboard() {
   const users = await prisma.users.findMany({
     orderBy: {
       // order by points in descending order
-      points: "desc",
+      totalPoints: "desc",
     },
   });
 
@@ -241,7 +300,7 @@ export async function updateFreeDailyBoosters(req: NextRequest) {
   // Check if user exists
   const user = await prisma.users.findUnique({
     where: {
-        userId: userId,
+      userId: userId,
     },
   });
 
@@ -262,7 +321,7 @@ export async function updateFreeDailyBoosters(req: NextRequest) {
     ) {
       const updatedUser = await prisma.users.update({
         where: {
-            userId: userId,
+          userId: userId,
         },
         data: {
           dailyFreeBoosters: dailyBoostLimit,
@@ -301,7 +360,7 @@ export async function updateFreeDailyBoosters(req: NextRequest) {
   // Update the user's free daily boosters and expiration date
   const updatedUser = await prisma.users.update({
     where: {
-        userId: userId,
+      userId: userId,
     },
     data: {
       dailyFreeBoosters: {
@@ -341,7 +400,7 @@ export async function updateBoostRefillEndTime(req: NextRequest) {
   // Check if user exists
   const user = await prisma.users.findUnique({
     where: {
-        userId: userId,
+      userId: userId,
     },
   });
 
@@ -357,7 +416,7 @@ export async function updateBoostRefillEndTime(req: NextRequest) {
   // Update the user's boost refill time
   const updatedUser = await prisma.users.update({
     where: {
-        userId: userId,
+      userId: userId,
     },
     data: {
       boostRefillEndTime: new Date(refillEndTime),
@@ -388,7 +447,7 @@ export async function fetchBoostRefillEndTime(req: NextRequest) {
   // Check if user exists
   const user = await prisma.users.findUnique({
     where: {
-        userId: userId,
+      userId: userId,
     },
   });
 
@@ -408,17 +467,17 @@ export async function fetchBoostRefillEndTime(req: NextRequest) {
   };
 }
 
-async function incrementUserPoints(
+async function incrementUserTotalPoints(
   points: number,
   userId: string,
   currentPoints: number
 ) {
   await prisma.users.update({
     where: {
-        userId: userId,
+      userId: userId,
     },
     data: {
-      points: currentPoints + points,
+      totalPoints: currentPoints + points,
     },
   });
 }
@@ -438,7 +497,7 @@ export async function updateUserLevel(req: NextRequest) {
   // Check if user exists
   const user = await prisma.users.findUnique({
     where: {
-        userId: request.userId,
+      userId: request.userId,
     },
   });
 
@@ -482,10 +541,10 @@ export async function updateUserLevel(req: NextRequest) {
   const requestedLevelFee = requestedLevel.fee;
 
   console.log("🚀 ~ updateUserLevel ~ requestedLevelFee:", requestedLevelFee);
-  console.log("🚀 ~ updateUserLevel ~ points:", user.points);
+  console.log("🚀 ~ updateUserLevel ~ points:", user.totalPoints);
 
-  // Check if the user's points are enough to level up
-  if (user.points < requestedLevelFee) {
+  // Check if the user's totalPoints are enough to level up
+  if (user.totalPoints < requestedLevelFee) {
     return {
       error: ApplicationError.NotEnoughPointsToUpgradeLevel.Text,
       errorCode: ApplicationError.NotEnoughPointsToUpgradeLevel.Code,
@@ -496,11 +555,11 @@ export async function updateUserLevel(req: NextRequest) {
   // Update the user's level and deduct the level fee from the user's points
   const updatedUser = await prisma.users.update({
     where: {
-        userId: request.userId,
+      userId: request.userId,
     },
     data: {
       level: request.level,
-      points: {
+      totalPoints: {
         decrement: requestedLevelFee,
       },
     },
