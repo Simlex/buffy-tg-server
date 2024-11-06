@@ -6,7 +6,7 @@ import { BonusClaimRequest, ReferralCreationRequest } from "../models/IReferral"
 import { MultiLevelRequest } from "../models/ILevel";
 
 export const API = axios.create({
-  baseURL: ApiRoutes.BASE_URL_LIVE,
+  baseURL: ApiRoutes.BASE_URL_DEV,
 });
 
 //#region user
@@ -25,6 +25,14 @@ export function useFetchUserInformation() {
   }
 
   return fetchUserInformation;
+}
+
+export function useFetchUserAccountMetrics() {
+  async function fetchUserAccountMetrics(userId: string) {
+    return API.get(`${ApiRoutes.UsersAccount}?userId=${userId}`);
+  }
+
+  return fetchUserAccountMetrics;
 }
 
 export function useFetchUserInformationByUserName() {
