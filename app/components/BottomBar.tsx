@@ -6,6 +6,7 @@ import images from "@/public/images";
 import { usePathname } from "next/navigation";
 import { motion } from "framer-motion";
 import { ApplicationContext, ApplicationContextData } from "../context/ApplicationContext";
+import { Icons } from "./ui/icons";
 
 // interface BottomBarProps {
 
@@ -19,19 +20,27 @@ const BottomBar: FunctionComponent = (): ReactElement => {
 
     const links = [
         {
+            title: "Home",
+            icon: <Icons.Home />,
+            href: "/"
+        },
+        {
             title: "Refer",
-            icon: images.buffies,
+            // icon: images.buffies,
+            icon: <Icons.Refer />,
             href: "/refer"
         },
         {
-            title: "Trivia",
-            icon: images.task,
-            href: "/task"
+            title: "Games",
+            // icon: images.coin,
+            icon: <Icons.Games />,
+            href: "/games"
         },
         {
-            title: "Roll",
-            icon: images.coin,
-            href: "/"
+            title: "Trivia",
+            // icon: images.task,
+            icon: <Icons.Trivia />,
+            href: "/task"
         },
         // {
         //     title: "Boost",
@@ -39,13 +48,15 @@ const BottomBar: FunctionComponent = (): ReactElement => {
         //     href: "/boost"
         // },
         {
-            title: "Wallet",
-            icon: images.nft_coin,
+            title: "Market",
+            // icon: images.nft_coin,
+            icon: <Icons.Wallet />,
             href: "/wallet"
         },
         {
             title: "Stats",
-            icon: images.stats,
+            // icon: images.stats,
+            icon: <Icons.Stats />,
             href: "/stats"
         },
         // {
@@ -77,8 +88,9 @@ const BottomBar: FunctionComponent = (): ReactElement => {
                                         repeat: Infinity
                                     }
                                 }}
-                                className="w-7 h-7 relative block">
-                                <CustomImage src={link.icon} alt="Buffy" />
+                                className="w-7 h-7 relative grid place-items-center">
+                                {/* <CustomImage src={link.icon} alt="Buffy" /> */}
+                                {link.icon}
                             </motion.span>
                             {link.title}
                         </Link>
