@@ -1,8 +1,6 @@
 "use client"
 import Link from "next/link";
 import { FunctionComponent, ReactElement, useContext } from "react";
-import CustomImage from "./ui/image";
-import images from "@/public/images";
 import { usePathname } from "next/navigation";
 import { motion } from "framer-motion";
 import { ApplicationContext, ApplicationContextData } from "../context/ApplicationContext";

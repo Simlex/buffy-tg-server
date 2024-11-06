@@ -3,7 +3,7 @@ import React from 'react';
 import { AppProvider } from './context/ApplicationContext';
 import { TonConnectUIProvider } from '@tonconnect/ui-react';
 
-type Props = {
+interface Props {
     children?: React.ReactNode
 }
 

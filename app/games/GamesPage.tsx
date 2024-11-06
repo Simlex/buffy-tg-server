@@ -1,15 +1,12 @@
 'use client'
-import { FunctionComponent, ReactElement, useContext, useState } from "react";
+import { FunctionComponent, ReactElement, useContext } from "react";
 import Dicepage from "./Dicepage";
 import Tappage from "./Tappage";
 import { Game } from "../enums/Game";
 import { ApplicationContext, ApplicationContextData } from "../context/ApplicationContext";
 
-interface GamesPageProps {
 
-}
-
-const GamesPage: FunctionComponent<GamesPageProps> = (): ReactElement => {
+const GamesPage: FunctionComponent = (): ReactElement => {
 
     const { selectedGame } = useContext(ApplicationContext) as ApplicationContextData;
 

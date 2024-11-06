@@ -1,11 +1,7 @@
 import { FunctionComponent, ReactElement } from "react";
 import BoostPage from "./BoostPage";
 
-interface BoostProps {
-
-}
-
-const Boost: FunctionComponent<BoostProps> = (): ReactElement => {
+const Boost: FunctionComponent = (): ReactElement => {
     return (
         <BoostPage />
     );

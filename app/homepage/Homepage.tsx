@@ -1,7 +1,5 @@
 "use client"
-import { ReactElement, FunctionComponent, useState, useEffect, useRef, useContext } from "react"
-import Button from "../components/ui/button";
-import { AnimatePresence, motion } from "framer-motion";
+import { ReactElement, FunctionComponent, useContext } from "react"
 import Image from "next/image";
 import images from "@/public/images";
 import Link from "next/link";

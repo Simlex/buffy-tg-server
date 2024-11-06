@@ -1,9 +1,5 @@
 type Color = string | false;
 
-interface Telegram {
-    WebApp: WebApp;
-}
-
 export interface WebApp {
     /**
      * A string with raw data transferred to the Web App, convenient for

@@ -26,6 +26,7 @@ const Layout: FunctionComponent<LayoutProps> = ({ children }): ReactElement => {
     const createUser = useCreateUser();
     const createReferral = useCreateReferral();
     const fetchUserBoostRefillEndTime = useFetchUserBoostRefillEndTime();
+    const updateBoostRefillEndTime = useUpdateBoostRefillEndTime();
 
     const {
         userProfileInformation, fetchUserProfileInformation, updateUserProfileInformation,
@@ -52,7 +53,7 @@ const Layout: FunctionComponent<LayoutProps> = ({ children }): ReactElement => {
         isCreatingUser = true;
 
         await createUser(userInfo)
-            .then((response) => {
+            .then(() => {
                 fetchUserProfileInformation();
                 // console.log(response);
             })
@@ -170,13 +171,13 @@ const Layout: FunctionComponent<LayoutProps> = ({ children }): ReactElement => {
     const handleUpdateBoostRefillEndTime = useCallback(
         debounce(async (userId: string, endTime: Date) => {
             console.log("DB ACTION TRIGGERED!");
-            // await updateBoostRefillEndTime({ userId, refillEndTime: endTime })
-            //     .then((response) => {
-            //         console.log("Boost refill time updated", response);
-            //     })
-            //     .catch((error) => {
-            //         console.error("Error updating boost refill time", error);
-            //     });
+            await updateBoostRefillEndTime({ userId, refillEndTime: endTime })
+                .then((response) => {
+                    console.log("Boost refill time updated", response);
+                })
+                .catch((error) => {
+                    console.error("Error updating boost refill time", error);
+                });
         }, 1000), []
     );
 

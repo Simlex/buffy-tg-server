@@ -1,11 +1,8 @@
 import type { Metadata } from 'next'
 import { Outfit } from 'next/font/google'
 import './globals.scss';
-import Layout, { WrappedLayout } from './components/Layout';
+import { WrappedLayout } from './components/Layout';
 import GlobalProvider from './Provider';
-import Image from 'next/image';
-import images from '@/public/images';
-import Script from 'next/script';
 
 const dmSans = Outfit({ subsets: ['latin'] })
 

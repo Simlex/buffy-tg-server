@@ -1,10 +1,5 @@
 "use client"
-import Image from "next/image";
-import Button from "./components/ui/button";
 import Homepage from "./homepage/Homepage";
-import images from "@/public/images";
-import Link from "next/link";
-import { useEffect } from "react";
 
 export default function Home() {
     // useEffect(() => {

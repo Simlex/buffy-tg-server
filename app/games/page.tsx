@@ -1,11 +1,7 @@
 import { FunctionComponent, ReactElement } from "react";
 import GamesPage from "./GamesPage";
 
-interface GamesProps {
-
-}
-
-const Games: FunctionComponent<GamesProps> = (): ReactElement => {
+const Games: FunctionComponent = (): ReactElement => {
     return (
         <GamesPage />
     );

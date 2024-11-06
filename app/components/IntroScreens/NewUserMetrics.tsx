@@ -181,15 +181,15 @@ const NewUserMetrics: FunctionComponent<NewUserMetricsProps> = (
 
                             <div className="mt-auto mb-3">
                                 <p>Your account number is #233R3412009</p>
-                                <p>You're in the Top 15% Telegram users 🔥</p>
+                                <p>You&apos;re in the Top 15% Telegram users 🔥</p>
                             </div>
                             <Button onClick={() => setIsDisplayingYears(false)}>
                                 Next
                             </Button>
                         </> :
                         <>
-                            <h2 className="text-3xl font-bold mb-2">That's incredible!</h2>
-                            <p className="text-base text-center">Since signing up for Telegram, you've sent</p>
+                            <h2 className="text-3xl font-bold mb-2">That&apos;s incredible!</h2>
+                            <p className="text-base text-center">Since signing up for Telegram, you&apos;ve sent</p>
 
                             <div className="flex flex-col items-center my-auto">
                                 <span className="text-[100px] leading-none font-black">{messages > 1000 ? (messages / 1000).toFixed(1) : messages}K</span>

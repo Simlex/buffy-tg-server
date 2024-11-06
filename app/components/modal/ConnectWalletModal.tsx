@@ -3,7 +3,7 @@ import ModalWrapper from './ModalWrapper'
 import { TonConnectButton } from '@tonconnect/ui-react'
 import { Icons } from '../ui/icons'
 
-type Props = {
+interface Props {
     visibility: boolean
     setVisibility: React.Dispatch<React.SetStateAction<boolean>>
 }

@@ -2,7 +2,7 @@ import { modalCardVariant, modalOverlayVariant } from "@/app/animations/modal"
 import { motion } from "framer-motion"
 import React, { Dispatch, ReactNode, SetStateAction } from 'react'
 
-type Props = {
+interface Props {
     /**
      * The function to set the visibility state of the modal
      */

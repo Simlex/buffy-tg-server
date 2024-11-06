@@ -2,7 +2,6 @@ import { FunctionComponent, ReactNode, createContext, useState } from "react";
 import { UserProfileInformation } from "../models/IUser";
 import { StorageKeys } from "../constants/storageKeys";
 import { fetchUserFromDb } from "../api/services/fetchUserFromDb";
-import { useFetchUserInformation } from "../api/apiClient";
 import { Game } from "../enums/Game";
 
 
@@ -29,7 +28,7 @@ export interface ApplicationContextData {
 const ApplicationContext = createContext<ApplicationContextData | undefined>(undefined);
 
 // Create a provider component that takes children as props
-type AppProviderProps = {
+interface AppProviderProps {
     children: ReactNode;
 };
 
