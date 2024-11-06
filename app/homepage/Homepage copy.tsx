@@ -46,7 +46,7 @@ const Homepage: FunctionComponent = (): ReactElement => {
 
     useMemo(() => {
         if (userProfileInformation) {
-            setTaps(userProfileInformation.points ?? 0);
+            setTaps(userProfileInformation.totalPoints ?? 0);
         }
     }, [userProfileInformation]);
 
