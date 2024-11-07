@@ -6,5 +6,5 @@ export interface PointsUpdateRequest {
     points: number;
     task?: Task;
     game?: Game;
-    accountMetrics?: 'age' | 'messages'
+    accountMetrics?: 'age' | 'messages';
 }
