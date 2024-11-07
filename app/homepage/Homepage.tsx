@@ -28,8 +28,7 @@ const Homepage: FunctionComponent = (): ReactElement => {
             <div className="flex flex-col gap-2 w-full mt-auto mb-12">
                 <p className="text-white/50">Get more points</p>
                 <Link href={"/games"} className="bg-gradient-to-r from-orange-400 to-orange-600 text-white text-center font-bold py-3 px-4 shadow rounded-xl hover:from-orange-500 hover:to-orange-700 transition duration-300">Play Games</Link>
-                <Link href={"/task"} className="bg-white text-gray-900 text-center font-bold py-3 px-4 shadow rounded-xl hover:from-orange-500 hover:to-orange-700 transition duration-300">Daily Trivia</Link>
-                {/* <Button>Daily Trivia</Button> */}
+                <Link href={"/trivia"} className="bg-white text-gray-900 text-center font-bold py-3 px-4 shadow rounded-xl hover:from-orange-500 hover:to-orange-700 transition duration-300">Daily Trivia</Link>
             </div>
         </main>
     );
