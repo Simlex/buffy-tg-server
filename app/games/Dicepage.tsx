@@ -16,14 +16,13 @@ const Dicepage: FunctionComponent = (): ReactElement => {
 
     const updateUserPoints = useUpdateUserPoints();
     const { updateSelectedGame, userProfileInformation, updateUserProfileInformation } = useContext(ApplicationContext) as ApplicationContextData;
-    console.log("🚀 ~ userProfileInformation:", userProfileInformation)
 
     const [isRollingDice, setIsRollingDice] = useState(false);
     const [randomNumber, setRandomNumber] = useState<Array<number>>([]);
     const [rolledNumbers, setRolledNumbers] = useState<Array<number>>([]);
     const [wonPoints, setWonPoints] = useState<number>();
-    const [wonTon, setWonTon] = useState<number>();
-    const [wonNft, setWonNft] = useState<number>();
+    // const [wonTon, setWonTon] = useState<number>();
+    // const [wonNft, setWonNft] = useState<number>();
     const [rollsLeft, setRollsLeft] = useState(20);
 
     const rollDice = (multiplier?: number) => {

@@ -4,7 +4,7 @@ interface ComponentLoaderProps {
     className?: string;
 }
 
-type ComponentLoaderV2Props = {
+interface ComponentLoaderV2Props {
 
     /**
      * The optional classnames to be added
