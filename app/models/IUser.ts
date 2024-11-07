@@ -12,18 +12,28 @@ export interface UserProfileInformation {
   phone?: string;
   referralCode?: string;
   referralCount?: number;
-  
-  diceRollsPoints: number;
-  tapPoints: number; 
-  totalPoints: number; 
-  triviaPoints: number;
 
-  dailyFreeBoosters: number;
+  diceRollsPoints?: number;
+  tapPoints?: number;
+  totalPoints?: number;
+  triviaPoints?: number;
+  dailyFreeBoosters?: number;
   dailyBoostersExp?: Date;
   boostRefillEndTime?: Date;
+
+  agePoints?: number; // points earned from age verification
+  messagesPoints?: number; // points earned from messages sent
+  tonEarned?: number; // total ton earned
+  nftEarned?: number; // total nft earned
+
+  dailyFreeDiceRollsStreak?: number;
+  dailyFreeDiceRollsClaimed?: boolean;
+  dailyFreeDiceRollsExp?: string;
+  availableDiceRolls?: number;
+
   telegramTaskDone: boolean;
   twitterTaskDone: boolean;
   highestReferralBonusClaimed?: number;
   createdAt?: Date;
   updatedAt?: Date;
-};
+}
