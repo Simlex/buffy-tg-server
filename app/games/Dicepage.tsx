@@ -5,21 +5,30 @@ import { AnimatePresence, motion } from "framer-motion";
 import { Styles } from "../styles/styles";
 import { ApplicationContext, ApplicationContextData } from "../context/ApplicationContext";
 import { Game } from "../enums/Game";
+import { pointsMappings } from "../constants/pointMappings";
+import { useUpdateUserPoints } from "../api/apiClient";
+import { PointsUpdateRequest } from "../models/IPoints";
+import CustomImage from "../components/ui/image";
+import images from "@/public/images";
 
 
 const Dicepage: FunctionComponent = (): ReactElement => {
 
-    const { updateSelectedGame, userProfileInformation } = useContext(ApplicationContext) as ApplicationContextData;
+    const updateUserPoints = useUpdateUserPoints();
+    const { updateSelectedGame, userProfileInformation, updateUserProfileInformation } = useContext(ApplicationContext) as ApplicationContextData;
     console.log("🚀 ~ userProfileInformation:", userProfileInformation)
 
     const [isRollingDice, setIsRollingDice] = useState(false);
     const [randomNumber, setRandomNumber] = useState<Array<number>>([]);
     const [rolledNumbers, setRolledNumbers] = useState<Array<number>>([]);
-    const [rollsLeft, setRollsLeft] = useState(5);
-    // const [rollsMultipliers, setRollsMultipliers] = useState(0);
+    const [wonPoints, setWonPoints] = useState<number>();
+    const [wonTon, setWonTon] = useState<number>();
+    const [wonNft, setWonNft] = useState<number>();
+    const [rollsLeft, setRollsLeft] = useState(20);
 
     const rollDice = (multiplier?: number) => {
         setIsRollingDice(true);
+        setWonPoints(undefined);
 
         // const random = Math.random();
         // let number;
@@ -36,14 +45,39 @@ const Dicepage: FunctionComponent = (): ReactElement => {
         //     number = 1; // Fallback to 1
         // }
 
-        // setRandomNumber([number]);
+        // const generateRandomNumber = () => {
+        //     const random = Math.random();
+        //     if (random < 0.85) return 1; // Face 1: 85% chance
+        //     if (random < 0.85 + 0.10) return 2; // Face 2: 10% chance
+        //     if (random < 0.85 + 0.10 + 0.04) return 3; // Face 3: 4% chance
+        //     if (random < 0.85 + 0.10 + 0.04 + 0.007) return 4; // Face 4: 0.7% chance
+        //     if (random < 0.85 + 0.10 + 0.04 + 0.007 + 0.002) return 5; // Face 5: 0.2% chance
+        //     return 6; // Face 6: Remaining 0.1% chance
+        //     // if (random < 0.01) return 6; // 1% chance
+        //     // if (random < 0.51) return 1; // 90% chance
+        //     // if (random < 0.81) return Math.random() < 0.5 ? 2 : 3; // 60% chance for 2 or 3
+        //     // if (random < 0.91) return Math.random() < 0.5 ? 4 : 5; // 50% chance for 4 or 5
+        //     // return 1; // Fallback to 1
+        // };
+
+        let rollCount = 0;
+
         const generateRandomNumber = () => {
+            rollCount += 1; // Increment roll count each time a dice roll happens
             const random = Math.random();
-            if (random < 0.01) return 6; // 1% chance
-            if (random < 0.51) return 1; // 90% chance
-            if (random < 0.81) return Math.random() < 0.5 ? 2 : 3; // 60% chance for 2 or 3
-            if (random < 0.91) return Math.random() < 0.5 ? 4 : 5; // 50% chance for 4 or 5
-            return 1; // Fallback to 1
+
+            // Regular faces (1-3) are available from the start
+            if (random < 0.85) return 1; // Face 1: 85% chance
+            if (random < 0.85 + 0.10) return 2; // Face 2: 10% chance
+            if (random < 0.85 + 0.10 + 0.04) return 3; // Face 3: 4% chance
+
+            // Introduce rarer faces based on roll count
+            if (rollCount >= 143 && random < 0.85 + 0.10 + 0.04 + 0.007) return 4; // Face 4: 0.7% chance
+            if (rollCount >= 500 && random < 0.85 + 0.10 + 0.04 + 0.007 + 0.002) return 5; // Face 5: 0.2% chance
+            if (rollCount >= 1000 && random < 0.85 + 0.10 + 0.04 + 0.007 + 0.002 + 0.001) return 6; // Face 6: 0.1% chance
+
+            // If none match, return one of the more common faces
+            return 1;
         };
 
         if (multiplier) {
@@ -57,7 +91,61 @@ const Dicepage: FunctionComponent = (): ReactElement => {
         }
     };
 
+    // const generateRandomNumber = () => {
+    //     const random = Math.random();
+    //     if (random < 0.85) return 1; // Face 1: 85% chance
+    //     if (random < 0.85 + 0.10) return 2; // Face 2: 10% chance
+    //     if (random < 0.85 + 0.10 + 0.04) return 3; // Face 3: 4% chance
+    //     if (random < 0.85 + 0.10 + 0.04 + 0.007) return 4; // Face 4: 0.7% chance
+    //     if (random < 0.85 + 0.10 + 0.04 + 0.007 + 0.002) return 5; // Face 5: 0.2% chance
+    //     return 6; // Face 6: Remaining 0.1% chance
+    //     // if (random < 0.01) return 6; // 1% chance
+    //     // if (random < 0.51) return 1; // 90% chance
+    //     // if (random < 0.81) return Math.random() < 0.5 ? 2 : 3; // 60% chance for 2 or 3
+    //     // if (random < 0.91) return Math.random() < 0.5 ? 4 : 5; // 50% chance for 4 or 5
+    //     // return 1; // Fallback to 1
+    // };
+
+    // // Simulate multiple rolls and track results
+    // const simulateRolls = (multiplier: number) => {
+    //     const rollResults = { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0 };
+
+    //     for (let i = 0; i < multiplier; i++) {
+    //         const roll = generateRandomNumber();
+    //         rollResults[roll] += 1;
+    //     }
+
+    //     console.log(`After ${multiplier} rolls:`);
+    //     console.log(`Face 1 (2000 points): ${rollResults[1]} times`);
+    //     console.log(`Face 2 (15,000 points): ${rollResults[2]} times`);
+    //     console.log(`Face 3 (50,000 points): ${rollResults[3]} times`);
+    //     console.log(`Face 4 (2 TON): ${rollResults[4]} times`);
+    //     console.log(`Face 5 (7.5 TON): ${rollResults[5]} times`);
+    //     console.log(`Face 6 (NFT): ${rollResults[6]} times`);
+    // };
+
     const diceElement = useRef<HTMLDivElement>(null);
+
+    const handleUpdateUserPoints = async (points: number) => {
+
+        const data: PointsUpdateRequest = {
+            points,
+            game: Game.Dice,
+            userId: userProfileInformation?.userId as string
+        };
+
+        await updateUserPoints(data)
+            .then((response) => {
+                console.log("🚀 ~ .then ~ response:", response);
+
+                setTimeout(() => {
+                    updateUserProfileInformation(response.data);
+                }, 4050);
+            })
+            .catch((error) => {
+                console.log("🚀 ~ .catch ~ error:", error)
+            })
+    }
 
     useEffect(() => {
         if (randomNumber.length == 0) return;
@@ -106,6 +194,40 @@ const Dicepage: FunctionComponent = (): ReactElement => {
         animateDice();
     }, [randomNumber]);
 
+    useEffect(() => {
+        if (rolledNumbers.length == 0) return;
+
+        const calculatePoints = async () => {
+            // get the cummulative points
+            const points = rolledNumbers.reduce((acc, curr) => {
+                const point = pointsMappings.find(point => point.diceRoll == curr)?.points;
+                return acc + (point ?? 0);
+            }, 0);
+
+            // check if there is a ton or nft
+            const ton = rolledNumbers.find(number => pointsMappings.find(point => point.diceRoll == number)?.ton);
+            const nft = rolledNumbers.find(number => pointsMappings.find(point => point.diceRoll == number)?.nft);
+
+            console.log("🚀 ~ points ~ points:", points)
+            console.log("🚀 ~ calculatePoints ~ ton:", ton)
+            console.log("🚀 ~ calculatePoints ~ nft:", nft)
+
+            setWonPoints(points);
+            setWonTon(ton ? pointsMappings.find(point => point.diceRoll == ton)?.ton as number : undefined);
+            setWonNft(nft ? pointsMappings.find(point => point.diceRoll == nft)?.nft as number : undefined);
+
+            await handleUpdateUserPoints(points);
+        };
+
+        // calculate points
+        calculatePoints();
+
+        // cleanup
+        return () => {
+            setRolledNumbers([]);
+        }
+    }, [rolledNumbers]);
+
     return (
         <main className="flex min-h-screen flex-col items-center py-20 pt-12 pb-32 select-none relative">
             <button
@@ -114,8 +236,30 @@ const Dicepage: FunctionComponent = (): ReactElement => {
                 Play Tap To Earn
             </button>
             <div className="flex flex-col items-center mb-10 z-10">
-                <p className="text-sm text-white/50">Total Points</p>
-                <h1 className="text-[40px] text-white font-extrabold">{(userProfileInformation?.diceRollsPoints ?? 0).toLocaleString()}</h1>
+                <p className="text-sm text-white/50">Points</p>
+                <div className="flex flex-row gap-2 items-center">
+                    <span className="w-7 h-7 relative grid place-items-center">
+                        <CustomImage src={images.coin} alt="Coin" />
+                    </span>
+                    <motion.h1
+                        key={userProfileInformation?.diceRollsPoints}
+                        initial={{ scale: 0.5, opacity: 0, filter: "blur(10px)" }}
+                        animate={{ scale: 1, opacity: 1, filter: "blur(0px)" }}
+                        exit={{ scale: 0, opacity: 0 }}
+                        className="text-[40px] text-white font-extrabold">
+                        {(userProfileInformation?.diceRollsPoints ?? 0).toLocaleString()}
+                    </motion.h1>
+                </div>
+                {
+                    wonPoints &&
+                    <motion.span
+                        initial={{ scale: 3, opacity: 0, filter: "blur(10px)" }}
+                        animate={{ scale: 1, opacity: 1, filter: "blur(0px)" }}
+                        transition={{ delay: 2.5 }}
+                        className=" bg-green-300/20 p-1 px-2 text-sm text-green-400 rounded-lg mt-2">
+                        +{wonPoints.toLocaleString()}
+                    </motion.span>
+                }
             </div>
             <motion.div
                 animate={{
@@ -145,50 +289,55 @@ const Dicepage: FunctionComponent = (): ReactElement => {
                 <Button
                     disabled={isRollingDice || rollsLeft == 0}
                     onClick={() => rollDice()}
+                    // onClick={() => simulateRolls(100)}
                     className="!w-fit mb-3 !bg-orange-500 !text-white">
                     <h2>Roll Dice</h2>
                 </Button>
                 <div className="flex flex-row gap-2">
                     <Button
-                        disabled={isRollingDice || rollsLeft == 0}
+                        disabled={isRollingDice || rollsLeft < 5}
                         onClick={() => rollDice(5)}
                         className="!w-fit mb-3">
                         <h2>Roll x5</h2>
                     </Button>
                     <Button
-                        disabled={isRollingDice || rollsLeft == 0}
+                        disabled={isRollingDice || rollsLeft < 10}
                         onClick={() => rollDice(10)}
                         className="!w-fit mb-3">
                         <h2>Roll x10</h2>
                     </Button>
                 </div>
             </div>
-            <p className="text-white">{rollsLeft} {rollsLeft > 1 ? 'rolls' : 'roll'} left for today.</p>
-            <div className="my-3 mt-5 flex flex-col items-center w-full gap-2 bg-white/5 p-4 pb-5 rounded-2xl">
-                <p className="text-white font-semibold">Multi-roll points</p>
-                <div className="flex flex-row flex-wrap gap-2 w-full justify-between">
-                    <AnimatePresence>
-                        {
-                            !isRollingDice && rolledNumbers.map((number, index) => (
-                                <motion.span
-                                    key={index}
-                                    initial={{ scale: 0, opacity: 0 }}
-                                    animate={{ scale: 1, opacity: 1 }}
-                                    transition={{ duration: 0.15, delay: 0.25 * index }}
-                                    // viewport={{ once: true }}
-                                    className="bg-white text-orange-500 text-xl w-12 h-12 rounded-full grid place-items-center border-2 border-orange-300">
-                                    {number}
-                                </motion.span>
-                            ))
-                        }
-                    </AnimatePresence>
-                    {/* <span className="bg-white text-orange-500 text-xl w-12 h-12 rounded-full grid place-items-center border-2 border-orange-300">3</span>
+            <p className="text-white">{rollsLeft} {rollsLeft > 1 ? 'rolls' : 'roll'} left.</p>
+            {
+                rolledNumbers.length > 1 &&
+                <div className="my-3 mt-5 flex flex-col items-center w-full gap-2 bg-white/5 p-4 pb-5 rounded-2xl">
+                    <p className="text-white font-semibold">Multi-roll points</p>
+                    <div className="flex flex-row flex-wrap gap-2 w-full justify-between">
+                        <AnimatePresence>
+                            {
+                                !isRollingDice && rolledNumbers.map((number, index) => (
+                                    <motion.span
+                                        key={index}
+                                        initial={{ scale: 0, opacity: 0 }}
+                                        animate={{ scale: 1, opacity: 1 }}
+                                        exit={{ scale: 0, opacity: 0 }}
+                                        transition={{ duration: 0.15, delay: 0.15 * index }}
+                                        // viewport={{ once: true }}
+                                        className="bg-white text-orange-500 text-xl w-12 h-12 rounded-full grid place-items-center border-2 border-orange-300">
+                                        {number}
+                                    </motion.span>
+                                ))
+                            }
+                        </AnimatePresence>
+                        {/* <span className="bg-white text-orange-500 text-xl w-12 h-12 rounded-full grid place-items-center border-2 border-orange-300">3</span>
                     <span className="bg-white text-orange-500 text-xl w-12 h-12 rounded-full grid place-items-center border-2 border-orange-300">3</span>
                     <span className="bg-white text-orange-500 text-xl w-12 h-12 rounded-full grid place-items-center border-2 border-orange-300">3</span>
                     <span className="bg-white text-orange-500 text-xl w-12 h-12 rounded-full grid place-items-center border-2 border-orange-300">3</span>
                     <span className="bg-white text-orange-500 text-xl w-12 h-12 rounded-full grid place-items-center border-2 border-orange-300">3</span> */}
+                    </div>
                 </div>
-            </div>
+            }
         </main>
     );
 }
