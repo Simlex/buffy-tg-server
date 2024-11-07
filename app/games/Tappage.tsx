@@ -1,72 +1,66 @@
 "use client"
-import { ReactElement, FunctionComponent, useState, useContext, useMemo, useEffect } from "react"
+import { ReactElement, FunctionComponent, useState, useContext } from "react"
 import images from "@/public/images";
 import { motion } from "framer-motion"
 import CustomImage from "../components/ui/image";
 import { Icons } from "../components/ui/icons";
 import { metrics } from "../constants/userMetrics";
 import { ApplicationContext, ApplicationContextData } from "../context/ApplicationContext";
-import { useUpdateUserPoints } from "../api/apiClient";
-import { PointsUpdateRequest } from "../models/IPoints";
 import { Metrics } from "../enums/IMetrics";
 import { sessionLimit } from "../constants/user";
 import { Styles } from "../styles/styles";
 import { Game } from "../enums/Game";
 
-// interface HomepageProps {
-
-// }
-
 const Tappage: FunctionComponent = (): ReactElement => {
 
-    const updateUserPoints = useUpdateUserPoints();
-
     const {
-        userProfileInformation, fetchUserProfileInformation,
+        userProfileInformation,
         timesClickedPerSession, updateTimesClickedPerSession,
-        updateSelectedGame
+        updateSelectedGame, taps, setTaps
     } = useContext(ApplicationContext) as ApplicationContextData;
 
-    const [taps, setTaps] = useState<number>(0);
+    // const [taps, setTaps] = useState<number>(0);
 
-    async function handleUpdateUserPoints() {
+    // async function handleUpdateUserPoints() {
 
-        // construct the data 
-        const data: PointsUpdateRequest = {
-            userId: userProfileInformation?.userId as string,
-            points: taps,
-            game: Game.Tap
-        };
+    //     // construct the data 
+    //     const data: PointsUpdateRequest = {
+    //         userId: userProfileInformation?.userId as string,
+    //         points: taps,
+    //         game: Game.Tap
+    //     };
 
-        await updateUserPoints(data)
-            .then(() => {
-                // console.log(response);
-                fetchUserProfileInformation();
-            })
-            .catch((error) => {
-                console.error(error);
-            });
-    };
+    //     return;
 
-    useMemo(() => {
-        if (userProfileInformation) {
-            setTaps(userProfileInformation.tapPoints ?? 0);
-        }
-    }, [userProfileInformation]);
+    //     await updateUserPoints(data)
+    //         .then(() => {
+    //             // console.log(response);
+    //             fetchUserProfileInformation();
+    //         })
+    //         .catch((error) => {
+    //             console.error(error);
+    //         });
+    // };
 
-    const DEBOUNCE_DELAY = 1000; // Adjust the delay as needed
+    // useMemo(() => {
+    //     if (userProfileInformation) {
+    //         setTaps(userProfileInformation.tapPoints ?? 0);
+    //     }
+    // }, [userProfileInformation]);
 
-    useEffect(() => {
-        if (taps === 0) return;
+    // const DEBOUNCE_DELAY = 1000; // Adjust the delay as needed
 
-        const timer = setTimeout(() => {
-            handleUpdateUserPoints();
-        }, DEBOUNCE_DELAY);
+    // useEffect(() => {
+    //     if (taps === 0) return;
 
-        return () => {
-            clearTimeout(timer);
-        };
-    }, [taps]);
+    //     const timer = setTimeout(() => {
+    //         handleUpdateUserPoints();
+    //     }, DEBOUNCE_DELAY);
+
+    //     return () => {
+    //         clearTimeout(timer);
+    //     };
+    // }, [taps]);
 
     function swapColorBasedOnStatus() {
         if (metrics(taps)?.status === Metrics.NOOB) {
@@ -112,11 +106,19 @@ const Tappage: FunctionComponent = (): ReactElement => {
                     </button>
 
                     <div className="flex flex-col items-center mb-12">
+                    <p className="text-sm text-white/50">Points</p>
                         <div className="flex flex-row gap-2 items-center">
                             <span className="w-7 h-7 relative grid place-items-center">
                                 <CustomImage src={images.coin} alt="Coin" />
                             </span>
-                            <h1 className="text-[40px] text-white font-extrabold">{(taps).toLocaleString()}{metrics(taps)?.pointSuffix}</h1>
+                            <motion.h1
+                                key={userProfileInformation.tapPoints}
+                                initial={{ scale: 0.5, opacity: 0, filter: "blur(10px)" }}
+                                animate={{ scale: 1, opacity: 1, filter: "blur(0px)" }}
+                                exit={{ scale: 0, opacity: 0 }}
+                                className="text-[40px] text-white font-extrabold">
+                                {(taps).toLocaleString()}{metrics(taps)?.pointSuffix}
+                            </motion.h1>
                         </div>
                         <div className="flex flex-row gap-3 items-center">
                             <div className="flex flex-row gap-2 items-center">
