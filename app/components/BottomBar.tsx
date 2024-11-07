@@ -35,7 +35,7 @@ const BottomBar: FunctionComponent = (): ReactElement => {
             href: "/games"
         },
         {
-            title: "Trivia",
+            title: "Tasks",
             // icon: images.task,
             icon: <Icons.Trivia />,
             href: "/task"
