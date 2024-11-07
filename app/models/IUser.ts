@@ -28,7 +28,7 @@ export interface UserProfileInformation {
 
   dailyFreeDiceRollsStreak?: number;
   dailyFreeDiceRollsClaimed?: boolean;
-  dailyFreeDiceRollsExp?: string;
+  dailyFreeDiceRollsExp?: Date | null;
   availableDiceRolls?: number;
 
   telegramTaskDone: boolean;
