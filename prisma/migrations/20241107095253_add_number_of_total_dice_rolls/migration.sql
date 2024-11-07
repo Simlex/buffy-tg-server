@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE `Users` ADD COLUMN `totalDiceRolls` INTEGER NOT NULL DEFAULT 0;
