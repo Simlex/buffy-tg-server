@@ -10,12 +10,14 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { UserProfileInformation } from "../models/IUser";
 import { StorageKeys } from "../constants/storageKeys";
 import { splashScreenVariant } from "../animations/splashScreen";
-import { useCreateReferral, useCreateUser, useFetchUserBoostRefillEndTime, useUpdateBoostRefillEndTime } from "../api/apiClient";
+import { useCreateReferral, useCreateUser, useFetchUserBoostRefillEndTime, useUpdateBoostRefillEndTime, useUpdateUserPoints } from "../api/apiClient";
 import { ReferralCreationRequest } from "../models/IReferral";
 import { debounce } from "lodash"
 import { Toaster } from "sonner";
 import Script from "next/script";
 import NewUserMetrics from "./IntroScreens/NewUserMetrics";
+import { PointsUpdateRequest } from "../models/IPoints";
+import { Game } from "../enums/Game";
 
 interface LayoutProps {
     children?: ReactNode;
@@ -27,10 +29,11 @@ const Layout: FunctionComponent<LayoutProps> = ({ children }): ReactElement => {
     const createReferral = useCreateReferral();
     const fetchUserBoostRefillEndTime = useFetchUserBoostRefillEndTime();
     const updateBoostRefillEndTime = useUpdateBoostRefillEndTime();
+    const updateUserPoints = useUpdateUserPoints();
 
     const {
         userProfileInformation, fetchUserProfileInformation, updateUserProfileInformation,
-        updateNextUpdateTimestamp, timesClickedPerSession,
+        updateNextUpdateTimestamp, timesClickedPerSession, taps, didInitialLoad,
         nextUpdateTimestamp, updateTimeLeft: setTimeLeft, updateTimesClickedPerSession,
     } = useContext(ApplicationContext) as ApplicationContextData;
 
@@ -38,6 +41,7 @@ const Layout: FunctionComponent<LayoutProps> = ({ children }): ReactElement => {
     const [loaderIsVisible, setLoaderIsVisible] = useState(true);
     const [isReferralCreated, setIsReferralCreated] = useState(false);
     const [isBoostTimeRetrieved, setIsBoostTimeRetrieved] = useState(false);
+
     let isCreatingUser = false;
 
     const iswindow = typeof window !== 'undefined' ? true : false;
@@ -83,6 +87,10 @@ const Layout: FunctionComponent<LayoutProps> = ({ children }): ReactElement => {
     useEffect(() => {
         if (typeof window !== 'undefined' && userProfileInformation) {
             setLoaderIsVisible(false);
+            // Don't show 
+            if (userProfileInformation.agePoints && userProfileInformation.messagesPoints) {
+                setIsShowingNewUserInfo(false);
+            }
         }
     }, [iswindow, userProfileInformation]);
 
@@ -214,6 +222,29 @@ const Layout: FunctionComponent<LayoutProps> = ({ children }): ReactElement => {
             });
     };
 
+    async function handleUpdateUserPoints() {
+
+        // construct the data 
+        const data: PointsUpdateRequest = {
+            userId: userProfileInformation?.userId as string,
+            points: taps,
+            game: Game.Tap
+        };
+
+        await updateUserPoints(data)
+            .then((response) => {
+                console.log("🚀 ~ updateUserPoints ~ response:", response);
+                // fetchUserProfileInformation();
+                updateUserProfileInformation(response?.data);
+
+                // set initial load to true
+                didInitialLoad.current = true;
+            })
+            .catch((error) => {
+                console.error(error);
+            });
+    };
+
     // const DEBOUNCE_DELAY_FOR_SESSION = 32400; // Delay for 3 clicks for 3hrs
     const DEBOUNCE_DELAY_FOR_SESSION = 10800; // Delay for 1 click for 3hrs
 
@@ -290,6 +321,24 @@ const Layout: FunctionComponent<LayoutProps> = ({ children }): ReactElement => {
             });
         }
     }, []); // Runs once after component mounts
+
+    const DEBOUNCE_DELAY_FOR_TAP = 1000; // Adjust the delay as needed
+
+    useEffect(() => {
+        // Skip update if taps is zero
+        if (taps == 0) return;
+
+        // Skip if this is the initial load
+        if (!didInitialLoad.current) return;
+
+        const timer = setTimeout(() => {
+            handleUpdateUserPoints();
+        }, DEBOUNCE_DELAY_FOR_TAP);
+
+        return () => {
+            clearTimeout(timer);
+        };
+    }, [taps]);
 
     return (
         <>
