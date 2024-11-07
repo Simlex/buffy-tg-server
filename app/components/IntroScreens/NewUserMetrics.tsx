@@ -1,8 +1,11 @@
 "use client"
-import { Dispatch, FunctionComponent, ReactElement, SetStateAction, useEffect, useState } from "react";
+import { Dispatch, FunctionComponent, ReactElement, SetStateAction, useContext, useEffect, useState } from "react";
 import Button from "../ui/button";
 import ReactConfetti from "react-confetti";
 import { userIdCreationMap } from "@/app/constants/userMappings";
+import { useUpdateUserPoints } from "@/app/api/apiClient";
+import { PointsUpdateRequest } from "@/app/models/IPoints";
+import { ApplicationContext, ApplicationContextData } from "@/app/context/ApplicationContext";
 
 interface NewUserMetricsProps {
     isDisplayingYears: boolean;
@@ -14,8 +17,11 @@ interface NewUserMetricsProps {
 const NewUserMetrics: FunctionComponent<NewUserMetricsProps> = (
     { isDisplayingYears, setIsDisplayingYears, setIsShowingNewUserInfo, userId }): ReactElement => {
 
+    const updateUserPoints = useUpdateUserPoints();
+    const { userProfileInformation, updateUserProfileInformation } = useContext(ApplicationContext) as ApplicationContextData;
     const [years, setYears] = useState(0);
     const [messages, setMessages] = useState(0);
+    const [fetchedMetrics, setFetchedMetrics] = useState(false);
 
     const viewLimit = (index: number) => {
         if (index == 1) {
@@ -24,42 +30,29 @@ const NewUserMetrics: FunctionComponent<NewUserMetricsProps> = (
         return 100;
     };
 
+    const handleUpdateUserPoints = async (points: number, metric: 'age' | 'messages') => {
+
+        const data: PointsUpdateRequest = {
+            points,
+            userId: userProfileInformation?.userId as string,
+            accountMetrics: metric
+        };
+
+        await updateUserPoints(data)
+            .then((response) => {
+                console.log("🚀 ~ .then ~ response:", response);
+                updateUserProfileInformation(response.data);
+            })
+            .catch((error) => {
+                console.log("🚀 ~ .catch ~ error:", error)
+            })
+    };
+
     useEffect(() => {
-        console.log("🚀 ~ userId:", userId)
-        /**
-         * A baseline map of known user IDs and their account creation dates.
-         * You would populate this with accurate, known data points.
-         */
-        // const userIdCreationMap = [
-        //     { userId: 1, creationDate: new Date('2013-08-14') },     // Launch date
-        //     { userId: 150000, creationDate: new Date('2014-08-14') }, // ~1 year: 100k daily active users
-        //     { userId: 550000, creationDate: new Date('2015-01-01') }, // ~1.5 years: rapid growth
-        //     { userId: 1500000, creationDate: new Date('2015-06-01') }, // 2 years: crossing 1M users
-        //     { userId: 55000000, creationDate: new Date('2016-12-01') }, // 3 years: 5M users
-        //     { userId: 150000000, creationDate: new Date('2017-10-01') }, // 4 years: 10M users
-        //     { userId: 350000000, creationDate: new Date('2018-12-01') }, // 5 years: reaching 30M users
-        //     { userId: 500000000, creationDate: new Date('2019-12-01') }, // 6 years: 50M users
-        //     { userId: 1500000000, creationDate: new Date('2020-12-01') }, // 7 years: 100M users
-        //     { userId: 3000000000, creationDate: new Date('2021-12-01') }, // 8 years: 200M users
-        //     { userId: 7500000000, creationDate: new Date('2022-12-01') }, // 9 years: 300M users
-        //     { userId: 9500000000, creationDate: new Date('2023-12-01') }, // 10 years: 500M users
-        //     { userId: 25000000000, creationDate: new Date('2024-12-01') }  // 11 years: projected 950M users
-        // ];
-        // const userIdCreationMap = [
-        //     { userId: 1, creationDate: new Date('2013-08-14') },         // Launch date
-        //     { userId: 100000, creationDate: new Date('2014-08-14') },    // ~1 year: early growth
-        //     { userId: 500000, creationDate: new Date('2015-01-01') },    // ~1.5 years: steady rise
-        //     { userId: 1500000, creationDate: new Date('2015-06-01') },   // 2 years: crossing 1.5M users
-        //     { userId: 50000000, creationDate: new Date('2016-12-01') },  // 3 years: reaching 50M users
-        //     { userId: 150000000, creationDate: new Date('2017-10-01') }, // 4 years: hitting 150M users
-        //     { userId: 400000000, creationDate: new Date('2018-12-01') }, // 5 years: reaching 400M users
-        //     { userId: 650000000, creationDate: new Date('2019-12-01') }, // 6 years: your target user ID now at 5 years age
-        //     { userId: 1000000000, creationDate: new Date('2020-12-01') }, // 7 years: hitting 1B users
-        //     { userId: 2500000000, creationDate: new Date('2021-12-01') }, // 8 years: significant growth
-        //     { userId: 5000000000, creationDate: new Date('2022-12-01') }, // 9 years: exponential increase
-        //     { userId: 7500000000, creationDate: new Date('2023-12-01') }, // 10 years: major expansion
-        //     { userId: 10000000000, creationDate: new Date('2024-12-01') } // 11 years: projected user growth
-        // ];
+        if (!userId || fetchedMetrics) return;
+
+        let agePoints: number = 0;
+        let messagesPoints: number = 0;
 
         /**
          * Function to estimate the creation date of a Telegram account given a userID.
@@ -101,7 +94,7 @@ const NewUserMetrics: FunctionComponent<NewUserMetricsProps> = (
             const accountAgeInYears = accountAgeInMs / (1000 * 60 * 60 * 24 * 365.25);
 
             return Math.max(0, Math.floor(accountAgeInYears)); // Ensure age is not negative
-        }
+        };
 
         function estimateMessageCount(userId: number): number {
             // Find the two closest data points for interpolation
@@ -134,13 +127,37 @@ const NewUserMetrics: FunctionComponent<NewUserMetricsProps> = (
 
             // Return the estimated message count, limited to one decimal point
             return parseFloat(estimatedMessageCount.toFixed(1));
-        }
+        };
 
-        console.log(`🚀 ~ useEffect ~ estimateAccountAge(${userId}):`, estimateAccountAge(Number(userId) ?? 0))
-        console.log(`🚀 ~ useEffect ~ estimateMessageCount(${userId}):`, estimateMessageCount(Number(userId) ?? 0))
-        setYears(estimateAccountAge(Number(userId) ?? 0));
-        setMessages(estimateMessageCount(Number(userId) ?? 0));
-    }, [userId]);
+        agePoints = estimateAccountAge(Number(userId));
+        messagesPoints = estimateMessageCount(Number(userId));
+
+        console.log(`🚀 ~ useEffect ~ estimateAccountAge(${userId}):`, agePoints ?? 0)
+        console.log(`🚀 ~ useEffect ~ estimateMessageCount(${userId}):`, messagesPoints ?? 0)
+
+        setYears(agePoints ?? 0)
+        setMessages(messagesPoints ?? 0)
+
+        setFetchedMetrics(true);
+
+        // if (userProfileInformation?.agePoints || userProfileInformation?.messagesPoints || fetchedMetrics) return
+        // (async () => (
+        //     Promise.all([
+        //         await handleUpdateUserPoints(estimateAccountAge(Number(userId)), 'age'),
+        //         await handleUpdateUserPoints(estimateMessageCount(Number(userId)), 'messages')
+        //     ])
+        // ))()
+        // Trigger handleUpdateUserPoints only if needed
+        if (!userProfileInformation?.agePoints && !userProfileInformation?.messagesPoints && !fetchedMetrics) {
+            const updateUserPoints = async () => {
+                await Promise.all([
+                    handleUpdateUserPoints(agePoints, 'age'),
+                    handleUpdateUserPoints(messagesPoints, 'messages')
+                ]);
+            };
+            updateUserPoints();
+        }
+    }, [userId, userProfileInformation]);
 
     useEffect(() => {
         if (isDisplayingYears) {
@@ -180,7 +197,7 @@ const NewUserMetrics: FunctionComponent<NewUserMetricsProps> = (
                             </div>
 
                             <div className="mt-auto mb-3">
-                                <p>Your account number is #233R3412009</p>
+                                {/* <p>Your account number is #233R3412009</p> */}
                                 <p>You&apos;re in the Top 15% Telegram users 🔥</p>
                             </div>
                             <Button onClick={() => setIsDisplayingYears(false)}>
