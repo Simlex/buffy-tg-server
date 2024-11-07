@@ -197,7 +197,7 @@ export async function updateUserPoints(req: NextRequest) {
       );
 
       // update the user's dice task status
-      await prisma.users.update({
+      const updatedUser = await prisma.users.update({
         where: {
           userId: request.userId,
         },
@@ -207,6 +207,9 @@ export async function updateUserPoints(req: NextRequest) {
           },
         },
       });
+
+      // Return the response
+      return { ...updatedUser };
     }
 
     // If the specified game is tap
@@ -218,7 +221,7 @@ export async function updateUserPoints(req: NextRequest) {
       );
       
       // update the user's tap task status
-      await prisma.users.update({
+      const updatedUser = await prisma.users.update({
         where: {
           userId: request.userId,
         },
@@ -228,10 +231,60 @@ export async function updateUserPoints(req: NextRequest) {
           },
         },
       });
-    }
 
-    // Return the response
-    return { message: "Successfully updated user's games points" };
+      // Return the response
+      return { ...updatedUser };
+    }
+  }
+
+  const accountMetrics = request.accountMetrics;
+
+  // Check if the user is a new user => for account metrics (age & message)
+  if (accountMetrics) {
+    if (accountMetrics === 'age') {
+        await incrementUserTotalPoints(
+          request.points,
+          request.userId,
+          user.totalPoints
+        );
+  
+        // update the user's age
+        const updatedUser = await prisma.users.update({
+          where: {
+            userId: request.userId,
+          },
+          data: {
+            agePoints: {
+                increment: request.points,
+            }
+          },
+        });
+  
+        // Return the response
+        return { ...updatedUser };
+    }
+    if (accountMetrics === 'messages') {
+        await incrementUserTotalPoints(
+          request.points,
+          request.userId,
+          user.totalPoints
+        );
+  
+        // update the user's age
+        const updatedUser = await prisma.users.update({
+          where: {
+            userId: request.userId,
+          },
+          data: {
+            messagesPoints: {
+                increment: request.points,
+            }
+          },
+        });
+  
+        // Return the response
+        return { ...updatedUser };
+    }
   }
 
   // Update the user's points
@@ -240,12 +293,14 @@ export async function updateUserPoints(req: NextRequest) {
       userId: request.userId,
     },
     data: {
-      totalPoints: request.points,
+      totalPoints: {
+        increment: request.points
+      }
     },
   });
 
   // Return the response
-  return { message: "Successfully updated user's point", data: updatedUser };
+  return { ...updatedUser };
 }
 
 // async function fetchUserByUserId(userId: string) {
@@ -425,8 +480,7 @@ export async function updateBoostRefillEndTime(req: NextRequest) {
 
   // Return the response
   return {
-    message: "Successfully updated user's boost refill end time",
-    data: updatedUser,
+    ...updatedUser
   };
 }
 
