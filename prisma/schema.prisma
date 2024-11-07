@@ -15,30 +15,37 @@ datasource db {
 }
 
 model Users {
-    id                          String    @id @default(uuid())
-    userId                      String    @unique
-    username                    String
-    email                       String?   @unique
-    emailVerified               Boolean   @default(false)
-    role                        String    @default("user")
-    level                       Int       @default(1)
-    firstName                   String?
-    lastName                    String?
-    profilePhoto                String?
-    phone                       String?
-    referralCode                String    @unique
-    referralCount               Int       @default(0)
+    id            String  @id @default(uuid())
+    userId        String  @unique
+    username      String
+    email         String? @unique
+    emailVerified Boolean @default(false)
+    role          String  @default("user")
+    level         Int     @default(1)
+    firstName     String?
+    lastName      String?
+    profilePhoto  String?
+    phone         String?
+    referralCode  String  @unique
+    referralCount Int     @default(0)
 
-    tapPoints                   Int       @default(0)
-    totalPoints                 Int       @default(0)
-    diceRollsPoints             Int       @default(0)
-    triviaPoints                Int       @default(0)
-    agePoints                   Int       @default(0)
-    messagesPoints              Int       @default(0)
+    tapPoints       Int @default(0)
+    totalPoints     Int @default(0)
+    diceRollsPoints Int @default(0)
+    totalDiceRolls  Int @default(0) // total number of dice rolls the user has made
+    triviaPoints    Int @default(0)
+    agePoints       Int @default(0) // points earned from age verification
+    messagesPoints  Int @default(0) // points earned from messages sent
+    tonEarned       Int @default(0) // total ton earned
+    nftEarned       Int @default(0) // total nft earned
 
     dailyFreeBoosters           Int       @default(4)
     dailyBoostersExp            DateTime?
     boostRefillEndTime          DateTime?
+    dailyFreeDiceRollsStreak    Int       @default(0)
+    dailyFreeDiceRollsClaimed   Boolean   @default(false)
+    dailyFreeDiceRollsExp       DateTime?
+    availableDiceRolls          Int       @default(0)
     telegramTaskDone            Boolean   @default(false)
     twitterTaskDone             Boolean   @default(false)
     highestReferralBonusClaimed Int       @default(0)
