@@ -1,5 +1,5 @@
 import * as React from "react"
-import ComponentLoader from "../Loader/ComponentLoader";
+import ComponentLoader, { ButtonLoader } from "../Loader/ComponentLoader";
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
     btnIcon?: React.ReactElement;
@@ -12,12 +12,12 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         return (
             <button
                 type={type} 
-                className={`bg-white text-black font-medium ${minBtn ? "py-2 px-4 text-xs" : "py-3 px-6 text-base"} ${props.disabled ? "opacity-50" : "opacity-100"} rounded-xl w-full hover:bg-primary-foreground hover:text:bg-primary ${className}`}
+                className={`bg-white relative overflow-hidden text-black font-medium ${minBtn ? "py-2 px-4 text-xs" : "py-3 px-6 text-base"} ${props.disabled ? "opacity-50" : "opacity-100"} rounded-xl w-full hover:bg-primary-foreground hover:text:bg-primary ${className}`}
                 ref={ref}
                 {...props}
             >
                 {btnIcon && <span>{btnIcon}</span>}
-                {isLoading && <ComponentLoader />}
+                {isLoading && <ButtonLoader />}
                 {props.children}
             </button>
         );
