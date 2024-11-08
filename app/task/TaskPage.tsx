@@ -11,8 +11,6 @@ import { ApplicationContext, ApplicationContextData } from "../context/Applicati
 import { Task, TaskType } from "../enums/ITask";
 import { referralMetrics } from "../constants/referralMetrics";
 import { BonusClaimRequest } from "../models/IReferral";
-import { Styles } from "../styles/styles";
-import { motion } from "framer-motion";
 
 // interface TaskPageProps {
 

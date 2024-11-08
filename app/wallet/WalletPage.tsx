@@ -1,6 +1,5 @@
 "use client"
 import React, { useContext, useEffect } from 'react'
-import { Icons } from '../components/ui/icons'
 import { RollsPurchasesConfig } from '../constants/purchases'
 import ConnectWalletModal from '../components/modal/ConnectWalletModal'
 import { SendTransactionRequest, TonConnectUIContext, useTonAddress, useTonConnectModal } from '@tonconnect/ui-react'
