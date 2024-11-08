@@ -17,7 +17,7 @@ export default async function RootLayout({
     children: React.ReactNode
 }) {
 
-    // Check if user is connected to internet
+    //TODO Check if user is connected to internet
 
     return (
         <html lang="en" data-theme={"light"} className='bg-white'>
