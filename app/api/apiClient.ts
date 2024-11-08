@@ -2,7 +2,10 @@ import axios from "axios";
 import { ApiRoutes } from "./apiRoutes";
 import { UserProfileInformation } from "../models/IUser";
 import { PointsUpdateRequest } from "../models/IPoints";
-import { BonusClaimRequest, ReferralCreationRequest } from "../models/IReferral";
+import {
+  BonusClaimRequest,
+  ReferralCreationRequest,
+} from "../models/IReferral";
 import { MultiLevelRequest } from "../models/ILevel";
 
 export const API = axios.create({
@@ -59,27 +62,32 @@ export function useUpdateUserPoints() {
 }
 
 export function useUpdateUserLevels() {
-    async function updateUserLevels(data: MultiLevelRequest) {
-        return API.post(ApiRoutes.UsersMultiLevels, data);
-    }
-    
-    return updateUserLevels;    
+  async function updateUserLevels(data: MultiLevelRequest) {
+    return API.post(ApiRoutes.UsersMultiLevels, data);
+  }
+
+  return updateUserLevels;
 }
 
 export function useUpdateBoostRefillEndTime() {
-    async function updateBoostRefillEndTime(data: { userId: string, refillEndTime: Date }) {
-        return API.post(`${ApiRoutes.UsersBoostRefillEndTime}?userId=${data.userId}&refillEndTime=${data.refillEndTime}`);
-    }
-    
-    return updateBoostRefillEndTime;   
+  async function updateBoostRefillEndTime(data: {
+    userId: string;
+    refillEndTime: Date;
+  }) {
+    return API.post(
+      `${ApiRoutes.UsersBoostRefillEndTime}?userId=${data.userId}&refillEndTime=${data.refillEndTime}`
+    );
+  }
+
+  return updateBoostRefillEndTime;
 }
 
 export function useFetchUserBoostRefillEndTime() {
-    async function fetchUserBoostRefillEndTime(userId: string) {
-        return API.get(`${ApiRoutes.UsersBoostRefillEndTime}?userId=${userId}`);
-    }
-    
-    return fetchUserBoostRefillEndTime;   
+  async function fetchUserBoostRefillEndTime(userId: string) {
+    return API.get(`${ApiRoutes.UsersBoostRefillEndTime}?userId=${userId}`);
+  }
+
+  return fetchUserBoostRefillEndTime;
 }
 
 export function useCreateReferral() {
@@ -91,12 +99,11 @@ export function useCreateReferral() {
 }
 
 export function useClaimReferralBonus() {
-    async function claimReferralBonus(data: BonusClaimRequest) {
-        return API.post(ApiRoutes.ReferralBonus, data);
-    }
-    
-    return claimReferralBonus;
-    
+  async function claimReferralBonus(data: BonusClaimRequest) {
+    return API.post(ApiRoutes.ReferralBonus, data);
+  }
+
+  return claimReferralBonus;
 }
 
 export function useFetchLeaderboard() {
@@ -109,10 +116,20 @@ export function useFetchLeaderboard() {
 
 export function useUpdateDailyBoosts() {
   async function updateDailyBoosts(userId: string, mode: "fetch" | "update") {
-    return API.post(`${ApiRoutes.UsersDailyBoosts}/?userId=${userId}&mode=${mode}`);
+    return API.post(
+      `${ApiRoutes.UsersDailyBoosts}/?userId=${userId}&mode=${mode}`
+    );
   }
 
   return updateDailyBoosts;
+}
+
+export function useUpdateUserRollsPoints() {
+  async function updateUserRollsPoints(data: PointsUpdateRequest) {
+    return API.post(ApiRoutes.UsersRolls, data);
+  }
+
+  return updateUserRollsPoints;
 }
 
 //#endregion
