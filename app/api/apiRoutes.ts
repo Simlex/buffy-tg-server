@@ -35,6 +35,11 @@ export class ApiRoutes {
   static UsersDailyBoosts: string = "api/users/dailyboosts";
 
   /**
+   * The route to Users Rolls endpoint
+   */
+  static UsersRolls: string = "api/users/rolls";
+
+  /**
    * The route to Users Multitap endpoint
    */
   static UsersMultiLevels: string = "api/users/multilevels";
