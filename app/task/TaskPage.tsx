@@ -47,21 +47,6 @@ const TaskPage: FunctionComponent = (): ReactElement => {
     const [isVerifyingTask, setIsVerifyingTask] = useState(false);
     const [isClaimingBonus, setIsClaimingBonus] = useState(false);
 
-    const options = ['Hal Finney', 'Satoshi Nakamoto', 'Adam Back', 'David Chaum'];
-    const [answer, setAnswer] = useState<string>();
-
-    // const [shuffledOptions, setShuffledOptions] = useState([]);
-
-    // // Function to shuffle an array
-    // const shuffleArray = (array: []) => {
-    //     return array.sort(() => Math.random() - 0.5);
-    // };
-
-    // useEffect(() => {
-    //     // Shuffle options when the component mounts
-    //     setShuffledOptions(shuffleArray([...options]));
-    // }, [options]);
-
     const telegramPoints = 4000;
     const twitterPoints = 4000;
 
@@ -269,34 +254,7 @@ const TaskPage: FunctionComponent = (): ReactElement => {
             </ModalWrapper>
 
             <main className="flex min-h-screen flex-col items-center py-14">
-                <h2 className="text-white font-medium text-3xl mb-8">Daily Trivia</h2>
-
-                <div className="flex flex-col items-center mb-14">
-                    <p className="text-white text-base mb-5">Who was the first person to use Bitcoin?</p>
-                    <div className="flex flex-col w-full gap-2 mb-5">
-                        {
-                            options.sort(() => Math.random() - 0.5).map((option, index) => (
-                                <motion.button
-                                    initial={{ scale: 0.05 * index, opacity: 0, y: -10 * index }}
-                                    animate={{ scale: 1, opacity: 1, y: 0 }}
-                                    transition={{ delay: 0.1 * index }}
-                                    key={index}
-                                    onClick={() => setAnswer(option)}
-                                    className={`bg-gray-700 rounded-xl p-2 pr-5 hover:bg-gray-600 text-white/80 ${option === answer ? "!bg-white !text-gray-800" : ""}`}>
-                                    {option}
-                                </motion.button>
-                            ))
-                        }
-                    </div>
-
-                    <button
-                        disabled={!answer}
-                        className={`${Styles.OrangeBgLinkButton} disabled:opacity-50`}>
-                        Submit
-                    </button>
-                </div>
-
-                <h2 className="text-white font-medium text-3xl mb-10">Other Tasks</h2>
+                <h2 className="text-white font-medium text-3xl mb-10">Tasks</h2>
 
                 {
                     userProfileInformation &&
