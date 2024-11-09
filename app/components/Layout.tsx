@@ -6,7 +6,7 @@ import { motion } from "framer-motion";
 import Topbar from "./Topbar";
 import BottomBar from "./BottomBar";
 import { ApplicationContext, ApplicationContextData } from "../context/ApplicationContext";
-import { useRouter, useSearchParams } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { UserProfileInformation } from "../models/IUser";
 import { StorageKeys } from "../constants/storageKeys";
 import { splashScreenVariant } from "../animations/splashScreen";
@@ -34,11 +34,12 @@ const Layout: FunctionComponent<LayoutProps> = ({ children }): ReactElement => {
 
     const {
         userProfileInformation, fetchUserProfileInformation, updateUserProfileInformation,
-        updateNextUpdateTimestamp, timesClickedPerSession, taps, didInitialLoad,
+        updateNextUpdateTimestamp, timesClickedPerSession, taps, didInitialLoad, updateSelectedGame,
         nextUpdateTimestamp, updateTimeLeft: setTimeLeft, updateTimesClickedPerSession,
     } = useContext(ApplicationContext) as ApplicationContextData;
 
     const router = useRouter();
+    const pathname = usePathname();
     const [loaderIsVisible, setLoaderIsVisible] = useState(true);
     const [isReferralCreated, setIsReferralCreated] = useState(false);
     const [isBoostTimeRetrieved, setIsBoostTimeRetrieved] = useState(false);
@@ -309,10 +310,10 @@ const Layout: FunctionComponent<LayoutProps> = ({ children }): ReactElement => {
             // tg.BiometricManager.init();
 
             // if the app is not running in the Telegram WebApp, and not in development mode
-            if (!isTelegramWebView() && BaseUrl !== ApiRoutes.BASE_URL_DEV) {
-                // redirect to the Telegram WebApp
-                window.location.href = "https://t.me/your_bot_name";
-            };
+            // if (!isTelegramWebView() && BaseUrl !== ApiRoutes.BASE_URL_DEV) {
+            //     // redirect to the Telegram WebApp
+            //     window.location.href = "https://t.me/your_bot_name";
+            // };
 
             // Initialize or customize WebApp UI
             tg.setBackgroundColor('#000000');
@@ -349,6 +350,12 @@ const Layout: FunctionComponent<LayoutProps> = ({ children }): ReactElement => {
             clearTimeout(timer);
         };
     }, [taps]);
+
+    useEffect(() => {
+        if (pathname !== '/games') {
+            updateSelectedGame(undefined);
+        }
+    }, [pathname])
 
     return (
         <>
