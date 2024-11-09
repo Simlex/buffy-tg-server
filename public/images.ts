@@ -11,6 +11,8 @@ import splash from "./images/splash.png";
 import buffy_nft from "./images/buffy_nft.jpg";
 import nft_coin from "./images/nft_coin.png";
 import bg_image from "./images/bg-image.jpg";
+import pattern from "./images/pattern.png";
+import dice from "./images/dice.png";
 
 export default {
   avatar,
@@ -23,5 +25,7 @@ export default {
   splash,
   buffy_nft,
   nft_coin,
-  bg_image
+  bg_image,
+  pattern,
+  dice
 };
