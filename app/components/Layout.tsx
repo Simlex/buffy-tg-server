@@ -10,7 +10,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { UserProfileInformation } from "../models/IUser";
 import { StorageKeys } from "../constants/storageKeys";
 import { splashScreenVariant } from "../animations/splashScreen";
-import { useCreateReferral, useCreateUser, useFetchUserBoostRefillEndTime, useUpdateBoostRefillEndTime, useUpdateUserPoints } from "../api/apiClient";
+import { BaseUrl, useCreateReferral, useCreateUser, useFetchUserBoostRefillEndTime, useUpdateBoostRefillEndTime, useUpdateUserPoints } from "../api/apiClient";
 import { ReferralCreationRequest } from "../models/IReferral";
 import { debounce } from "lodash"
 import { Toaster } from "sonner";
@@ -18,6 +18,7 @@ import Script from "next/script";
 import NewUserMetrics from "./IntroScreens/NewUserMetrics";
 import { PointsUpdateRequest } from "../models/IPoints";
 import { Game } from "../enums/Game";
+import { ApiRoutes } from "../api/apiRoutes";
 
 interface LayoutProps {
     children?: ReactNode;
@@ -297,12 +298,21 @@ const Layout: FunctionComponent<LayoutProps> = ({ children }): ReactElement => {
 
     const [isShowingNewUserInfo, setIsShowingNewUserInfo] = useState(true);
     const [isDisplayingYears, setIsDisplayingYears] = useState(true);
+    function isTelegramWebView() {
+        return navigator.userAgent.includes("Telegram");
+    }
 
     useEffect(() => {
         // Check if Telegram WebApp is available
         if (typeof window !== 'undefined' && window.Telegram?.WebApp) {
             const tg = window.Telegram.WebApp;
             // tg.BiometricManager.init();
+
+            // if the app is not running in the Telegram WebApp, and not in development mode
+            if (!isTelegramWebView() && BaseUrl !== ApiRoutes.BASE_URL_DEV) {
+                // redirect to the Telegram WebApp
+                window.location.href = "https://t.me/your_bot_name";
+            };
 
             // Initialize or customize WebApp UI
             tg.setBackgroundColor('#000000');
