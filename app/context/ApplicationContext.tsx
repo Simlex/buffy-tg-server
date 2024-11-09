@@ -20,8 +20,8 @@ export interface ApplicationContextData {
     updateTimeLeft: (time: string) => void;
     timesClickedPerSession: number | undefined;
     updateTimesClickedPerSession: (times: number) => void;
-    selectedGame: Game;
-    updateSelectedGame: (game: Game) => void;
+    selectedGame: Game | undefined;
+    updateSelectedGame: (game: Game | undefined) => void;
     taps: number;
     setTaps: (taps: number) => void;
     didInitialLoad: MutableRefObject<boolean>
@@ -50,7 +50,7 @@ const AppProvider: FunctionComponent<AppProviderProps> = ({ children }) => {
     const [showUserLoginPrompt, setShowUserLoginPrompt] = useState(false);
 
     // Define state for selected game
-    const [selectedGame, setSelectedGame] = useState<Game>(Game.Dice);
+    const [selectedGame, setSelectedGame] = useState<Game>();
 
     // Define function to display toast
     const displayToast = (message: string) => {
@@ -96,7 +96,7 @@ const AppProvider: FunctionComponent<AppProviderProps> = ({ children }) => {
         timesClickedPerSession,
         updateTimesClickedPerSession: (times: number) => setTimesClickedPerSession(times),
         selectedGame,
-        updateSelectedGame: (game: Game) => setSelectedGame(game),
+        updateSelectedGame: (game: Game | undefined) => setSelectedGame(game || undefined),
         taps,
         setTaps,
         didInitialLoad
