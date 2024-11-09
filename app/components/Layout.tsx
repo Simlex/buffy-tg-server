@@ -10,7 +10,7 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { UserProfileInformation } from "../models/IUser";
 import { StorageKeys } from "../constants/storageKeys";
 import { splashScreenVariant } from "../animations/splashScreen";
-import { BaseUrl, useCreateReferral, useCreateUser, useFetchUserBoostRefillEndTime, useUpdateBoostRefillEndTime, useUpdateUserPoints } from "../api/apiClient";
+import { useCreateReferral, useCreateUser, useFetchUserBoostRefillEndTime, useUpdateBoostRefillEndTime, useUpdateUserPoints } from "../api/apiClient";
 import { ReferralCreationRequest } from "../models/IReferral";
 import { debounce } from "lodash"
 import { Toaster } from "sonner";
@@ -18,7 +18,6 @@ import Script from "next/script";
 import NewUserMetrics from "./IntroScreens/NewUserMetrics";
 import { PointsUpdateRequest } from "../models/IPoints";
 import { Game } from "../enums/Game";
-import { ApiRoutes } from "../api/apiRoutes";
 
 interface LayoutProps {
     children?: ReactNode;
@@ -299,9 +298,9 @@ const Layout: FunctionComponent<LayoutProps> = ({ children }): ReactElement => {
 
     const [isShowingNewUserInfo, setIsShowingNewUserInfo] = useState(true);
     const [isDisplayingYears, setIsDisplayingYears] = useState(true);
-    function isTelegramWebView() {
-        return navigator.userAgent.includes("Telegram");
-    }
+    // function isTelegramWebView() {
+    //     return navigator.userAgent.includes("Telegram");
+    // }
 
     useEffect(() => {
         // Check if Telegram WebApp is available

@@ -7,7 +7,6 @@ import { ApplicationContext, ApplicationContextData } from "../context/Applicati
 import Button from "../components/ui/button";
 import Image from "next/image";
 import images from "@/public/images";
-import { Icons } from "../components/ui/icons";
 
 
 const GamesPage: FunctionComponent = (): ReactElement => {
