@@ -190,6 +190,42 @@ export async function updateUserPoints(req: NextRequest) {
 
     // If the specified game is dice
     if (specifiedGame === Game.Dice) {
+      // If the user rolled a 4, 5, or 6
+      if (request.ton) {
+        // update the user's ton balance
+        const updatedUser = await prisma.users.update({
+          where: {
+            userId: request.userId,
+          },
+          data: {
+            tonEarned: {
+              increment: request.ton,
+            },
+          },
+        });
+
+        // Return the response
+        return { ...updatedUser };
+      }
+
+      // If the user rolled a 6
+      if (request.nft) {
+        // update the user's nft balance
+        const updatedUser = await prisma.users.update({
+          where: {
+            userId: request.userId,
+          },
+          data: {
+            nftEarned: {
+              increment: request.nft,
+            },
+          },
+        });
+
+        // Return the response
+        return { ...updatedUser };
+      }
+
       await incrementUserTotalPoints(
         request.points,
         request.userId,
@@ -219,7 +255,7 @@ export async function updateUserPoints(req: NextRequest) {
         request.userId,
         user.totalPoints
       );
-      
+
       // update the user's tap task status
       const updatedUser = await prisma.users.update({
         where: {
@@ -241,49 +277,49 @@ export async function updateUserPoints(req: NextRequest) {
 
   // Check if the user is a new user => for account metrics (age & message)
   if (accountMetrics) {
-    if (accountMetrics === 'age') {
-        await incrementUserTotalPoints(
-          request.points,
-          request.userId,
-          user.totalPoints
-        );
-  
-        // update the user's age
-        const updatedUser = await prisma.users.update({
-          where: {
-            userId: request.userId,
+    if (accountMetrics === "age") {
+      await incrementUserTotalPoints(
+        request.points,
+        request.userId,
+        user.totalPoints
+      );
+
+      // update the user's age
+      const updatedUser = await prisma.users.update({
+        where: {
+          userId: request.userId,
+        },
+        data: {
+          agePoints: {
+            increment: request.points,
           },
-          data: {
-            agePoints: {
-                increment: request.points,
-            }
-          },
-        });
-  
-        // Return the response
-        return { ...updatedUser };
+        },
+      });
+
+      // Return the response
+      return { ...updatedUser };
     }
-    if (accountMetrics === 'messages') {
-        await incrementUserTotalPoints(
-          request.points,
-          request.userId,
-          user.totalPoints
-        );
-  
-        // update the user's age
-        const updatedUser = await prisma.users.update({
-          where: {
-            userId: request.userId,
+    if (accountMetrics === "messages") {
+      await incrementUserTotalPoints(
+        request.points,
+        request.userId,
+        user.totalPoints
+      );
+
+      // update the user's age
+      const updatedUser = await prisma.users.update({
+        where: {
+          userId: request.userId,
+        },
+        data: {
+          messagesPoints: {
+            increment: request.points,
           },
-          data: {
-            messagesPoints: {
-                increment: request.points,
-            }
-          },
-        });
-  
-        // Return the response
-        return { ...updatedUser };
+        },
+      });
+
+      // Return the response
+      return { ...updatedUser };
     }
   }
 
@@ -294,8 +330,8 @@ export async function updateUserPoints(req: NextRequest) {
     },
     data: {
       totalPoints: {
-        increment: request.points
-      }
+        increment: request.points,
+      },
     },
   });
 
@@ -480,7 +516,7 @@ export async function updateBoostRefillEndTime(req: NextRequest) {
 
   // Return the response
   return {
-    ...updatedUser
+    ...updatedUser,
   };
 }
 
