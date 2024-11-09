@@ -10,6 +10,8 @@ import { useUpdateUserPoints } from "../api/apiClient";
 import { PointsUpdateRequest } from "../models/IPoints";
 import CustomImage from "../components/ui/image";
 import images from "@/public/images";
+import { Icons } from "../components/ui/icons";
+import Link from "next/link";
 
 
 const Dicepage: FunctionComponent = (): ReactElement => {
@@ -23,8 +25,6 @@ const Dicepage: FunctionComponent = (): ReactElement => {
     const [wonPoints, setWonPoints] = useState<number>();
     const [wonTon, setWonTon] = useState<number>();
     const [wonNft, setWonNft] = useState<number>();
-    console.log("🚀 ~ wonTon:", wonTon)
-    console.log("🚀 ~ wonNft:", wonNft)
     const [rollsLeft, setRollsLeft] = useState(20);
 
     const rollDice = (multiplier?: number) => {
@@ -127,13 +127,16 @@ const Dicepage: FunctionComponent = (): ReactElement => {
 
     const diceElement = useRef<HTMLDivElement>(null);
 
-    const handleUpdateUserPoints = async (points: number) => {
+    const handleUpdateUserPoints = async (points: number, wonTon?: number, wonNft?: number) => {
 
         const data: PointsUpdateRequest = {
             points,
             game: Game.Dice,
+            ton: wonTon,
+            nft: wonNft,
             userId: userProfileInformation?.userId as string
         };
+        console.log("🚀 ~ handleUpdateUserPoints ~ data:", data)
 
         await updateUserPoints(data)
             .then((response) => {
@@ -188,7 +191,7 @@ const Dicepage: FunctionComponent = (): ReactElement => {
 
                 setIsRollingDice(false);
                 setRandomNumber([]);
-                setRollsLeft(() => rollsLeft - 1);
+                setRollsLeft(() => rollsLeft - rolledNumbers.length);
             }, 4050);
         };
 
@@ -213,11 +216,27 @@ const Dicepage: FunctionComponent = (): ReactElement => {
             console.log("🚀 ~ calculatePoints ~ ton:", ton)
             console.log("🚀 ~ calculatePoints ~ nft:", nft)
 
-            setWonPoints(points);
-            setWonTon(ton ? pointsMappings.find(point => point.diceRoll == ton)?.ton as number : undefined);
-            setWonNft(nft ? pointsMappings.find(point => point.diceRoll == nft)?.nft as number : undefined);
+            // find the total ton and nft won
+            const wonTon = ton ? rolledNumbers.reduce((acc, curr) => {
+                const ton = pointsMappings.find(point => point.diceRoll == curr)?.ton;
+                return acc + (ton ?? 0);
+            }, 0) : undefined;
+            const wonNft = nft ? rolledNumbers.reduce((acc, curr) => {
+                const nft = pointsMappings.find(point => point.diceRoll == curr)?.nft;
+                return acc + (nft ?? 0);
+            }, 0) : undefined;
 
-            await handleUpdateUserPoints(points);
+            // const wonTon = ton ? pointsMappings.find(point => point.diceRoll == ton)?.ton as number : undefined;
+            // const wonNft = nft ? pointsMappings.find(point => point.diceRoll == nft)?.nft as number : undefined;
+
+            console.log("🚀 ~ wonTon ~ wonTon:", wonTon)
+            console.log("🚀 ~ wonNft ~ wonNft:", wonNft)
+
+            setWonPoints(points);
+            setWonTon(wonTon);
+            setWonNft(wonNft);
+
+            await handleUpdateUserPoints(points, wonTon, wonNft);
         };
 
         // calculate points
@@ -238,7 +257,7 @@ const Dicepage: FunctionComponent = (): ReactElement => {
             </button>
             <div className="flex flex-col items-center mb-10 z-10">
                 <p className="text-sm text-white/50">Points</p>
-                <div className="flex flex-row gap-2 items-center">
+                <div className="flex flex-row gap-2 items-center mb-2">
                     <span className="w-7 h-7 relative grid place-items-center">
                         <CustomImage src={images.coin} alt="Coin" />
                     </span>
@@ -251,22 +270,34 @@ const Dicepage: FunctionComponent = (): ReactElement => {
                         {(userProfileInformation?.diceRollsPoints ?? 0).toLocaleString()}
                     </motion.h1>
                 </div>
-                {
-                    wonPoints &&
-                    <motion.span
-                        initial={{ scale: 3, opacity: 0, filter: "blur(10px)" }}
-                        animate={{ scale: 1, opacity: 1, filter: "blur(0px)" }}
-                        transition={{ delay: 2.5 }}
-                        className=" bg-green-300/20 p-1 px-2 text-sm text-green-400 rounded-lg mt-2">
-                        +{wonPoints.toLocaleString()}
-                    </motion.span>
-                }
+                <div>
+                    <div className="flex flex-row gap-2 items-center text-white/80 mb-4">
+                        <div className="flex flex-row items-center gap-2 p-2 px-3 pr-2 bg-white/10 rounded-3xl">
+                            <p>{userProfileInformation?.tonEarned} TON</p>
+                            <span><Icons.Ton fill="#fff" className="w-5 h-5" /></span>
+                        </div>
+                        <div className="flex flex-row items-center gap-2 p-2 px-3 pr-2 bg-white/10 rounded-3xl">
+                            <p>{userProfileInformation?.nftEarned} NFT</p>
+                            <span><Icons.Ton fill="#fff" className="w-5 h-5" /></span>
+                        </div>
+                    </div>
+                    <div className="flex flex-row gap-2 items-center text-white/80">
+                        <Link href="/wallet" className="flex flex-col items-center gap-0 p-4 py-3 bg-white/10 rounded-2xl">
+                            <Icons.Wallet />
+                            <p>Purchase</p>
+                        </Link>
+                        <div className="flex flex-col items-center gap-0 p-4 py-3 bg-white/10 rounded-2xl">
+                            <Icons.Withdraw />
+                            <p>Witdraw</p>
+                        </div>
+                    </div>
+                </div>
             </div>
             <motion.div
                 animate={{
                     scale: isRollingDice ? 0.85 : 1
                 }}
-                className={`container !rounded-full mx-auto p-4 pt-6 mb-8 md:p-6 lg:p-12 border-8 border-orange-400/20 ${isRollingDice ? '[box-shadow:0_0px_40px_5px_#ff954a7a,0_0px_0_0_#ff954a3c]' : ''}`}>
+                className={`container !rounded-full mx-auto p-4 pt-6 mb-5 md:p-6 lg:p-12 border-8 border-orange-400/20 ${isRollingDice ? '[box-shadow:0_0px_40px_5px_#ff954a7a,0_0px_0_0_#ff954a3c]' : ''}`}>
                 <div className="dice flex justify-center mb-4" ref={diceElement}>
                     <div className="face front"></div>
                     <div className="face back"></div>
@@ -276,6 +307,7 @@ const Dicepage: FunctionComponent = (): ReactElement => {
                     <div className="face left"></div>
                 </div>
             </motion.div>
+
             {/* <Button
                 disabled={isRollingDice || rollsLeft == 0}
                 onClick={() => rollDice()}
@@ -286,6 +318,17 @@ const Dicepage: FunctionComponent = (): ReactElement => {
                 !rounded-full border-[1px] border-orange-400">
                 <h2>Roll Dice</h2>
             </Button> */}
+
+            {wonPoints ? <motion.span
+                key={wonPoints}
+                initial={{ scale: 3, opacity: 0, filter: "blur(10px)" }}
+                animate={{ scale: 1, opacity: 1, filter: "blur(0px)" }}
+                exit={{ scale: 1, opacity: 0 }}
+                transition={{ delay: 2.5 }}
+                className={`${wonPoints ? 'bg-green-300/20' : ''} p-1 px-2 text-sm text-green-400 rounded-lg mb-3`}>
+                {wonPoints ? <>+{wonPoints.toLocaleString()}</> : <></>}
+            </motion.span> : <span className="h-[28px] mb-3"></span>}
+
             <div className="flex flex-col items-center">
                 <Button
                     disabled={isRollingDice || rollsLeft == 0}
