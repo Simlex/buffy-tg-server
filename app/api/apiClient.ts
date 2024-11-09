@@ -8,8 +8,10 @@ import {
 } from "../models/IReferral";
 import { MultiLevelRequest } from "../models/ILevel";
 
+export const BaseUrl = ApiRoutes.BASE_URL_DEV;
+
 export const API = axios.create({
-  baseURL: ApiRoutes.BASE_URL_LIVE,
+  baseURL: BaseUrl,
 });
 
 //#region user
