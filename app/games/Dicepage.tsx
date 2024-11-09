@@ -23,8 +23,8 @@ const Dicepage: FunctionComponent = (): ReactElement => {
     const [randomNumber, setRandomNumber] = useState<Array<number>>([]);
     const [rolledNumbers, setRolledNumbers] = useState<Array<number>>([]);
     const [wonPoints, setWonPoints] = useState<number>();
-    const [wonTon, setWonTon] = useState<number>();
-    const [wonNft, setWonNft] = useState<number>();
+    // const [wonTon, setWonTon] = useState<number>();
+    // const [wonNft, setWonNft] = useState<number>();
     const [rollsLeft, setRollsLeft] = useState(20);
 
     const rollDice = (multiplier?: number) => {
@@ -233,8 +233,8 @@ const Dicepage: FunctionComponent = (): ReactElement => {
             console.log("🚀 ~ wonNft ~ wonNft:", wonNft)
 
             setWonPoints(points);
-            setWonTon(wonTon);
-            setWonNft(wonNft);
+            // setWonTon(wonTon);
+            // setWonNft(wonNft);
 
             await handleUpdateUserPoints(points, wonTon, wonNft);
         };
