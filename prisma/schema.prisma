@@ -39,18 +39,22 @@ model Users {
     tonEarned       Int @default(0) // total ton earned
     nftEarned       Int @default(0) // total nft earned
 
-    dailyFreeBoosters           Int       @default(4)
-    dailyBoostersExp            DateTime?
-    boostRefillEndTime          DateTime?
-    dailyFreeDiceRollsStreak    Int       @default(0)
-    dailyFreeDiceRollsClaimed   Boolean   @default(false)
-    dailyFreeDiceRollsExp       DateTime?
-    availableDiceRolls          Int       @default(0)
-    telegramTaskDone            Boolean   @default(false)
-    twitterTaskDone             Boolean   @default(false)
-    highestReferralBonusClaimed Int       @default(0)
-    createdAt                   DateTime  @default(now())
-    updatedAt                   DateTime  @updatedAt
+    dailyFreeBoosters         Int       @default(4)
+    dailyBoostersExp          DateTime?
+    boostRefillEndTime        DateTime?
+    dailyFreeDiceRollsStreak  Int       @default(0)
+    dailyFreeDiceRollsClaimed Boolean   @default(false)
+    dailyFreeDiceRollsExp     DateTime?
+    availableDiceRolls        Int       @default(0)
+
+    isSubscribedToPremium  Boolean   @default(false)
+    premiumSubscriptionExp DateTime?
+
+    telegramTaskDone            Boolean  @default(false)
+    twitterTaskDone             Boolean  @default(false)
+    highestReferralBonusClaimed Int      @default(0)
+    createdAt                   DateTime @default(now())
+    updatedAt                   DateTime @updatedAt
 }
 
 model Referrals {
