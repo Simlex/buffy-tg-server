@@ -27,6 +27,8 @@ export default function WalletPage() {
     const [depositAmount, setDepositAmount] = React.useState<number>();
     const [isDepositing, setIsDepositing] = React.useState(false);
 
+    const premiumSubscriptionTonFee = 2.5;
+
     const body = beginCell()
         .storeUint(0, 32) // Write 32 zero bits to indicate a text comment will follow
         .storeStringTail("Some random comment here") // Write the text comment
@@ -58,6 +60,8 @@ export default function WalletPage() {
 
         setIsDepositing(true);
 
+        // send request to api to award points for connecting wallet, and then update the user profile information
+
         if (tonConnectUI) {
             tonConnectUI
                 .sendTransaction(paymentRequest)
@@ -66,7 +70,9 @@ export default function WalletPage() {
 
                     const data: PointsUpdateRequest = {
                         userId: userProfileInformation?.userId as string,
-                        points: RollsPurchasesConfig.find(purchase => purchase.tonPrice === depositAmount)?.roll || 0
+                        ton: depositAmount,
+                        points: RollsPurchasesConfig.find(purchase => purchase.tonPrice === depositAmount)?.roll || 0,
+                        forPremiumSubscription: depositAmount === premiumSubscriptionTonFee
                     }
 
                     await updateUserRollsPoints(data)
@@ -95,6 +101,15 @@ export default function WalletPage() {
     useEffect(() => {
         handleBuyRolls();
     }, [depositAmount]);
+
+    useEffect(() => {
+        if (!tonConnectUI) return;
+        if (!tonConnectUI.connected) {
+            open();
+            // setIsModalVisible(true);
+            return;
+        }
+    }, [tonConnectUI]);
 
     return (
         <>
@@ -145,17 +160,17 @@ export default function WalletPage() {
                     <div className=' bg-gradient-to-br from-[#24A1DE] to-[#086b9c] p-4 rounded-3xl flex items-center justify-between mb-4'>
                         <div>
                             <h3 className='text-white font-bold'>4 daily rolls + other perks</h3>
-                            <p className='text-white/60'>2.5 TON</p>
+                            <p className='text-white/60'>{premiumSubscriptionTonFee} TON</p>
                         </div>
                         <motion.button
                             whileTap={{ scale: 0.9 }}
                             onClick={() => {
-                                setDepositAmount(2.5);
+                                setDepositAmount(premiumSubscriptionTonFee);
                             }}
                             disabled={isDepositing}
                             className='bg-orange-500 text-white font-bold py-2 px-4 rounded-2xl relative overflow-hidden disabled:pointer-events-none'>
                             Buy
-                            {isDepositing && depositAmount == 2.5 && <ButtonLoader />}
+                            {isDepositing && depositAmount == premiumSubscriptionTonFee && <ButtonLoader />}
                         </motion.button>
                     </div>
                 </div>
