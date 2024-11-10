@@ -180,6 +180,37 @@ export async function updateUserPoints(req: NextRequest) {
       });
     }
 
+    // If the specified task is ton transaction 
+    if (specifiedTask === Task.TON_TRANSACTION) {
+      // If the user has done the task, show error
+      if (user.hadMadeFirstTonTransaction) {
+        return {
+          error: ApplicationError.TonTransactionTaskAlreadyCompleted.Text,
+          errorCode: ApplicationError.TonTransactionTaskAlreadyCompleted.Code,
+          statusCode: StatusCodes.BadRequest,
+        };
+      }
+
+      // if we get here, it means the user has not done the task...
+
+      // increment the user's points
+      await incrementUserTotalPoints(
+        request.points,
+        request.userId,
+        user.totalPoints
+      );
+
+      // update the user's telegram task status
+      await prisma.users.update({
+        where: {
+          userId: request.userId,
+        },
+        data: {
+          hadMadeFirstTonTransaction: true,
+        },
+      });
+    }
+
     // Return the response
     return { message: "Successfully updated user's point & task status" };
   }
