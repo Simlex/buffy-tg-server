@@ -12,6 +12,8 @@ import CustomImage from "../components/ui/image";
 import images from "@/public/images";
 import { Icons } from "../components/ui/icons";
 import Link from "next/link";
+import DiceGameInfoModal from "../components/modal/DicePointsModal";
+import Image from "next/image";
 
 
 const Dicepage: FunctionComponent = (): ReactElement => {
@@ -19,13 +21,14 @@ const Dicepage: FunctionComponent = (): ReactElement => {
     const updateUserPoints = useUpdateUserPoints();
     const { updateSelectedGame, userProfileInformation, updateUserProfileInformation } = useContext(ApplicationContext) as ApplicationContextData;
 
+    const [isDiceInfoModalVisible, setIsDiceInfoModalVisible] = useState(false);
     const [isRollingDice, setIsRollingDice] = useState(false);
     const [randomNumber, setRandomNumber] = useState<Array<number>>([]);
     const [rolledNumbers, setRolledNumbers] = useState<Array<number>>([]);
     const [wonPoints, setWonPoints] = useState<number>();
     // const [wonTon, setWonTon] = useState<number>();
     // const [wonNft, setWonNft] = useState<number>();
-    const [rollsLeft, setRollsLeft] = useState(20);
+    const [rollsLeft, setRollsLeft] = useState(0);
 
     const rollDice = (multiplier?: number) => {
         setIsRollingDice(true);
@@ -124,6 +127,25 @@ const Dicepage: FunctionComponent = (): ReactElement => {
     //     console.log(`Face 5 (7.5 TON): ${rollResults[5]} times`);
     //     console.log(`Face 6 (NFT): ${rollResults[6]} times`);
     // };
+
+    const getImageBasedOnFace = (face: number) => {
+        switch (face) {
+            case 1:
+                return images.face_1;
+            case 2:
+                return images.face_2;
+            case 3:
+                return images.face_3;
+            case 4:
+                return images.face_4;
+            case 5:
+                return images.face_5;
+            case 6:
+                return images.face_6;
+            default:
+                return images.face_1;
+        }
+    }
 
     const diceElement = useRef<HTMLDivElement>(null);
 
@@ -248,6 +270,12 @@ const Dicepage: FunctionComponent = (): ReactElement => {
         }
     }, [rolledNumbers]);
 
+    useEffect(() => {
+        if (userProfileInformation?.availableDiceRolls && rollsLeft) {
+            setRollsLeft(userProfileInformation.availableDiceRolls);
+        }
+    }, [userProfileInformation]);
+
     return (
         <main className="flex min-h-screen flex-col items-center py-20 pt-12 pb-32 select-none relative">
             <button
@@ -255,7 +283,7 @@ const Dicepage: FunctionComponent = (): ReactElement => {
                 onClick={() => updateSelectedGame(Game.Tap)}>
                 Play Tap To Earn
             </button>
-            <div className="flex flex-col items-center mb-10 z-10">
+            <div className="flex flex-col items-center w-full mb-10 z-10">
                 <p className="text-sm text-white/50">Points</p>
                 <div className="flex flex-row gap-2 items-center mb-2">
                     <span className="w-7 h-7 relative grid place-items-center">
@@ -270,7 +298,7 @@ const Dicepage: FunctionComponent = (): ReactElement => {
                         {(userProfileInformation?.diceRollsPoints ?? 0).toLocaleString()}
                     </motion.h1>
                 </div>
-                <div>
+                <div className="flex flex-col items-center w-full">
                     <div className="flex flex-row gap-2 items-center text-white/80 mb-4">
                         <div className="flex flex-row items-center gap-2 p-2 px-3 pr-2 bg-white/10 rounded-3xl">
                             <p>{userProfileInformation?.tonEarned} TON</p>
@@ -278,17 +306,26 @@ const Dicepage: FunctionComponent = (): ReactElement => {
                         </div>
                         <div className="flex flex-row items-center gap-2 p-2 px-3 pr-2 bg-white/10 rounded-3xl">
                             <p>{userProfileInformation?.nftEarned} NFT</p>
-                            <span><Icons.Ton fill="#fff" className="w-5 h-5" /></span>
+                            <span>
+                                <Image src={images.nft_coin} alt="Nft coin" className="w-5 h-5" />
+                                {/* <Icons.Ton fill="#fff" className="w-5 h-5" /> */}
+                            </span>
                         </div>
                     </div>
-                    <div className="flex flex-row gap-2 items-center text-white/80">
-                        <Link href="/wallet" className="flex flex-col items-center gap-0 p-4 py-3 bg-white/10 rounded-2xl">
+                    <div className="flex flex-row gap-2 items-center text-white/80 w-full">
+                        <Link href="/wallet" className="flex flex-col items-center gap-0 p-4 py-3 bg-white/10 rounded-2xl w-full">
                             <Icons.Wallet />
                             <p>Purchase</p>
                         </Link>
-                        <div className="flex flex-col items-center gap-0 p-4 py-3 bg-white/10 rounded-2xl">
+                        <div className="flex flex-col items-center gap-0 p-4 py-3 bg-white/10 rounded-2xl w-full">
                             <Icons.Withdraw />
-                            <p>Witdraw</p>
+                            <p>Withdraw</p>
+                        </div>
+                        <div
+                            onClick={() => setIsDiceInfoModalVisible(true)}
+                            className="cursor-pointer flex flex-col items-center gap-0 p-4 py-3 bg-white/10 rounded-2xl w-full">
+                            <Icons.Trivia />
+                            <p>Info</p>
                         </div>
                     </div>
                 </div>
@@ -326,7 +363,7 @@ const Dicepage: FunctionComponent = (): ReactElement => {
                 exit={{ scale: 1, opacity: 0 }}
                 transition={{ delay: 2.5 }}
                 className={`${wonPoints ? 'bg-green-300/20' : ''} p-1 px-2 text-sm text-green-400 rounded-lg mb-3`}>
-                {wonPoints ? <>+{wonPoints.toLocaleString()}</> : <></>}
+                {wonPoints ? <>+{wonPoints.toLocaleString()}&nbsp;points</> : <></>}
             </motion.span> : <span className="h-[28px] mb-3"></span>}
 
             <div className="flex flex-col items-center">
@@ -361,27 +398,50 @@ const Dicepage: FunctionComponent = (): ReactElement => {
                         <AnimatePresence>
                             {
                                 !isRollingDice && rolledNumbers.map((number, index) => (
+                                    // <motion.span
+                                    //     key={index}
+                                    //     initial={{ scale: 0, opacity: 0 }}
+                                    //     animate={{ scale: 1, opacity: 1 }}
+                                    //     exit={{ scale: 0, opacity: 0 }}
+                                    //     transition={{ duration: 0.15, delay: 0.15 * index }}
+                                    //     // viewport={{ once: true }}
+                                    //     className="bg-white text-orange-500 text-xl w-12 h-12 rounded-full grid place-items-center border-2 border-orange-300">
+                                    //     {number}
+                                    // </motion.span>
                                     <motion.span
                                         key={index}
                                         initial={{ scale: 0, opacity: 0 }}
                                         animate={{ scale: 1, opacity: 1 }}
                                         exit={{ scale: 0, opacity: 0 }}
                                         transition={{ duration: 0.15, delay: 0.15 * index }}
-                                        // viewport={{ once: true }}
-                                        className="bg-white text-orange-500 text-xl w-12 h-12 rounded-full grid place-items-center border-2 border-orange-300">
-                                        {number}
+                                        className="bg-white/0 text-xl w-12 h-12 grid place-items-center mb-1">
+                                        <span className="relative w-10 h-10">
+                                            <Image src={getImageBasedOnFace(number)} alt="Face 1 dice" className="w-full h-full object-contain" />
+                                        </span>
+                                        <p className="text-xs text-white">
+                                            {pointsMappings.find(point => point.diceRoll == number)?.points}
+                                        </p>
                                     </motion.span>
                                 ))
                             }
                         </AnimatePresence>
-                        {/* <span className="bg-white text-orange-500 text-xl w-12 h-12 rounded-full grid place-items-center border-2 border-orange-300">3</span>
-                    <span className="bg-white text-orange-500 text-xl w-12 h-12 rounded-full grid place-items-center border-2 border-orange-300">3</span>
-                    <span className="bg-white text-orange-500 text-xl w-12 h-12 rounded-full grid place-items-center border-2 border-orange-300">3</span>
-                    <span className="bg-white text-orange-500 text-xl w-12 h-12 rounded-full grid place-items-center border-2 border-orange-300">3</span>
-                    <span className="bg-white text-orange-500 text-xl w-12 h-12 rounded-full grid place-items-center border-2 border-orange-300">3</span> */}
+                        {/* <span className="bg-white/0 text-xl w-12 h-12 grid place-items-center">
+                            <span className="relative w-10 h-10">
+                                <Image src={images.face_1} alt="Face 1 dice" className="w-full h-full object-contain" />
+                            </span>
+                        </span>
+                        <span className="bg-white text-orange-500 text-xl w-12 h-12 rounded-full grid place-items-center border-2 border-orange-300">3</span>
+                        <span className="bg-white text-orange-500 text-xl w-12 h-12 rounded-full grid place-items-center border-2 border-orange-300">3</span>
+                        <span className="bg-white text-orange-500 text-xl w-12 h-12 rounded-full grid place-items-center border-2 border-orange-300">3</span>
+                        <span className="bg-white text-orange-500 text-xl w-12 h-12 rounded-full grid place-items-center border-2 border-orange-300">3</span> */}
                     </div>
                 </div>
             }
+
+            <DiceGameInfoModal
+                visibility={isDiceInfoModalVisible}
+                setVisibility={setIsDiceInfoModalVisible}
+            />
         </main>
     );
 }
