@@ -5,16 +5,15 @@ import images from "@/public/images";
 import { Icons } from "../components/ui/icons";
 import ModalWrapper from "../components/modal/ModalWrapper";
 import ComponentLoader from "../components/Loader/ComponentLoader";
-import { useClaimReferralBonus, useUpdateUserPoints } from "../api/apiClient";
+import { useClaimReferralBonus, useUpdateUserPoints, useUpdateUserRollsPoints } from "../api/apiClient";
 import { PointsUpdateRequest } from "../models/IPoints";
 import { ApplicationContext, ApplicationContextData } from "../context/ApplicationContext";
 import { Task, TaskType } from "../enums/ITask";
 import { referralMetrics } from "../constants/referralMetrics";
 import { BonusClaimRequest } from "../models/IReferral";
-
-// interface TaskPageProps {
-
-// }
+import { useRouter } from "next/navigation";
+import { SendTransactionRequest, TonConnectUIContext, useTonAddress } from "@tonconnect/ui-react";
+import { Address, beginCell, toNano } from "@ton/ton";
 
 interface TaskStatusProps {
     status: boolean;
@@ -26,9 +25,11 @@ const TaskStatus: FunctionComponent<TaskStatusProps> = ({ status }) => {
 
 const TaskPage: FunctionComponent = (): ReactElement => {
 
+    const { push } = useRouter();
+    const tonConnectUI = useContext(TonConnectUIContext);
     const updateUserPoints = useUpdateUserPoints();
     const claimReferralBonus = useClaimReferralBonus();
-    const { userProfileInformation, fetchUserProfileInformation } = useContext(ApplicationContext) as ApplicationContextData;
+    const { userProfileInformation, fetchUserProfileInformation, updateUserProfileInformation } = useContext(ApplicationContext) as ApplicationContextData;
 
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [isClaimModalVisible, setIsClaimModalVisible] = useState(false);
@@ -44,9 +45,16 @@ const TaskPage: FunctionComponent = (): ReactElement => {
 
     const [isVerifyingTask, setIsVerifyingTask] = useState(false);
     const [isClaimingBonus, setIsClaimingBonus] = useState(false);
+    // const [depositAmount, setDepositAmount] = useState<number>();
+    const [isMakingATransaction, setIsMakingATransaction] = useState(false);
 
     const telegramPoints = 4000;
     const twitterPoints = 4000;
+    const walletConnectPoints = 4000;
+    const tonTransactionPoints = 10000;
+
+    const userFriendlyAddress = useTonAddress();
+    const destination = userFriendlyAddress ? Address.parse(userFriendlyAddress).toRawString() : '';
 
     async function handleVerifyTask(specifiedTask: Task) {
         // Show loader
@@ -120,6 +128,76 @@ const TaskPage: FunctionComponent = (): ReactElement => {
             });
     };
 
+    const body = beginCell()
+        .storeUint(0, 32) // Write 32 zero bits to indicate a text comment will follow
+        .storeStringTail(`TON transaction from user ${userProfileInformation?.userId}`) // Write the text comment
+        .endCell();
+
+    const paymentRequest = (depositAmount: number): SendTransactionRequest => {
+        return {
+            messages: [
+                {
+                    address: destination,
+                    amount: toNano(depositAmount || 0).toString(),
+                    payload: body.toBoc().toString('base64'), // Optional: Additional data
+                },
+            ],
+
+            validUntil: Math.floor(Date.now() / 1000) + 360, // Expiration time in seconds since epoch = now + 360 seconds
+        };
+    };
+
+    const handleAwardPoints = (task: Task) => { };
+
+    const handleMakeATransaction = (depositAmount: number) => {
+        if (!depositAmount) {
+            console.log("🚀 ~ handleBuyRolls ~ depositAmount:", depositAmount)
+            return;
+        };
+
+        if (!tonConnectUI?.connected) {
+            open();
+            // setIsModalVisible(true);
+            return;
+        }
+
+        setIsMakingATransaction(true);
+
+        // send request to api to award points for connecting wallet, and then update the user profile information
+
+        if (tonConnectUI) {
+            tonConnectUI
+                .sendTransaction(paymentRequest(tonTransactionPoints))
+                .then(async (transactionResult) => {
+                    console.log('Transaction successful:', transactionResult);
+
+                    const data: PointsUpdateRequest = {
+                        userId: userProfileInformation?.userId as string,
+                        points: tonTransactionPoints,
+                    }
+
+                    await updateUserPoints(data)
+                        .then((response) => {
+                            updateUserProfileInformation(response.data);
+                        })
+                        .catch((error) => {
+                            console.error('Transaction failed:', error);
+                        })
+                        .finally(() => { })
+                })
+                .catch((error) => {
+                    console.error('Transaction failed:', error);
+                })
+                .finally(() => {
+                    setIsMakingATransaction(false);
+                });
+        } else {
+            console.log('Wallet is not connected');
+            alert(`Wallet is not connected `);
+            setIsMakingATransaction(false);
+        }
+    };
+
     const taskInfo = [
         {
             icon: (className?: string) => <Icons.Telegram className={className} />,
@@ -146,6 +224,28 @@ const TaskPage: FunctionComponent = (): ReactElement => {
                 window.open("https://x.com/buffydurov?s=11", "_blank");
             },
             verificationFunction: () => handleVerifyTask(Task.TWITTER)
+        },
+        {
+            icon: (className?: string) => <Icons.Wallet className={className} />,
+            task: Task.WALLET_CONNECT,
+            title: "Connect Wallet",
+            points: walletConnectPoints,
+            action: "Connect",
+            isDone: userProfileInformation?.isWalletConnected ?? false,
+            actionFunction: () => { push("/wallet") },
+            verificationFunction: () => handleVerifyTask(Task.WALLET_CONNECT)
+        },
+        {
+            icon: (className?: string) => <Icons.Ton fill="#fff" className={`w-8 h-8 ${className}`} />,
+            task: Task.TON_TRANSACTION,
+            title: "Make a 0.3 TON transaction",
+            points: tonTransactionPoints,
+            action: "Transact",
+            isDone: userProfileInformation?.hadMadeFirstTonTransaction ?? false,
+            actionFunction: () => {
+                handleMakeATransaction(0.3);
+            },
+            verificationFunction: () => handleAwardPoints(Task.TON_TRANSACTION)
         }
     ];
 
@@ -190,9 +290,13 @@ const TaskPage: FunctionComponent = (): ReactElement => {
                     </div>
                     <div className="flex flex-row gap-4 w-full">
                         <button
-                            onClick={() => { selectedTaskInfo?.actionFunction() }}
-                            className="w-full p-2 rounded-xl bg-blue-500 focus:bg-blue-600">
-                            {selectedTaskInfo?.action}
+                            onClick={() => selectedTaskInfo?.actionFunction()}
+                            className="relative w-full p-2 rounded-xl bg-blue-500 focus:bg-blue-600">
+                            {
+                                isMakingATransaction ?
+                                    <ComponentLoader className="absolute inset-0 m-auto w-5 h-5" /> :
+                                    selectedTaskInfo?.action
+                            }
                         </button>
                         <button
                             onClick={() => { selectedTaskInfo?.verificationFunction() }}
@@ -261,12 +365,17 @@ const TaskPage: FunctionComponent = (): ReactElement => {
                             <button
                                 onClick={() => setSelectedTaskType(TaskType.Social)}
                                 className={`py-2 p-5 rounded-full font-bold text-sm ${selectedTaskType === TaskType.Social ? "bg-white text-gray-700" : "bg-white/20 text-white"}`}>
-                                Social tasks
+                                Social
                             </button>
                             <button
                                 onClick={() => setSelectedTaskType(TaskType.Referral)}
                                 className={`py-2 p-5 rounded-full font-bold text-sm ${selectedTaskType === TaskType.Referral ? "bg-white text-gray-700" : "bg-white/20 text-white"}`}>
-                                Referral tasks
+                                Referral
+                            </button>
+                            <button
+                                onClick={() => setSelectedTaskType(TaskType.Others)}
+                                className={`py-2 p-5 rounded-full font-bold text-sm ${selectedTaskType === TaskType.Others ? "bg-white text-gray-700" : "bg-white/20 text-white"}`}>
+                                Others
                             </button>
                         </div>
 
@@ -364,6 +473,58 @@ const TaskPage: FunctionComponent = (): ReactElement => {
                                     })
                                 }
                             </div>
+                        }
+
+                        {
+                            selectedTaskType === TaskType.Others &&
+                            <>
+                                <button
+                                    onClick={() => {
+                                        setSelectedTask(Task.WALLET_CONNECT);
+                                        setIsModalVisible(true);
+                                    }}
+                                    className={`bg-gray-700 rounded-3xl flex flex-row items-center justify-between p-4 pr-5 hover:bg-gray-600 ${userProfileInformation.isWalletConnected ? "pointer-events-none opacity-70" : ""}`}>
+                                    <div className="flex flex-row items-center gap-3">
+                                        <span className="w-7 h-7 relative grid place-items-center">
+                                            <Icons.Wallet />
+                                        </span>
+                                        <div className="flex flex-col gap-[2px] items-start">
+                                            <h5 className="text-white font-medium leading-3 text-base">Connect Wallet</h5>
+                                            <TaskStatus status={userProfileInformation.isWalletConnected} />
+                                        </div>
+                                    </div>
+                                    <span className="w-7 h-7 rounded-full bg-white/30 grid place-items-center">
+                                        {
+                                            userProfileInformation.isWalletConnected ?
+                                                <Icons.CheckFill className="fill-white" /> :
+                                                <Icons.CloseFill className="fill-white" />
+                                        }
+                                    </span>
+                                </button>
+                                <button
+                                    onClick={() => {
+                                        setSelectedTask(Task.TON_TRANSACTION);
+                                        setIsModalVisible(true);
+                                    }}
+                                    className={`bg-gray-700 rounded-3xl flex flex-row items-center justify-between p-4 pr-5 hover:bg-gray-600 ${userProfileInformation.hadMadeFirstTonTransaction ? "pointer-events-none opacity-70" : ""}`}>
+                                    <div className="flex flex-row items-center gap-3">
+                                        <span className="w-7 h-7 relative grid place-items-center">
+                                            <Icons.Wallet />
+                                        </span>
+                                        <div className="flex flex-col gap-[2px] items-start">
+                                            <h5 className="text-white font-medium leading-3 text-base">Make a TON transaction</h5>
+                                            <TaskStatus status={userProfileInformation.hadMadeFirstTonTransaction} />
+                                        </div>
+                                    </div>
+                                    <span className="w-7 h-7 rounded-full bg-white/30 grid place-items-center">
+                                        {
+                                            userProfileInformation.hadMadeFirstTonTransaction ?
+                                                <Icons.CheckFill className="fill-white" /> :
+                                                <Icons.CloseFill className="fill-white" />
+                                        }
+                                    </span>
+                                </button>
+                            </>
                         }
                     </div>
                 }
