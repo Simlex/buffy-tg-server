@@ -1,4 +1,5 @@
 import { ApplicationError } from "@/app/constants/applicationError";
+import { RollsPurchasesConfig } from "@/app/constants/purchases";
 import { PointsUpdateRequest } from "@/app/models/IPoints";
 import { StatusCodes } from "@/app/models/IStatusCodes";
 import { prisma } from "@/lib/prisma";
@@ -31,6 +32,9 @@ export async function updateUserRollsPoints(req: NextRequest) {
         statusCode: StatusCodes.NotFound,
       };
     }
+
+    // get the dice rolls the user gets from this purchase
+    const diceRolls = RollsPurchasesConfig.find(purchase => purchase.tonPrice === request.ton)?.roll || 0;
   
     // Update the user's dice roll points
     const updatedUser = await prisma.users.update({
@@ -38,9 +42,10 @@ export async function updateUserRollsPoints(req: NextRequest) {
         userId: request.userId,
       },
       data: {
-        diceRollsPoints: {
-          increment: request.points
-        }
+        isSubscribedToPremium: request.forPremiumSubscription,
+        availableDiceRolls: {
+            increment: diceRolls
+        },
       },
     });
   
