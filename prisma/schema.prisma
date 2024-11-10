@@ -15,19 +15,21 @@ datasource db {
 }
 
 model Users {
-    id            String  @id @default(uuid())
-    userId        String  @unique
-    username      String
-    email         String? @unique
-    emailVerified Boolean @default(false)
-    role          String  @default("user")
-    level         Int     @default(1)
-    firstName     String?
-    lastName      String?
-    profilePhoto  String?
-    phone         String?
-    referralCode  String  @unique
-    referralCount Int     @default(0)
+    id                         String  @id @default(uuid())
+    userId                     String  @unique
+    username                   String
+    email                      String? @unique
+    emailVerified              Boolean @default(false)
+    role                       String  @default("user")
+    level                      Int     @default(1)
+    firstName                  String?
+    lastName                   String?
+    profilePhoto               String?
+    phone                      String?
+    referralCode               String  @unique
+    referralCount              Int     @default(0)
+    isWalletConnected          Boolean @default(false)
+    hadMadeFirstTonTransaction Boolean @default(false)
 
     tapPoints       Int @default(0)
     totalPoints     Int @default(0)
