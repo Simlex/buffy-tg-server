@@ -14,6 +14,13 @@ import bg_image from "./images/bg-image.jpg";
 import pattern from "./images/pattern.png";
 import dice from "./images/dice.png";
 
+import face_1 from "./images/dice/face_1.png";
+import face_2 from "./images/dice/face_2.png";
+import face_3 from "./images/dice/face_3.png";
+import face_4 from "./images/dice/face_4.png";
+import face_5 from "./images/dice/face_5.png";
+import face_6 from "./images/dice/face_6.png";
+
 export default {
   avatar,
   coin,
@@ -27,5 +34,11 @@ export default {
   nft_coin,
   bg_image,
   pattern,
-  dice
+  dice,
+  face_1,
+  face_2,
+  face_3,
+  face_4,
+  face_5,
+  face_6,
 };
