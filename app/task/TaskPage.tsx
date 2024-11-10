@@ -147,7 +147,9 @@ const TaskPage: FunctionComponent = (): ReactElement => {
         };
     };
 
-    const handleAwardPoints = (task: Task) => { };
+    const handleAwardPoints = (task: Task) => {
+        console.log("🚀 ~ task:", task)
+    };
 
     const handleMakeATransaction = (depositAmount: number) => {
         if (!depositAmount) {
