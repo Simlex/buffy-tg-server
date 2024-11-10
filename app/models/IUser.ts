@@ -12,6 +12,8 @@ export interface UserProfileInformation {
   phone?: string;
   referralCode?: string;
   referralCount?: number;
+  isWalletConnected: boolean;
+  hadMadeFirstTonTransaction: boolean;
 
   diceRollsPoints?: number;
   tapPoints?: number;
@@ -30,6 +32,9 @@ export interface UserProfileInformation {
   dailyFreeDiceRollsClaimed?: boolean;
   dailyFreeDiceRollsExp?: Date | null;
   availableDiceRolls?: number;
+
+  isSubscribedToPremium?: boolean;
+  premiumSubscriptionExp?: Date;
 
   telegramTaskDone: boolean;
   twitterTaskDone: boolean;
