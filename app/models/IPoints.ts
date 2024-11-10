@@ -9,4 +9,5 @@ export interface PointsUpdateRequest {
     ton?: number;
     nft?: number;
     accountMetrics?: 'age' | 'messages';
+    forPremiumSubscription?: boolean;
 }
