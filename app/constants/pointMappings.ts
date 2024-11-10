@@ -1,20 +1,20 @@
 export const pointsMappings = [
     {
         diceRoll: 1,
-        points: 2000,
+        points: 1000,
         ton: null,
         nft: null
     },
     {
         diceRoll: 2,
-        points: 15000,
+        points: 5000,
         ton: null,
         nft: null
     },
     {
         diceRoll: 3,
-        points: 50000,
-        ton: null,
+        points: null,
+        ton: 0.1,
         nft: null
     },
     {
