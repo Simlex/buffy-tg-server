@@ -5,7 +5,7 @@ import images from "@/public/images";
 import { Icons } from "../components/ui/icons";
 import ModalWrapper from "../components/modal/ModalWrapper";
 import ComponentLoader from "../components/Loader/ComponentLoader";
-import { useClaimReferralBonus, useUpdateUserPoints, useUpdateUserRollsPoints } from "../api/apiClient";
+import { useClaimReferralBonus, useUpdateUserPoints } from "../api/apiClient";
 import { PointsUpdateRequest } from "../models/IPoints";
 import { ApplicationContext, ApplicationContextData } from "../context/ApplicationContext";
 import { Task, TaskType } from "../enums/ITask";

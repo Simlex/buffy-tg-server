@@ -1,8 +1,6 @@
 import React from 'react'
 import ModalWrapper from './ModalWrapper'
 import { Icons } from '../ui/icons'
-import { RollsPurchasesConfig } from '@/app/constants/purchases'
-import { pointsMappings } from '@/app/constants/pointMappings'
 
 interface Props {
     visibility: boolean
