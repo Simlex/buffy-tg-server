@@ -147,6 +147,8 @@ const Layout: FunctionComponent<LayoutProps> = ({ children }): ReactElement => {
                 dailyFreeBoosters: 4,
                 telegramTaskDone: false,
                 twitterTaskDone: false,
+                isWalletConnected: false,
+                hadMadeFirstTonTransaction: false,
                 level: 1,
                 tapPoints: 0,
                 diceRollsPoints: 0,
