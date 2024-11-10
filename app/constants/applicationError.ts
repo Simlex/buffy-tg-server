@@ -233,6 +233,22 @@ export class ApplicationError extends BaseApplicationError {
     Code: "TASKS_1001",
   };
 
+    /**
+     * The error message for ~ Wallet Connect task already completed
+     */
+    static WalletConnectTaskAlreadyCompleted: IApplicationError = {
+      Text: "Wallet Connect task already completed",
+      Code: "TASKS_1002",
+    };
+
+    /**
+     * The error message for ~ TON Transaction task already completed
+     */
+    static TonTransactionTaskAlreadyCompleted: IApplicationError = {
+      Text: "TON Transaction task already completed",
+      Code: "TASKS_1003",
+    };
+
   //#endregion
 
   //#region Level Errors
