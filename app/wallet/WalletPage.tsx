@@ -73,13 +73,10 @@ export default function WalletPage() {
                         ton: depositAmount,
                         points: RollsPurchasesConfig.find(purchase => purchase.tonPrice === depositAmount)?.roll || 0,
                         forPremiumSubscription: depositAmount === premiumSubscriptionTonFee
-                    };
-
-                    console.log("🚀 ~ .then ~ data:", data)
+                    }
 
                     await updateUserRollsPoints(data)
                         .then((response) => {
-                            console.log("🚀 ~ .then ~ response:", response)
                             updateUserProfileInformation(response.data);
                         })
                         .catch((error) => {
