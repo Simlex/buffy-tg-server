@@ -241,7 +241,7 @@ const Layout: FunctionComponent<LayoutProps> = ({ children }): ReactElement => {
                 updateUserProfileInformation(response?.data);
 
                 // set initial load to true
-                didInitialLoad.current = true;
+                didInitialLoad.current = false;
             })
             .catch((error) => {
                 console.error(error);
