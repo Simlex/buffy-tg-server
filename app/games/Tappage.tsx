@@ -17,7 +17,7 @@ const Tappage: FunctionComponent = (): ReactElement => {
     const {
         userProfileInformation,
         timesClickedPerSession, updateTimesClickedPerSession,
-        updateSelectedGame, taps, setTaps
+        updateSelectedGame, taps, setTaps, didInitialLoad
     } = useContext(ApplicationContext) as ApplicationContextData;
 
     // const [taps, setTaps] = useState<number>(0);
@@ -138,20 +138,22 @@ const Tappage: FunctionComponent = (): ReactElement => {
                         </div>
                     </div>
 
-                    {clicks.map((click) => (
-                        <div
-                            key={click.id}
-                            className="absolute text-4xl z-20 font-bold opacity-0 text-white pointer-events-none"
-                            style={{
-                                top: `${click.y - 42}px`,
-                                left: `${click.x - 28}px`,
-                                animation: `float 1s ease-out`
-                            }}
-                            onAnimationEnd={() => handleAnimationEnd(click.id)}
-                        >
-                            +{userProfileInformation.level}
-                        </div>
-                    ))}
+                    {
+                        clicks.map((click) => (
+                            <div
+                                key={click.id}
+                                className="absolute text-4xl z-20 font-bold opacity-0 text-white pointer-events-none"
+                                style={{
+                                    top: `${click.y - 42}px`,
+                                    left: `${click.x - 28}px`,
+                                    animation: `float 1s ease-out`
+                                }}
+                                onAnimationEnd={() => handleAnimationEnd(click.id)}
+                            >
+                                +{userProfileInformation.level}
+                            </div>
+                        ))
+                    }
                     <div className="flex relative mb-12">
                         <div className="absolute w-full h-full flex items-center justify-end z-20 pointer-events-none">
                             {/* <AnimatePresence>
@@ -201,6 +203,12 @@ const Tappage: FunctionComponent = (): ReactElement => {
                                 }, 100);
 
                                 // setIsClicked(!isClicked);
+                            }}
+                            onTouchEnd={(e) => {
+                                // run the function to update the user points after a delay of 1 second
+                                setTimeout(() => {
+                                    didInitialLoad.current = true;
+                                }, 800);
                             }}
                             whileTap={{
                                 // scale: 1.1,
