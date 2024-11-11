@@ -4,6 +4,7 @@ import Button from "./ui/button";
 import { usePathname } from "next/navigation";
 import { ApplicationContext, ApplicationContextData } from "../context/ApplicationContext";
 import Link from "next/link";
+// import { TonConnectButton } from '@tonconnect/ui-react'
 
 // interface TopbarProps {
 
@@ -27,6 +28,7 @@ const Topbar: FunctionComponent = (): ReactElement => {
                             <div>
                                 <h3 className="text-xl font-semibold text-white">{userProfileInformation.username}</h3>
                                 {/* <span className="text-sm text-slate-300">#{userProfileInformation.userId}</span> */}
+                                {/* <TonConnectButton style={{ marginLeft: "auto" }} /> */}
                             </div>
                         </div>
                         <div>
