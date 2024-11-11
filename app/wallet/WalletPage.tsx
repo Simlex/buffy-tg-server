@@ -140,9 +140,7 @@ export default function WalletPage() {
                     <p className='text-white/70'>You can purchase rolls for dice roll game here</p>
                 </div>
 
-                {/* <div>
-                    <TonConnectButton style={{ marginLeft: "auto" }} />
-                </div> */}
+                {/* <TonConnectButton style={{ marginLeft: "auto" }} /> */}
 
                 {/* <div className='bg-white/20 p-3 rounded-3xl flex items-center justify-between mb-14'>
                     <div>
