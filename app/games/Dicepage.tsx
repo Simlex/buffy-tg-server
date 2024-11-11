@@ -154,6 +154,7 @@ const Dicepage: FunctionComponent = (): ReactElement => {
         const data: PointsUpdateRequest = {
             points,
             game: Game.Dice,
+            diceRollsUsed: rolledNumbers.length,
             ton: wonTon,
             nft: wonNft,
             userId: userProfileInformation?.userId as string
@@ -271,7 +272,7 @@ const Dicepage: FunctionComponent = (): ReactElement => {
     }, [rolledNumbers]);
 
     useEffect(() => {
-        if (userProfileInformation?.availableDiceRolls && rollsLeft) {
+        if (userProfileInformation?.availableDiceRolls && !rollsLeft) {
             setRollsLeft(userProfileInformation.availableDiceRolls);
         }
     }, [userProfileInformation]);
