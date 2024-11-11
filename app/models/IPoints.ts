@@ -10,4 +10,5 @@ export interface PointsUpdateRequest {
     nft?: number;
     accountMetrics?: 'age' | 'messages';
     forPremiumSubscription?: boolean;
+    diceRollsUsed?: number
 }
