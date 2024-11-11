@@ -10,13 +10,13 @@ import { levels } from "../constants/levels";
 import { MultiLevelRequest } from "../models/ILevel";
 import ComponentLoader from "../components/Loader/ComponentLoader";
 import { dailyBoostLimit } from "../constants/user";
-
-// interface BoostPageProps {
-
-// }
+import Button from "../components/ui/button";
+import { Icons } from "../components/ui/icons";
+import { useRouter } from "next/navigation";
 
 const BoostPage: FunctionComponent = (): ReactElement => {
 
+    const { back } = useRouter();
     const updateDailyBoosts = useUpdateDailyBoosts();
     const updateUserLevels = useUpdateUserLevels();
     const updateBoostRefillEndTime = useUpdateBoostRefillEndTime();
@@ -235,6 +235,16 @@ const BoostPage: FunctionComponent = (): ReactElement => {
                     {upgradeErrorMsg && <p className="text-red-500/80 text-sm">{upgradeErrorMsg}</p>}
                 </div>
             }
+
+            <div className="mt-10">
+                <Button
+                    disabled={false}
+                    onClick={() => back()}
+                    // onClick={() => simulateRolls(100)}
+                    className="!w-full mb-3 !bg-orange-500 !text-white">
+                    <h2>Go Back</h2>
+                </Button>
+            </div>
         </main>
     );
 }
