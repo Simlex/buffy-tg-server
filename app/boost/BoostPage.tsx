@@ -11,7 +11,6 @@ import { MultiLevelRequest } from "../models/ILevel";
 import ComponentLoader from "../components/Loader/ComponentLoader";
 import { dailyBoostLimit } from "../constants/user";
 import Button from "../components/ui/button";
-import { Icons } from "../components/ui/icons";
 import { useRouter } from "next/navigation";
 
 const BoostPage: FunctionComponent = (): ReactElement => {

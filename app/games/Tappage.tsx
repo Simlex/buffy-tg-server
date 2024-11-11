@@ -10,7 +10,6 @@ import { Metrics } from "../enums/IMetrics";
 import { sessionLimit } from "../constants/user";
 import { Styles } from "../styles/styles";
 import { Game } from "../enums/Game";
-import Button from "../components/ui/button";
 import Link from "next/link";
 
 const Tappage: FunctionComponent = (): ReactElement => {
