@@ -204,7 +204,7 @@ const Tappage: FunctionComponent = (): ReactElement => {
 
                                 // setIsClicked(!isClicked);
                             }}
-                            onTouchEnd={(e) => {
+                            onTouchEnd={() => {
                                 // run the function to update the user points after a delay of 1 second
                                 setTimeout(() => {
                                     didInitialLoad.current = true;
