@@ -89,7 +89,6 @@ export async function fetchUsers(req: NextRequest) {
 export async function updateUserPoints(req: NextRequest) {
   // Get the body of the request
   const request = (await req.json()) as PointsUpdateRequest;
-  console.log("🚀 ~ updateUserPoints ~ request:", request);
 
   // Check if all required fields are provided
   if (!request.userId) {
