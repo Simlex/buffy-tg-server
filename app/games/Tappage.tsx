@@ -10,6 +10,8 @@ import { Metrics } from "../enums/IMetrics";
 import { sessionLimit } from "../constants/user";
 import { Styles } from "../styles/styles";
 import { Game } from "../enums/Game";
+import Button from "../components/ui/button";
+import Link from "next/link";
 
 const Tappage: FunctionComponent = (): ReactElement => {
 
@@ -106,7 +108,7 @@ const Tappage: FunctionComponent = (): ReactElement => {
                     </button>
 
                     <div className="flex flex-col items-center mb-12">
-                    <p className="text-sm text-white/50">Points</p>
+                        <p className="text-sm text-white/50">Points</p>
                         <div className="flex flex-row gap-2 items-center">
                             <span className="w-7 h-7 relative grid place-items-center">
                                 <CustomImage src={images.coin} alt="Coin" />
@@ -226,6 +228,11 @@ const Tappage: FunctionComponent = (): ReactElement => {
                                 <span className="text-xl">{(userProfileInformation.referralCount * 1000).toLocaleString()}</span>
                             </div> : <></>
                     } */}
+                    <div className="mt-10 w-full flex flex-col">
+                        <Link href="/boost" className="flex flex-col items-center gap-0 p-4 py-3 rounded-xl w-full mb-3 !bg-white !text-gray-900">
+                            Boost Points
+                        </Link>
+                    </div>
                 </>
             }
         </main>
