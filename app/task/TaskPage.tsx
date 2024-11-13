@@ -26,7 +26,6 @@ const TaskStatus: FunctionComponent<TaskStatusProps> = ({ status }) => {
 
 const TaskPage: FunctionComponent = (): ReactElement => {
 
-    const { push } = useRouter();
     const tonConnectUI = useContext(TonConnectUIContext);
     const updateUserPoints = useUpdateUserPoints();
     const claimReferralBonus = useClaimReferralBonus();

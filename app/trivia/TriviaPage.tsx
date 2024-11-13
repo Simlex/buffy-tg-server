@@ -28,7 +28,7 @@ const TriviaPage: FunctionComponent = (): ReactElement => {
     // get the date the trivia started
     const startDate = TriviaConfig.startDate;
     // get the date the trivia ends
-    const endDate = TriviaConfig.endDate;
+    // const endDate = TriviaConfig.endDate;
 
     // how many days since the trivia started
     const daysSinceStart = Math.floor((new Date().getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24));

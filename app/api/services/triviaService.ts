@@ -1,5 +1,4 @@
 import { ApplicationError } from "@/app/constants/applicationError";
-import { TriviaConfig } from "@/app/constants/triviaConfig";
 import { StatusCodes } from "@/app/models/IStatusCodes";
 import { TriviaUpdateRequest } from "@/app/models/ITrivia";
 import { prisma } from "@/lib/prisma";
@@ -39,9 +38,6 @@ export async function updateUserTriviaPoints(req: NextRequest) {
   }
 
   const todayDate = new Date();
-  const day = todayDate.getDate();
-  const month = todayDate.getMonth();
-  const year = todayDate.getFullYear();
 
   // if the user has already answered the trivia for the day, return an error
   if (user.lastAnsweredTriviaDate?.getDate() == todayDate.getDate() && user.lastAnsweredTriviaDate?.getMonth() == todayDate.getMonth() && user.lastAnsweredTriviaDate?.getFullYear() == todayDate.getFullYear()) {
