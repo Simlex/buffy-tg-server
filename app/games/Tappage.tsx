@@ -107,7 +107,7 @@ const Tappage: FunctionComponent = (): ReactElement => {
                     </button>
 
                     <div className="flex flex-col items-center mb-12">
-                        <p className="text-sm text-white/50">Points</p>
+                        {/* <p className="text-sm text-white/50">Points</p>
                         <div className="flex flex-row gap-2 items-center">
                             <span className="w-7 h-7 relative grid place-items-center">
                                 <CustomImage src={images.coin} alt="Coin" />
@@ -120,7 +120,7 @@ const Tappage: FunctionComponent = (): ReactElement => {
                                 className="text-[40px] text-white font-extrabold">
                                 {(taps).toLocaleString()}{metrics(taps)?.pointSuffix}
                             </motion.h1>
-                        </div>
+                        </div> */}
                         <div className="flex flex-row gap-3 items-center">
                             <div className="flex flex-row gap-2 items-center">
                                 <span className="w-6 h-6 grid place-items-center">
