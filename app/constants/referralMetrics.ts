@@ -14,36 +14,40 @@ interface ReferralMetricsProps {
 export const referralMetrics: ReferralMetricsProps[] = [
     {
         friends: 3,
-        bonus: 5000
+        bonus: 1000
     },
     {
         friends: 5,
-        bonus: 10000
+        bonus: 3000
+    },
+    {
+        friends: 10,
+        bonus: 5000
     },
     {
         friends: 20,
-        bonus: 50000
+        bonus: 10000
     },
     {
         friends: 50,
-        bonus: 140000
+        bonus: 25000
     },
     {
         friends: 100,
-        bonus: 300000
+        bonus: 400000
     },
     {
         friends: 200,
-        bonus: 700000
+        bonus: 100000
     },
     {
         friends: 500,
-        bonus: 1500000,
+        bonus: 2500000,
         tonBonus: 0.5
     },
     {
         friends: 1000,
-        bonus: 3000000,
+        bonus: 5000000,
         tonBonus: 1
     }
 ]
