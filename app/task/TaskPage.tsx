@@ -11,7 +11,6 @@ import { ApplicationContext, ApplicationContextData } from "../context/Applicati
 import { Task, TaskType } from "../enums/ITask";
 import { referralMetrics } from "../constants/referralMetrics";
 import { BonusClaimRequest } from "../models/IReferral";
-import { useRouter } from "next/navigation";
 import { SendTransactionRequest, TonConnectUIContext, useTonAddress } from "@tonconnect/ui-react";
 import { Address, beginCell, toNano } from "@ton/ton";
 import { PointsConfig } from "../constants/globalPointsConfig";
