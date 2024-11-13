@@ -239,8 +239,9 @@ const TaskPage: FunctionComponent = (): ReactElement => {
             action: tonConnectUI?.connected ? "Claim Bonus!" : "Connect",
             hideRhsBtn: tonConnectUI?.connected,
             isDone: userProfileInformation?.isWalletConnected ?? false,
-            actionFunction: async () => { tonConnectUI?.connected ? await handleVerifyTask(Task.WALLET_CONNECT) : open() },
-            verificationFunction: () => handleVerifyTask(Task.WALLET_CONNECT)
+            actionFunction: async () => tonConnectUI?.connected ? await handleVerifyTask(Task.WALLET_CONNECT) : open(),
+            verificationFunction: () => handleVerifyTask(Task.WALLET_CONNECT),
+            isLoading: isVerifyingTask
         },
         {
             icon: (className?: string) => <Icons.Ton fill="#fff" className={`w-8 h-8 ${className}`} />,
@@ -297,6 +298,7 @@ const TaskPage: FunctionComponent = (): ReactElement => {
                     </div>
                     <div className="flex flex-row gap-4 w-full">
                         <button
+                            disabled={isVerifyingTask}
                             onClick={() => selectedTaskInfo?.actionFunction()}
                             className="relative w-full p-2 rounded-xl bg-blue-500 focus:bg-blue-600">
                             {
@@ -307,6 +309,7 @@ const TaskPage: FunctionComponent = (): ReactElement => {
                         </button>
                         {!selectedTaskInfo?.hideRhsBtn &&
                             <button
+                                disabled={isVerifyingTask}
                                 onClick={() => { selectedTaskInfo?.verificationFunction() }}
                                 className={`relative w-full p-2 rounded-xl bg-blue-500 focus:bg-blue-600 ${selectedTaskInfo?.isDone ? "" : " bg-gray-500 pointer-events-none"}`}>
                                 {
