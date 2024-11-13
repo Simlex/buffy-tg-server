@@ -249,6 +249,14 @@ export class ApplicationError extends BaseApplicationError {
       Code: "TASKS_1003",
     };
 
+    /**
+     * The error message for ~ user already answered the trivia for the day
+     */
+    static UserAlreadyAnsweredTrivia: IApplicationError = {
+      Text: "User already answered the trivia for the day",
+      Code: "TASKS_1004",
+    }
+
   //#endregion
 
   //#region Level Errors
