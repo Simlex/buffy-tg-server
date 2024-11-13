@@ -9,6 +9,7 @@ import { MultiLevelRequest } from "@/app/models/ILevel";
 import { levels } from "@/app/constants/levels";
 import { dailyBoostLimit } from "@/app/constants/user";
 import { Game } from "@/app/enums/Game";
+import { PointsConfig } from "@/app/constants/globalPointsConfig";
 
 export async function createUser(req: NextRequest) {
   // Get the body of the request
@@ -197,18 +198,54 @@ export async function updateUserPoints(req: NextRequest) {
       await incrementUserTotalPoints(
         request.points,
         request.userId,
-        user.totalPoints
+        user.isWalletConnected ? user.totalPoints : user.totalPoints + PointsConfig.walletConnectPoints
       );
 
       // update the user's telegram task status
-      await prisma.users.update({
+      const updatedUser = await prisma.users.update({
         where: {
           userId: request.userId,
         },
         data: {
           hadMadeFirstTonTransaction: true,
+          isWalletConnected: user.isWalletConnected || true,
         },
       });
+
+      return { ...updatedUser };
+    }
+
+    // If the specified task is wallet connect
+    if (specifiedTask === Task.WALLET_CONNECT) {
+      // If the user has done the task, show error
+      if (user.isWalletConnected) {
+        return {
+          error: ApplicationError.WalletConnectTaskAlreadyCompleted.Text,
+          errorCode: ApplicationError.WalletConnectTaskAlreadyCompleted.Code,
+          statusCode: StatusCodes.BadRequest,
+        };
+      }
+
+      // if we get here, it means the user has not done the task...
+
+      // increment the user's points
+      await incrementUserTotalPoints(
+        request.points,
+        request.userId,
+        user.totalPoints
+      );
+
+      // update the user's wallet connect task status
+      const updatedUser = await prisma.users.update({
+        where: {
+          userId: request.userId,
+        },
+        data: {
+          isWalletConnected: true,
+        },
+      });
+
+      return { ...updatedUser };
     }
 
     // Return the response
@@ -224,7 +261,7 @@ export async function updateUserPoints(req: NextRequest) {
       // If the user rolled a 4, 5, or 6
       if (request.ton) {
         // update the user's ton balance
-        const updatedUser = await prisma.users.update({
+        await prisma.users.update({
           where: {
             userId: request.userId,
           },
@@ -236,13 +273,13 @@ export async function updateUserPoints(req: NextRequest) {
         });
 
         // Return the response
-        return { ...updatedUser };
+        // return { ...updatedUser };
       }
 
       // If the user rolled a 6
       if (request.nft) {
         // update the user's nft balance
-        const updatedUser = await prisma.users.update({
+        await prisma.users.update({
           where: {
             userId: request.userId,
           },
@@ -254,7 +291,7 @@ export async function updateUserPoints(req: NextRequest) {
         });
 
         // Return the response
-        return { ...updatedUser };
+        // return { ...updatedUser };
       }
 
       await incrementUserTotalPoints(
