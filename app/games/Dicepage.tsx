@@ -8,7 +8,6 @@ import { Game } from "../enums/Game";
 import { pointsMappings } from "../constants/pointMappings";
 import { useUpdateUserPoints } from "../api/apiClient";
 import { PointsUpdateRequest } from "../models/IPoints";
-import CustomImage from "../components/ui/image";
 import images from "@/public/images";
 import { Icons } from "../components/ui/icons";
 import Link from "next/link";
@@ -285,21 +284,21 @@ const Dicepage: FunctionComponent = (): ReactElement => {
                 Play Tap To Earn
             </button>
             <div className="flex flex-col items-center w-full mb-10 z-10">
-                <p className="text-sm text-white/50">Points</p>
-                <div className="flex flex-row gap-2 items-center mb-2">
-                    <span className="w-7 h-7 relative grid place-items-center">
-                        <CustomImage src={images.coin} alt="Coin" />
-                    </span>
-                    <motion.h1
-                        key={userProfileInformation?.diceRollsPoints}
-                        initial={{ scale: 0.5, opacity: 0, filter: "blur(10px)" }}
-                        animate={{ scale: 1, opacity: 1, filter: "blur(0px)" }}
-                        exit={{ scale: 0, opacity: 0 }}
-                        className="text-[40px] text-white font-extrabold">
-                        {(userProfileInformation?.diceRollsPoints ?? 0).toLocaleString()}
-                    </motion.h1>
-                </div>
                 <div className="flex flex-col items-center w-full">
+                    {/* <p className="text-sm text-white/50">Points</p>
+                    <div className="flex flex-row gap-2 items-center mb-2">
+                        <span className="w-7 h-7 relative grid place-items-center">
+                            <CustomImage src={images.coin} alt="Coin" />
+                        </span>
+                        <motion.h1
+                            key={userProfileInformation?.diceRollsPoints}
+                            initial={{ scale: 0.5, opacity: 0, filter: "blur(10px)" }}
+                            animate={{ scale: 1, opacity: 1, filter: "blur(0px)" }}
+                            exit={{ scale: 0, opacity: 0 }}
+                            className="text-[40px] text-white font-extrabold">
+                            {(userProfileInformation?.diceRollsPoints ?? 0).toLocaleString()}
+                        </motion.h1>
+                    </div>
                     <div className="flex flex-row gap-2 items-center text-white/80 mb-4">
                         <div className="flex flex-row items-center gap-2 p-2 px-3 pr-2 bg-white/10 rounded-3xl">
                             <p>{userProfileInformation?.tonEarned} TON</p>
@@ -309,10 +308,9 @@ const Dicepage: FunctionComponent = (): ReactElement => {
                             <p>{userProfileInformation?.nftEarned} NFT</p>
                             <span>
                                 <Image src={images.nft_coin} alt="Nft coin" className="w-5 h-5" />
-                                {/* <Icons.Ton fill="#fff" className="w-5 h-5" /> */}
                             </span>
                         </div>
-                    </div>
+                    </div> */}
                     <div className="flex flex-row gap-2 items-center text-white/80 w-full">
                         <Link href="/wallet" className="flex flex-col items-center gap-0 p-4 py-3 bg-white/10 rounded-2xl w-full">
                             <Icons.Wallet />
