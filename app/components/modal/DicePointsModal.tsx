@@ -1,6 +1,7 @@
 import React from 'react'
 import ModalWrapper from './ModalWrapper'
 import { Icons } from '../ui/icons'
+import { pointsMappings } from '@/app/constants/pointMappings'
 
 interface Props {
     visibility: boolean
@@ -19,12 +20,12 @@ export default function DiceGameInfoModal({ visibility, setVisibility }: Props) 
                 </div>
                 <p className='mb-5 text-black/50'>Roll the dice and win exciting rewards based on the face you land on! Here’s what you can earn:</p>
                 <div>
-                    <p>1️⃣: Win 2,000 points to boost your score!</p>
-                    <p>2️⃣: Score 15,000 points and climb up the leaderboard.</p>
-                    <p>3️⃣: Earn a whopping 50,000 points and take the lead!</p>
-                    <p>4️⃣: Receive 2 TON tokens as a crypto reward.</p>
-                    <p>5️⃣: Pocket 7.5 TON tokens for a bigger win!</p>
-                    <p>6️⃣: Get 1 exclusive NFT added to your collection!</p>
+                    <p>1️⃣: Win {pointsMappings[0].points} points to boost your score!</p>
+                    <p>2️⃣: Score {pointsMappings[1].points} points and climb up the leaderboard.</p>
+                    <p>3️⃣: Earn a whopping {pointsMappings[2].ton} TON and take the lead!</p>
+                    <p>4️⃣: Receive {pointsMappings[3].ton} TON as a crypto reward.</p>
+                    <p>5️⃣: Pocket {pointsMappings[4].ton} TON for a bigger win!</p>
+                    <p>6️⃣: Get {pointsMappings[5].nft} exclusive NFT added to your collection!</p>
                 </div>
                 {/* <div className='rounded-xl overflow-hidden border-2 border-black/5'>
                     <table className='w-full'>
