@@ -19,6 +19,7 @@ export interface UserProfileInformation {
   tapPoints?: number;
   totalPoints?: number;
   triviaPoints?: number;
+  lastAnsweredTriviaDate?: Date;
   dailyFreeBoosters?: number;
   dailyBoostersExp?: Date;
   boostRefillEndTime?: Date;
