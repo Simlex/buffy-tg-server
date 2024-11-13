@@ -20,12 +20,14 @@ export const pointsMappings = [
     {
         diceRoll: 4,
         points: null,
-        ton: 2
+        ton: 2,
+        nft: null
     },
     {
         diceRoll: 5,
         points: null,
-        ton: 7.5
+        ton: 7.5,
+        nft: null
     },
     {
         diceRoll: 6,
