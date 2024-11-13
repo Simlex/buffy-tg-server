@@ -7,6 +7,7 @@ import {
   ReferralCreationRequest,
 } from "../models/IReferral";
 import { MultiLevelRequest } from "../models/ILevel";
+import { TriviaUpdateRequest } from "../models/ITrivia";
 
 export const BaseUrl = ApiRoutes.BASE_URL_LIVE;
 
@@ -132,6 +133,14 @@ export function useUpdateUserRollsPoints() {
   }
 
   return updateUserRollsPoints;
+}
+
+export function useUpdateUserTriviaPoints() {
+  async function updateUserTriviaPoints(userId: string, data: TriviaUpdateRequest) {
+    return API.post(ApiRoutes.UsersTrivia(userId), data);
+  }
+
+  return updateUserTriviaPoints;
 }
 
 //#endregion
