@@ -239,7 +239,7 @@ const TaskPage: FunctionComponent = (): ReactElement => {
             action: tonConnectUI?.connected ? "Claim Bonus!" : "Connect",
             hideRhsBtn: tonConnectUI?.connected,
             isDone: userProfileInformation?.isWalletConnected ?? false,
-            actionFunction: async () => tonConnectUI?.connected ? await handleVerifyTask(Task.WALLET_CONNECT) : open(),
+            actionFunction: tonConnectUI?.connected ? async () => await handleVerifyTask(Task.WALLET_CONNECT) : () => open(),
             verificationFunction: () => handleVerifyTask(Task.WALLET_CONNECT),
             isLoading: isVerifyingTask
         },
