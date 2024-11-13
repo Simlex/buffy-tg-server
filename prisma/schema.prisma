@@ -31,15 +31,16 @@ model Users {
     isWalletConnected          Boolean @default(false)
     hadMadeFirstTonTransaction Boolean @default(false)
 
-    tapPoints       Int @default(0)
-    totalPoints     Int @default(0)
-    diceRollsPoints Int @default(0)
-    totalDiceRolls  Int @default(0) // total number of dice rolls the user has made
-    triviaPoints    Int @default(0)
-    agePoints       Int @default(0) // points earned from age verification
-    messagesPoints  Int @default(0) // points earned from messages sent
-    tonEarned       Int @default(0) // total ton earned
-    nftEarned       Int @default(0) // total nft earned
+    tapPoints              Int       @default(0)
+    totalPoints            Int       @default(0)
+    diceRollsPoints        Int       @default(0)
+    totalDiceRolls         Int       @default(0) // total number of dice rolls the user has made
+    triviaPoints           Int       @default(0)
+    lastAnsweredTriviaDate DateTime?
+    agePoints              Int       @default(0) // points earned from age verification
+    messagesPoints         Int       @default(0) // points earned from messages sent
+    tonEarned              Float     @default(0.0) // total ton earned
+    nftEarned              Float     @default(0.0) // total nft earned
 
     dailyFreeBoosters         Int       @default(4)
     dailyBoostersExp          DateTime?
