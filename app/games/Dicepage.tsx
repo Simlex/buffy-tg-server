@@ -172,7 +172,7 @@ const Dicepage: FunctionComponent = (): ReactElement => {
             .catch((error) => {
                 console.log("🚀 ~ .catch ~ error:", error)
             })
-    }
+    };
 
     useEffect(() => {
         if (randomNumber.length == 0) return;
@@ -420,7 +420,11 @@ const Dicepage: FunctionComponent = (): ReactElement => {
                                             <Image src={getImageBasedOnFace(number)} alt="Face 1 dice" className="w-full h-full object-contain" />
                                         </span>
                                         <p className="text-xs text-white">
-                                            {pointsMappings.find(point => point.diceRoll == number)?.points}
+                                            {
+                                                pointsMappings.find(point => point.diceRoll == number)?.points ??
+                                                `${pointsMappings.find(point => point.diceRoll == number)?.ton} TON` ??
+                                                `${pointsMappings.find(point => point.diceRoll == number)?.nft} NFT`
+                                            }
                                         </p>
                                     </motion.span>
                                 ))
