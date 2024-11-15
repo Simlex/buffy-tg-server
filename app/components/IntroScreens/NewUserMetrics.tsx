@@ -1,5 +1,5 @@
 "use client"
-import { Dispatch, FunctionComponent, ReactElement, SetStateAction, useContext, useEffect, useState } from "react";
+import { Dispatch, FunctionComponent, ReactElement, SetStateAction, useContext, useEffect, useRef, useState } from "react";
 import Button from "../ui/button";
 import ReactConfetti from "react-confetti";
 import { userIdCreationMap } from "@/app/constants/userMappings";
@@ -22,6 +22,7 @@ const NewUserMetrics: FunctionComponent<NewUserMetricsProps> = (
     const [years, setYears] = useState(0);
     const [messages, setMessages] = useState(0);
     const [fetchedMetrics, setFetchedMetrics] = useState(false);
+    const infoUploaded = useRef(false);
 
     const viewLimit = (index: number) => {
         if (index == 1) {
@@ -31,7 +32,8 @@ const NewUserMetrics: FunctionComponent<NewUserMetricsProps> = (
     };
 
     const handleUpdateUserPoints = async (points: number, metric: 'age' | 'messages') => {
-
+        console.log("🚀 ~ Updating for ~ metric:", metric)
+        
         const data: PointsUpdateRequest = {
             points,
             userId: userProfileInformation?.userId as string,
@@ -49,6 +51,7 @@ const NewUserMetrics: FunctionComponent<NewUserMetricsProps> = (
     };
 
     useEffect(() => {
+        if (infoUploaded.current) return;
         if (!userId || fetchedMetrics) return;
 
         let agePoints: number = 0;
@@ -132,13 +135,11 @@ const NewUserMetrics: FunctionComponent<NewUserMetricsProps> = (
         agePoints = estimateAccountAge(Number(userId));
         messagesPoints = estimateMessageCount(Number(userId));
 
-        console.log(`🚀 ~ useEffect ~ estimateAccountAge(${userId}):`, agePoints ?? 0)
-        console.log(`🚀 ~ useEffect ~ estimateMessageCount(${userId}):`, messagesPoints ?? 0)
-
         setYears(agePoints ?? 0)
         setMessages(messagesPoints ?? 0)
 
         setFetchedMetrics(true);
+        infoUploaded.current = true;
 
         // if (userProfileInformation?.agePoints || userProfileInformation?.messagesPoints || fetchedMetrics) return
         // (async () => (
@@ -147,17 +148,24 @@ const NewUserMetrics: FunctionComponent<NewUserMetricsProps> = (
         //         await handleUpdateUserPoints(estimateMessageCount(Number(userId)), 'messages')
         //     ])
         // ))()
+
         // Trigger handleUpdateUserPoints only if needed
         if (!userProfileInformation?.agePoints && !userProfileInformation?.messagesPoints && !fetchedMetrics) {
             const updateUserPoints = async () => {
-                await Promise.all([
-                    handleUpdateUserPoints(agePoints, 'age'),
-                    handleUpdateUserPoints(messagesPoints, 'messages')
-                ]);
+                await handleUpdateUserPoints(agePoints, 'age')
+                .then(async () => {
+                    await handleUpdateUserPoints(messagesPoints / 5, 'messages')
+                    .then(() => {
+                        infoUploaded.current = true;
+                    })
+                })
+                .catch(() => {
+                    infoUploaded.current = false;
+                })
             };
             updateUserPoints();
         }
-    }, [userId, userProfileInformation]);
+    }, [userId, userProfileInformation, infoUploaded]);
 
     useEffect(() => {
         if (isDisplayingYears) {
