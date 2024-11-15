@@ -189,6 +189,14 @@ export class ApplicationError extends BaseApplicationError {
     Code: "USER_1018",
   };
 
+    /**
+     * The error message for ~ User already claimed the daily free dice roll
+     */
+    static DailyFreeDiceRollAlreadyClaimed: IApplicationError = {
+      Text: "User already claimed the daily free dice roll",
+      Code: "USER_1019",
+    };
+
   //#endregion
 
   //#region Referral Errors
