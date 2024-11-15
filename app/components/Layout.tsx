@@ -356,7 +356,7 @@ const Layout: FunctionComponent<LayoutProps> = ({ children }): ReactElement => {
         if (pathname !== '/games') {
             updateSelectedGame(undefined);
         }
-    }, [pathname])
+    }, [pathname]);
 
     return (
         <>
