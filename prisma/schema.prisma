@@ -42,9 +42,8 @@ model Users {
     tonEarned              Float     @default(0.0) // total ton earned
     nftEarned              Float     @default(0.0) // total nft earned
 
-    dailyFreeBoosters         Int       @default(4)
-    dailyBoostersExp          DateTime?
     boostRefillEndTime        DateTime?
+    dailyBoostersExp          DateTime?
     dailyFreeDiceRollsStreak  Int       @default(0)
     dailyFreeDiceRollsClaimed Boolean   @default(false)
     dailyFreeDiceRollsExp     DateTime?
