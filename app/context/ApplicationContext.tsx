@@ -1,8 +1,9 @@
-import { FunctionComponent, MutableRefObject, ReactNode, createContext, useRef, useState } from "react";
+import { Dispatch, FunctionComponent, MutableRefObject, ReactNode, SetStateAction, createContext, useRef, useState } from "react";
 import { UserProfileInformation } from "../models/IUser";
 import { StorageKeys } from "../constants/storageKeys";
 import { fetchUserFromDb } from "../api/services/fetchUserFromDb";
 import { Game } from "../enums/Game";
+import { useUpdateUsersRollsStreakPoints } from "../api/apiClient";
 
 
 // Define the type for the context data
@@ -24,7 +25,11 @@ export interface ApplicationContextData {
     updateSelectedGame: (game: Game | undefined) => void;
     taps: number;
     setTaps: (taps: number) => void;
-    didInitialLoad: MutableRefObject<boolean>
+    didInitialLoad: MutableRefObject<boolean>;
+    dailyStreakUpdated: MutableRefObject<boolean>;
+    handleUpdateUserRollsStreak: () => void;
+    isDailyStreakModalVisible: boolean;
+    setIsDailyStreakModalVisible: Dispatch<SetStateAction<boolean>>
 };
 
 // Create a context with the specified data type
@@ -37,6 +42,8 @@ interface AppProviderProps {
 
 const AppProvider: FunctionComponent<AppProviderProps> = ({ children }) => {
 
+    const updateUsersRollsStreakPoints = useUpdateUsersRollsStreakPoints();
+
     // Define state for customer data
     const [userProfileInformation, setUserProfileInformation] = useState<UserProfileInformation | null>(null);
     const [isFetchingUserProfileInformation, setIsFetchingUserProfileInformation] = useState(false);
@@ -45,6 +52,8 @@ const AppProvider: FunctionComponent<AppProviderProps> = ({ children }) => {
     const [timesClickedPerSession, setTimesClickedPerSession] = useState<number>();
     const [taps, setTaps] = useState<number>(0);
     const didInitialLoad = useRef(false); // New ref to track initial load
+    const dailyStreakUpdated = useRef(false); // New ref to track daily streak update
+    const [isDailyStreakModalVisible, setIsDailyStreakModalVisible] = useState(false);
 
     // Define state for displaying login prompt
     const [showUserLoginPrompt, setShowUserLoginPrompt] = useState(false);
@@ -80,6 +89,22 @@ const AppProvider: FunctionComponent<AppProviderProps> = ({ children }) => {
         };
     };
 
+    const handleUpdateUserRollsStreak = async () => {
+        if (!userProfileInformation) return;
+
+        if (dailyStreakUpdated.current) return;
+        dailyStreakUpdated.current = true;
+
+        await updateUsersRollsStreakPoints(userProfileInformation?.userId as string)
+            .then((response) => {
+                setUserProfileInformation(response.data);
+                setIsDailyStreakModalVisible(true);
+            })
+            .catch((error) => {
+                console.log("🚀 ~ handleUpdateUserRollsStreak ~ error:", error)
+            })
+    };
+
     // Define the values you want to share
     const sharedData: ApplicationContextData = {
         isFetchingUserProfile: isFetchingUserProfileInformation,
@@ -99,7 +124,11 @@ const AppProvider: FunctionComponent<AppProviderProps> = ({ children }) => {
         updateSelectedGame: (game: Game | undefined) => setSelectedGame(game || undefined),
         taps,
         setTaps,
-        didInitialLoad
+        didInitialLoad,
+        dailyStreakUpdated,
+        handleUpdateUserRollsStreak,
+        isDailyStreakModalVisible,
+        setIsDailyStreakModalVisible
     };
 
     return (
