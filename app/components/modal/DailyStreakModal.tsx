@@ -13,7 +13,7 @@ export default function DailyStreakModal({ visibility, setVisibility }: Props) {
     const { userProfileInformation } = useContext(ApplicationContext) as ApplicationContextData;
 
     // get the date the streak would expire - 24 hours from the time the user claimed the roll
-    const streakExpiryDate = new Date().setHours(new Date().getHours() + 24);
+    // const streakExpiryDate = new Date().setHours(new Date().getHours() + 24);
 
     // check if streak has expired
     const streakHasExpired =
