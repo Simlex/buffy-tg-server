@@ -40,6 +40,12 @@ export class ApiRoutes {
   static UsersRolls: string = "api/users/rolls";
 
   /**
+   * The route to Users Rolls Streak endpoint
+   */
+  static UsersRollsStreak: (userId: string) => string = (userId: string) =>
+    `api/rolls/streak?userId=${userId}`;
+
+  /**
    * The route to Users Trivia endpoint
    */
   static UsersTrivia: (userId: string) => string = (userId: string) =>
