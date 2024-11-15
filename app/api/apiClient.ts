@@ -135,8 +135,19 @@ export function useUpdateUserRollsPoints() {
   return updateUserRollsPoints;
 }
 
+export function useUpdateUsersRollsStreakPoints() {
+  async function updateUsersRollsStreakPoints(userId: string) {
+    return API.post(ApiRoutes.UsersRollsStreak(userId));
+  }
+
+  return updateUsersRollsStreakPoints;
+}
+
 export function useUpdateUserTriviaPoints() {
-  async function updateUserTriviaPoints(userId: string, data: TriviaUpdateRequest) {
+  async function updateUserTriviaPoints(
+    userId: string,
+    data: TriviaUpdateRequest
+  ) {
     return API.post(ApiRoutes.UsersTrivia(userId), data);
   }
 
