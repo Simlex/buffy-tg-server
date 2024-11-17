@@ -31,7 +31,7 @@ export interface UserProfileInformation {
 
   dailyFreeDiceRollsStreak?: number;
   dailyFreeDiceRollsClaimed?: boolean;
-  dailyFreeDiceRollsExp?: Date | null;
+  dailyFreeDiceRollsNextClaimableDateExp?: Date | null;
   availableDiceRolls?: number;
 
   isSubscribedToPremium?: boolean;
