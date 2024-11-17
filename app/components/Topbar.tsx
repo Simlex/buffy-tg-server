@@ -21,12 +21,12 @@ const Topbar: FunctionComponent = (): ReactElement => {
                 userProfileInformation ?
                     <>
                         <div className="flex flex-row items-center gap-3">
-                            <span className="w-12 h-12 rounded-full overflow-hidden relative border-4 border-orange-400">
+                            <span className="min-w-12 min-h-12 rounded-full overflow-hidden relative border-4 border-orange-400 block">
                                 {/* <CustomImage src={images.avatar} alt="User" /> */}
                                 {userProfileInformation.username && <CustomImage src={`https://placehold.co/300x300/8133F1/FFFFFF/png?text=${userProfileInformation.username[0].toUpperCase()}&font=Raleway`} alt="User" />}
                             </span>
-                            <div>
-                                <h3 className="text-xl font-semibold text-white">{userProfileInformation.username}</h3>
+                            <div className="w-full">
+                                <h3 className="text-lg font-semibold text-white truncate max-w-36">{userProfileInformation.username}</h3>
                                 {/* <span className="text-sm text-slate-300">#{userProfileInformation.userId}</span> */}
                                 {/* <TonConnectButton style={{ marginLeft: "auto" }} /> */}
                             </div>
