@@ -21,9 +21,11 @@ const TriviaPage: FunctionComponent = (): ReactElement => {
     const updateUserTriviaPoints = useUpdateUserTriviaPoints();
     const { userProfileInformation, updateUserProfileInformation } = useContext(ApplicationContext) as ApplicationContextData;
 
-    const userHasAnsweredTriviaToday = userProfileInformation?.lastAnsweredTriviaDate?.getDate() == (new Date).getDate()
-        && userProfileInformation?.lastAnsweredTriviaDate?.getMonth() == (new Date).getMonth() &&
-        userProfileInformation?.lastAnsweredTriviaDate?.getFullYear() == (new Date).getFullYear()
+    const lastAnsweredTriviaDate = userProfileInformation?.lastAnsweredTriviaDate ? new Date(userProfileInformation.lastAnsweredTriviaDate) : undefined
+
+    const userHasAnsweredTriviaToday = lastAnsweredTriviaDate?.getDate() == (new Date).getDate()
+        && lastAnsweredTriviaDate?.getMonth() == (new Date).getMonth() &&
+        lastAnsweredTriviaDate?.getFullYear() == (new Date).getFullYear();
 
     // get the date the trivia started
     const startDate = TriviaConfig.startDate;
@@ -33,7 +35,11 @@ const TriviaPage: FunctionComponent = (): ReactElement => {
     // how many days since the trivia started
     const daysSinceStart = Math.floor((new Date().getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24));
 
-    const options = TriviaConfig.questionsAndAnswers[daysSinceStart].options;
+    const triviaEnded = daysSinceStart >= TriviaConfig.questionsAndAnswers.length;
+
+    const question = triviaEnded ? "" : TriviaConfig.questionsAndAnswers[daysSinceStart].question;
+    const options = triviaEnded ? [] : TriviaConfig.questionsAndAnswers[daysSinceStart].options;
+
     const [answer, setAnswer] = useState<string>();
 
     const [isSubmittingAnswer, setIsSubmittingAnswer] = useState<boolean>(false);
@@ -63,6 +69,12 @@ const TriviaPage: FunctionComponent = (): ReactElement => {
                 })
         }
         else {
+            await updateUserTriviaPoints(userProfileInformation?.userId as string, { points: 0 })
+                .then((response) => {
+                    console.log("🚀 ~ .then ~ response:", response);
+                    setResultStatus(ResultStatus.Success);
+                    updateUserProfileInformation(response.data);
+                })
             setIsPostSubmissionModalVisible(true);
             setIsSubmittingAnswer(false);
             setResultStatus(userHasAnsweredTriviaToday ? ResultStatus.Taken : ResultStatus.Failure);
@@ -154,14 +166,15 @@ const TriviaPage: FunctionComponent = (): ReactElement => {
                 </div>
 
                 {
-                    !userHasAnsweredTriviaToday ?
+                    !triviaEnded &&
+                        !userHasAnsweredTriviaToday ?
                         <div className="flex flex-col items-center mb-14">
                             <motion.p
                                 initial={{ opacity: 0 }}
                                 animate={{ opacity: 1 }}
                                 transition={{ delay: 0.25 }}
                                 className="text-white text-base mb-5">
-                                Who was the first person to use Bitcoin?
+                                {question}
                             </motion.p>
                             <div className="flex flex-col w-full gap-2 mb-5">
                                 {
@@ -194,7 +207,7 @@ const TriviaPage: FunctionComponent = (): ReactElement => {
                                 animate={{ opacity: 1 }}
                                 transition={{ delay: 0.25 }}
                                 className="text-white text-base mb-0 text-center">
-                                You have already answered the trivia for today.
+                                {triviaEnded ? "Trivia has ended." : "You have already answered the trivia for today."}
                             </motion.p>
                         </div>
                 }
