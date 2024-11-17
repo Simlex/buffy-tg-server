@@ -134,12 +134,12 @@ export async function updateUserDailyRollStreak(req: NextRequest) {
   // If we get here, it means the user hasn’t claimed their daily roll, so we can proceed with updating their streak
 
   // calculate the next claimable date which is 1am of the next day
-  let nextClaimableDate = new Date();
+  const nextClaimableDate = new Date();
   nextClaimableDate.setDate(nextClaimableDate.getDate() + 1);
   nextClaimableDate.setHours(0, 1, 0, 0); // Sets time to 12:01 AM
 
   // get the date the streak would expire - 11:59pm of the next day
-  let streakExpiryDate = new Date();
+  const streakExpiryDate = new Date();
   streakExpiryDate.setDate(streakExpiryDate.getDate() + 1);
   streakExpiryDate.setHours(23, 59, 0, 0); // Sets time to 11:59 PM
 
