@@ -22,6 +22,7 @@ const NewUserMetrics: FunctionComponent<NewUserMetricsProps> = (
     const [years, setYears] = useState(0);
     const [messages, setMessages] = useState(0);
     const [fetchedMetrics, setFetchedMetrics] = useState(false);
+    const [isUpdatingUserAccountMetrics, setIsUpdatingUserAccountMetrics] = useState(false);
     const infoUploaded = useRef(false);
 
     const viewLimit = (index: number) => {
@@ -33,7 +34,7 @@ const NewUserMetrics: FunctionComponent<NewUserMetricsProps> = (
 
     const handleUpdateUserPoints = async (points: number, metric: 'age' | 'messages') => {
         console.log("🚀 ~ Updating for ~ metric:", metric)
-        
+
         const data: PointsUpdateRequest = {
             points,
             userId: userProfileInformation?.userId as string,
@@ -47,6 +48,26 @@ const NewUserMetrics: FunctionComponent<NewUserMetricsProps> = (
             })
             .catch((error) => {
                 console.log("🚀 ~ .catch ~ error:", error)
+            })
+    };
+
+    const _updateUserPoints = async () => {
+
+        setIsUpdatingUserAccountMetrics(true);
+
+        await handleUpdateUserPoints(years, 'age')
+            .then(async () => {
+                await handleUpdateUserPoints(messages / 5, 'messages')
+                    .then(() => {
+                        infoUploaded.current = true;
+                    })
+            })
+            .catch(() => {
+                infoUploaded.current = false;
+            })
+            .finally(() => {
+                setIsShowingNewUserInfo(false);
+                setIsUpdatingUserAccountMetrics(true);
             })
     };
 
@@ -141,30 +162,21 @@ const NewUserMetrics: FunctionComponent<NewUserMetricsProps> = (
         setFetchedMetrics(true);
         infoUploaded.current = true;
 
-        // if (userProfileInformation?.agePoints || userProfileInformation?.messagesPoints || fetchedMetrics) return
-        // (async () => (
-        //     Promise.all([
-        //         await handleUpdateUserPoints(estimateAccountAge(Number(userId)), 'age'),
-        //         await handleUpdateUserPoints(estimateMessageCount(Number(userId)), 'messages')
-        //     ])
-        // ))()
-
-        // Trigger handleUpdateUserPoints only if needed
-        if (!userProfileInformation?.agePoints && !userProfileInformation?.messagesPoints && !fetchedMetrics) {
-            const updateUserPoints = async () => {
-                await handleUpdateUserPoints(agePoints, 'age')
-                .then(async () => {
-                    await handleUpdateUserPoints(messagesPoints / 5, 'messages')
-                    .then(() => {
-                        infoUploaded.current = true;
-                    })
-                })
-                .catch(() => {
-                    infoUploaded.current = false;
-                })
-            };
-            updateUserPoints();
-        }
+        // if (!userProfileInformation?.agePoints && !userProfileInformation?.messagesPoints && !fetchedMetrics) {
+        //     const updateUserPoints = async () => {
+        //         await handleUpdateUserPoints(agePoints, 'age')
+        //         .then(async () => {
+        //             await handleUpdateUserPoints(messagesPoints / 5, 'messages')
+        //             .then(() => {
+        //                 infoUploaded.current = true;
+        //             })
+        //         })
+        //         .catch(() => {
+        //             infoUploaded.current = false;
+        //         })
+        //     };
+        //     updateUserPoints();
+        // }
     }, [userId, userProfileInformation, infoUploaded]);
 
     useEffect(() => {
@@ -223,8 +235,8 @@ const NewUserMetrics: FunctionComponent<NewUserMetricsProps> = (
 
                             <div className="mt-auto mb-3">
                             </div>
-                            <Button onClick={() => setIsShowingNewUserInfo(false)}>
-                                Continue
+                            <Button onClick={_updateUserPoints}>
+                                {isUpdatingUserAccountMetrics ? "Loading..." : "Continue"}
                             </Button>
                         </>
                 }
