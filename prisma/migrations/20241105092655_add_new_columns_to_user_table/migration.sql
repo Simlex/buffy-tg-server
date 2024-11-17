@@ -1,3 +1,0 @@
--- AlterTable
-ALTER TABLE `Users` ADD COLUMN `agePoints` INTEGER NOT NULL DEFAULT 0,
-    ADD COLUMN `messagesPoints` INTEGER NOT NULL DEFAULT 0;
