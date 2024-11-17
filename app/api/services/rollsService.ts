@@ -102,11 +102,14 @@ export async function updateUserDailyRollStreak(req: NextRequest) {
     };
   }
 
-  // check if the user has not waited for 24 hours
-  const expiryDateIsInFuture =
-    user.dailyFreeDiceRollsExp &&
-    new Date(user.dailyFreeDiceRollsExp) > new Date();
-
+  // Check current date against claimable and expiry times
+  const now = new Date();
+  const withinClaimablePeriod =
+  user.dailyFreeDiceRollsNextClaimableDate &&
+  new Date(user.dailyFreeDiceRollsNextClaimableDate) <= now &&
+  (!user.dailyFreeDiceRollsNextClaimableDateExp ||
+    now < new Date(user.dailyFreeDiceRollsNextClaimableDateExp));
+   
   // check if the user is a premium user
   const isPremiumUser = user.isSubscribedToPremium;
 
@@ -116,11 +119,11 @@ export async function updateUserDailyRollStreak(req: NextRequest) {
     user.premiumSubscriptionExp &&
     new Date(user.premiumSubscriptionExp) > new Date();
 
-  // assign a variable that specifies that a user is a valid premium user
+  // A valid premium user is one who is both subscribed to premium and within the premium subscription period
   const isValidPremiumUser = isPremiumUser && isWithinPremiumSubscriptionPeriod;
 
-  // check if the user has already claimed the daily free dice roll, and they have not waited for 24 hours
-  if (user.dailyFreeDiceRollsClaimed && expiryDateIsInFuture) {
+  // check if the user has already claimed the daily free dice roll, and still within the claimable period
+  if (user.dailyFreeDiceRollsClaimed && !withinClaimablePeriod) {
     return {
       error: ApplicationError.DailyFreeDiceRollAlreadyClaimed.Text,
       errorCode: ApplicationError.DailyFreeDiceRollAlreadyClaimed.Code,
@@ -128,10 +131,18 @@ export async function updateUserDailyRollStreak(req: NextRequest) {
     };
   }
 
-  // if we get here, it means the user has not claimed his or her daily roll
+  // If we get here, it means the user hasn’t claimed their daily roll, so we can proceed with updating their streak
 
-  // get the date the streak would expire - 24 hours from the time the user claimed the roll
-  const streakExpiryDate = new Date().setHours(new Date().getHours() + 24);
+  // calculate the next claimable date which is 1am of the next day
+  let nextClaimableDate = new Date();
+  nextClaimableDate.setDate(nextClaimableDate.getDate() + 1);
+  nextClaimableDate.setHours(0, 1, 0, 0); // Sets time to 12:01 AM
+
+  // get the date the streak would expire - 11:59pm of the next day
+  let streakExpiryDate = new Date();
+  streakExpiryDate.setDate(streakExpiryDate.getDate() + 1);
+  streakExpiryDate.setHours(23, 59, 0, 0); // Sets time to 11:59 PM
+
   console.log(
     "🚀 ~ updateUserDailyRollStreak ~ streakExpiryDate:",
     streakExpiryDate
@@ -139,11 +150,21 @@ export async function updateUserDailyRollStreak(req: NextRequest) {
 
   // check if streak has expired
   const streakHasExpired =
-    user.dailyFreeDiceRollsExp &&
-    new Date(user.dailyFreeDiceRollsExp) < new Date();
+    user.dailyFreeDiceRollsNextClaimableDateExp &&
+    new Date(user.dailyFreeDiceRollsNextClaimableDateExp) < new Date();
 
+  // Define rolls for premium and normal users
   const premiumUserRolls = 4;
   const normalUserRolls = 1;
+
+  // Calculate the dice rolls to be awarded based on whether the streak has expired and if the user is premium
+  const rollsToAward = streakHasExpired
+    ? isValidPremiumUser
+      ? premiumUserRolls
+      : normalUserRolls
+    : isValidPremiumUser
+    ? premiumUserRolls + user.dailyFreeDiceRollsStreak
+    : normalUserRolls + user.dailyFreeDiceRollsStreak;
 
   // Update the user's dice roll points
   const updatedUser = await prisma.users.update({
@@ -151,23 +172,10 @@ export async function updateUserDailyRollStreak(req: NextRequest) {
       userId: userId,
     },
     data: {
-      dailyFreeDiceRollsStreak: streakHasExpired
-        ? 1
-        : {
-            increment: 1,
-          },
-      availableDiceRolls: streakHasExpired
-        ? {
-            increment: isValidPremiumUser ? premiumUserRolls : normalUserRolls,
-          }
-        : {
-            increment: isValidPremiumUser
-              ? premiumUserRolls + user.dailyFreeDiceRollsStreak
-              : normalUserRolls + user.dailyFreeDiceRollsStreak,
-          },
-      dailyFreeDiceRollsExp: {
-        set: new Date(streakExpiryDate),
-      },
+      dailyFreeDiceRollsStreak: streakHasExpired ? 1 : { increment: 1 },
+      availableDiceRolls: { increment: rollsToAward },
+      dailyFreeDiceRollsNextClaimableDate: { set: nextClaimableDate },
+      dailyFreeDiceRollsNextClaimableDateExp: { set: streakExpiryDate },
       dailyFreeDiceRollsClaimed: true,
     },
   });
