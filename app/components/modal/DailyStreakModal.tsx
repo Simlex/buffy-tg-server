@@ -17,9 +17,8 @@ export default function DailyStreakModal({ visibility, setVisibility }: Props) {
 
     // check if streak has expired
     const streakHasExpired =
-        userProfileInformation?.dailyFreeDiceRollsExp &&
-        new Date(userProfileInformation.dailyFreeDiceRollsExp) < new Date();
-    console.log("🚀 ~ DailyStreakModal ~ streakHasExpired:", streakHasExpired)
+        userProfileInformation?.dailyFreeDiceRollsNextClaimableDateExp &&
+        new Date(userProfileInformation.dailyFreeDiceRollsNextClaimableDateExp) < new Date();
 
     // check if the user is a premium user
     const isPremiumUser = userProfileInformation?.isSubscribedToPremium;
