@@ -56,7 +56,7 @@ export async function updateUserTriviaPoints(req: NextRequest) {
         userId: userId,
       },
       data: {
-        lastAnsweredTriviaDate: todayDate,
+        lastAnsweredTriviaDate: new Date(todayDate.setHours(0, 0, 0, 0)),
       },
     });
 
