@@ -15,6 +15,8 @@ export default function WalletPage() {
     const { userProfileInformation, updateUserProfileInformation } = useContext(ApplicationContext) as ApplicationContextData;
     const tonConnectUI = useContext(TonConnectUIContext);
 
+    const walletAddress = process.env.WALLET_ADDRESS!;
+
     const userFriendlyAddress = useTonAddress();
     // const rawAddress = useTonAddress(false);
     // const wallet = useTonWallet();
@@ -23,7 +25,7 @@ export default function WalletPage() {
 
     const [isModalVisible, setIsModalVisible] = React.useState(false);
 
-    const destination = userFriendlyAddress ? Address.parse(userFriendlyAddress).toRawString() : '';
+    const destination = Address.parse(walletAddress).toRawString();
     const [depositAmount, setDepositAmount] = React.useState<number>();
     const [isDepositing, setIsDepositing] = React.useState(false);
 
