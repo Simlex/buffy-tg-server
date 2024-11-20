@@ -17,7 +17,7 @@ export default function WalletPage() {
 
     const walletAddress = process.env.WALLET_ADDRESS!;
 
-    const userFriendlyAddress = useTonAddress();
+    // const userFriendlyAddress = useTonAddress();
     // const rawAddress = useTonAddress(false);
     // const wallet = useTonWallet();
     // const { state, open, close } = useTonConnectModal(); // for opening and closing the modal
