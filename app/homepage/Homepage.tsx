@@ -7,6 +7,7 @@ import { ApplicationContext, ApplicationContextData } from "../context/Applicati
 import { Icons } from "../components/ui/icons";
 import DailyStreakModal from "../components/modal/DailyStreakModal";
 import ReactConfetti from 'react-confetti';
+import { TonConnectButton } from "@tonconnect/ui-react";
 
 
 const Homepage: FunctionComponent = (): ReactElement => {
@@ -28,6 +29,8 @@ const Homepage: FunctionComponent = (): ReactElement => {
             />
             <main className="flex min-h-screen flex-col items-center py-20 pb-32 select-none relative">
                 <div className="flex flex-col items-center mb-10 z-10">
+                    <TonConnectButton style={{ marginBottom: "32px" }} />
+
                     {/* <div>
                     {user.first_name && <h1 className="text-white text-3xl font-bold">{`Hello, ${user.first_name}`}</h1>}
                     {user.id && <p className="text-white/50">{`User ID: ${user.id}`}</p>}
