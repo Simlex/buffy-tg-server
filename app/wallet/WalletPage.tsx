@@ -44,7 +44,8 @@ export default function WalletPage() {
         messages: [
             {
                 // address: "UQA4tJOARNgCF5A029rQISCA4ts3iqchbgyjjkbJdMIhxLzB",
-                address: Address.parse("UQD4XoY3xrY_JotTrYAhMMnKP_CTt46eZvTzu7QonR-QsYF6").toRawString(),
+                address: Address.parse("UQA4tJOARNgCF5A029rQISCA4ts3iqchbgyjjkbJdMIhxLzB").toRawString(),
+                
                 amount: toNano(depositAmount || 0).toString(),
                 payload: body.toBoc().toString('base64'), // Optional: Additional data
             },
