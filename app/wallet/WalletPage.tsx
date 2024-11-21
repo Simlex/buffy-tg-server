@@ -3,7 +3,7 @@ import React, { useContext, useEffect } from 'react'
 import { RollsPurchasesConfig } from '../constants/purchases'
 import ConnectWalletModal from '../components/modal/ConnectWalletModal'
 import { SendTransactionRequest, TonConnectUIContext, useTonConnectModal } from '@tonconnect/ui-react'
-import { beginCell, toNano } from '@ton/ton';
+import { Address, beginCell, toNano } from '@ton/ton';
 import { motion } from 'framer-motion'
 import { useUpdateUserRollsPoints } from '../api/apiClient'
 import { ApplicationContext, ApplicationContextData } from '../context/ApplicationContext'
@@ -44,7 +44,7 @@ export default function WalletPage() {
         messages: [
             {
                 // address: "UQA4tJOARNgCF5A029rQISCA4ts3iqchbgyjjkbJdMIhxLzB",
-                address: "UQD4XoY3xrY_JotTrYAhMMnKP_CTt46eZvTzu7QonR-QsYF6",
+                address: Address.parse("UQD4XoY3xrY_JotTrYAhMMnKP_CTt46eZvTzu7QonR-QsYF6").toRawString(),
                 amount: toNano(depositAmount || 0).toString(),
                 payload: body.toBoc().toString('base64'), // Optional: Additional data
             },
