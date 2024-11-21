@@ -1,10 +1,5 @@
 {
     "name": "Buffy Durov",
-    "description": "Buffy Durov is a Telegram bot that helps you earn TON by completing simple tasks.",
     "url": "https://buffy-tg-server.vercel.app",
-    "icons": [
-        "https://buffy-tg-server.vercel.app/images/coin.png"
-    ],
-    "iconUrl": "https://buffy-tg-server.vercel.app/images/coin.png",
-    "bridgeUrl": "https://ton-connect.github.io/tonconnect-bridge/v1.0/bridge.html"
+    "iconUrl": "https://buffy-tg-server.vercel.app/images/coin.png"
 }
