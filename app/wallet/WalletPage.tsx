@@ -43,7 +43,8 @@ export default function WalletPage() {
     const paymentRequest: SendTransactionRequest = {
         messages: [
             {
-                address: "UQA4tJOARNgCF5A029rQISCA4ts3iqchbgyjjkbJdMIhxLzB",
+                // address: "UQA4tJOARNgCF5A029rQISCA4ts3iqchbgyjjkbJdMIhxLzB",
+                address: "UQD4XoY3xrY_JotTrYAhMMnKP_CTt46eZvTzu7QonR-QsYF6",
                 amount: toNano(depositAmount || 0).toString(),
                 payload: body.toBoc().toString('base64'), // Optional: Additional data
             },
