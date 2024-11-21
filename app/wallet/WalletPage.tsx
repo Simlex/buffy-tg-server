@@ -2,7 +2,7 @@
 import React, { useContext, useEffect } from 'react'
 import { RollsPurchasesConfig } from '../constants/purchases'
 import ConnectWalletModal from '../components/modal/ConnectWalletModal'
-import { SendTransactionRequest, TonConnectUIContext, useTonConnectModal } from '@tonconnect/ui-react'
+import { SendTransactionRequest, TonConnectUIContext, useTonAddress, useTonConnectModal } from '@tonconnect/ui-react'
 import { Address, beginCell, toNano } from '@ton/ton';
 import { motion } from 'framer-motion'
 import { useUpdateUserRollsPoints } from '../api/apiClient'
@@ -17,9 +17,10 @@ export default function WalletPage() {
 
     // const walletAddress = process.env.NEXT_PUBLIC_WALLET_ADDRESS!;
     // const walletAddress = "UQA4tJOARNgCF5A029rQISCA4ts3iqchbgyjjkbJdMIhxLzB";
-    const walletAddress = "UQD4XoY3xrY_JotTrYAhMMnKP_CTt46eZvTzu7QonR-QsYF6";
+    // const walletAddress = "UQD4XoY3xrY_JotTrYAhMMnKP_CTt46eZvTzu7QonR-QsYF6";
 
-    // const userFriendlyAddress = useTonAddress();
+    const userFriendlyAddress = useTonAddress();
+    console.log("🚀 ~ WalletPage ~ userFriendlyAddress:", userFriendlyAddress)
     // const rawAddress = useTonAddress(false);
     // const wallet = useTonWallet();
     // const { state, open, close } = useTonConnectModal(); // for opening and closing the modal
@@ -27,7 +28,8 @@ export default function WalletPage() {
 
     const [isModalVisible, setIsModalVisible] = React.useState(false);
 
-    const destination = Address.parse(walletAddress).toRawString();
+    const destination = Address.parse(userFriendlyAddress).toRawString();
+    console.log("🚀 ~ WalletPage ~ destination:", destination)
     const [depositAmount, setDepositAmount] = React.useState<number>();
     const [isDepositing, setIsDepositing] = React.useState(false);
 
