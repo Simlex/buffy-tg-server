@@ -16,7 +16,8 @@ export default function WalletPage() {
     const tonConnectUI = useContext(TonConnectUIContext);
 
     // const walletAddress = process.env.NEXT_PUBLIC_WALLET_ADDRESS!;
-    const walletAddress = "UQA4tJOARNgCF5A029rQISCA4ts3iqchbgyjjkbJdMIhxLzB";
+    // const walletAddress = "UQA4tJOARNgCF5A029rQISCA4ts3iqchbgyjjkbJdMIhxLzB";
+    const walletAddress = "UQD4XoY3xrY_JotTrYAhMMnKP_CTt46eZvTzu7QonR-QsYF6";
 
     // const userFriendlyAddress = useTonAddress();
     // const rawAddress = useTonAddress(false);
