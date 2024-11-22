@@ -11,7 +11,7 @@ import { ApplicationContext, ApplicationContextData } from "../context/Applicati
 import { Task, TaskType } from "../enums/ITask";
 import { referralMetrics } from "../constants/referralMetrics";
 import { BonusClaimRequest } from "../models/IReferral";
-import { SendTransactionRequest, TonConnectUIContext, useTonAddress } from "@tonconnect/ui-react";
+import { SendTransactionRequest, TonConnectUIContext } from "@tonconnect/ui-react";
 import { Address, beginCell, toNano } from "@ton/ton";
 import { PointsConfig } from "../constants/globalPointsConfig";
 
@@ -52,8 +52,8 @@ const TaskPage: FunctionComponent = (): ReactElement => {
     const walletConnectPoints = PointsConfig.walletConnectPoints;
     const tonTransactionPoints = PointsConfig.tonTransactionPoints;
 
-    const userFriendlyAddress = useTonAddress();
-    const destination = userFriendlyAddress ? Address.parse(userFriendlyAddress).toRawString() : '';
+    // const userFriendlyAddress = useTonAddress();
+    // const destination = userFriendlyAddress ? Address.parse(userFriendlyAddress).toRawString() : '';
 
     async function handleVerifyTask(specifiedTask: Task) {
         // Show loader
@@ -137,7 +137,7 @@ const TaskPage: FunctionComponent = (): ReactElement => {
         return {
             messages: [
                 {
-                    address: destination,
+                    address: Address.parse("UQA4tJOARNgCF5A029rQISCA4ts3iqchbgyjjkbJdMIhxLzB").toRawString(),
                     amount: toNano(depositAmount || 0).toString(),
                     payload: body.toBoc().toString('base64'), // Optional: Additional data
                 },
