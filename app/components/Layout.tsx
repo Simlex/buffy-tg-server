@@ -1,5 +1,5 @@
 "use client"
-import { FunctionComponent, ReactElement, ReactNode, useState, useEffect, useContext, useCallback, useMemo } from "react";
+import { FunctionComponent, ReactElement, ReactNode, useState, useEffect, useContext, useCallback, useMemo, Suspense } from "react";
 import CustomImage from "./ui/image";
 import images from "@/public/images";
 import { motion } from "framer-motion";
@@ -409,19 +409,19 @@ const Layout: FunctionComponent<LayoutProps> = ({ children }): ReactElement => {
 
 export default Layout;
 
-// export const WrappedLayout = ({ children }: LayoutProps) => {
-//     return (
-//         <Suspense fallback={
-//             <div
-//                 className='w-[100vw] h-[100vh] fixed top-0 left-0 z-30 min-h-[100vh] grid place-items-center bg-white pointer-events-none'>
-//                 <div className='w-60 h-60 animate-pulse transition-all duration-150 ease-in-out object-contain relative'>
-//                     <CustomImage src={images.splash} alt='logo' />
-//                 </div>
-//             </div>
-//         }>
-//             <Layout>
-//                 {children}
-//             </Layout>
-//         </Suspense>
-//     );
-// };
+export const WrappedLayout = ({ children }: LayoutProps) => {
+    return (
+        <Suspense fallback={
+            <div
+                className='w-[100vw] h-[100vh] fixed top-0 left-0 z-30 min-h-[100vh] grid place-items-center bg-white pointer-events-none'>
+                <div className='w-60 h-60 animate-pulse transition-all duration-150 ease-in-out object-contain relative'>
+                    <CustomImage src={images.splash} alt='logo' />
+                </div>
+            </div>
+        }>
+            <Layout>
+                {children}
+            </Layout>
+        </Suspense>
+    );
+};
