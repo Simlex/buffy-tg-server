@@ -6,7 +6,7 @@ import { motion } from "framer-motion";
 import Topbar from "./Topbar";
 import BottomBar from "./BottomBar";
 import { ApplicationContext, ApplicationContextData } from "../context/ApplicationContext";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { usePathname, useSearchParams } from "next/navigation";
 import { splashScreenVariant } from "../animations/splashScreen";
 import { useCreateReferral, useFetchUserBoostRefillEndTime, useUpdateBoostRefillEndTime, useUpdateUserPoints } from "../api/apiClient";
 import { ReferralCreationRequest } from "../models/IReferral";
