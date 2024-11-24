@@ -1,6 +1,5 @@
 import { Dispatch, FunctionComponent, MutableRefObject, ReactNode, SetStateAction, createContext, useRef, useState } from "react";
 import { UserProfileInformation } from "../models/IUser";
-import { StorageKeys } from "../constants/storageKeys";
 import { fetchUserFromDb } from "../api/services/fetchUserFromDb";
 import { Game } from "../enums/Game";
 import { useUpdateUsersRollsStreakPoints } from "../api/apiClient";
@@ -11,7 +10,7 @@ export interface ApplicationContextData {
     isFetchingUserProfile: boolean;
     userProfileInformation: UserProfileInformation | null;
     updateUserProfileInformation: (user: UserProfileInformation) => void;
-    fetchUserProfileInformation: () => void;
+    fetchUserProfileInformation: (userId: string) => Promise<void>;
     displayToast: (message: string, type: "success" | "error" | "info" | "warning") => void;
     isUserLoginPromptVisible: boolean;
     toggleUserLoginPrompt: () => void;
@@ -69,24 +68,33 @@ const AppProvider: FunctionComponent<AppProviderProps> = ({ children }) => {
     /**
      * Function to fetch user's profile information
      */
-    const handleFetchUserInformation = async () => {
+    const handleFetchUserInformation = async (userId: string) => {
 
         // Set loader to true
         setIsFetchingUserProfileInformation(true);
 
+        const user = await fetchUserFromDb(userId);
+        console.log("🚀 ~ handleFetchUserInformation ~ user:", user)
+
+        // Set the user information
+        setUserProfileInformation(user);
+
+        // Set tap points
+        setTaps(user.tapPoints || 0);
+
         // Check session storage for user information
-        const _userInfo = JSON.parse(sessionStorage.getItem(StorageKeys.UserInformation) as string);
+        // const _userInfo = JSON.parse(sessionStorage.getItem(StorageKeys.UserInformation) as string);
 
-        if (_userInfo !== null || _userInfo !== undefined) {
+        // if (_userInfo !== null || _userInfo !== undefined) {
 
-            const user = await fetchUserFromDb(_userInfo.userId);
+        //     const user = await fetchUserFromDb(_userInfo.userId);
 
-            // Set the user information
-            setUserProfileInformation(user);
+        //     // Set the user information
+        //     setUserProfileInformation(user);
 
-            // Set tap points
-            setTaps(user.tapPoints || 0);
-        };
+        //     // Set tap points
+        //     setTaps(user.tapPoints || 0);
+        // };
     };
 
     const handleUpdateUserRollsStreak = async () => {
@@ -110,7 +118,7 @@ const AppProvider: FunctionComponent<AppProviderProps> = ({ children }) => {
         isFetchingUserProfile: isFetchingUserProfileInformation,
         userProfileInformation,
         updateUserProfileInformation: (user: UserProfileInformation) => setUserProfileInformation(user),
-        fetchUserProfileInformation: handleFetchUserInformation,
+        fetchUserProfileInformation: (userId: string) => handleFetchUserInformation(userId),
         displayToast,
         isUserLoginPromptVisible: showUserLoginPrompt,
         toggleUserLoginPrompt: () => setShowUserLoginPrompt(!showUserLoginPrompt),

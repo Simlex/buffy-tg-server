@@ -68,7 +68,7 @@ const BoostPage: FunctionComponent = (): ReactElement => {
                     }
                 };
 
-                fetchUserProfileInformation();
+                fetchUserProfileInformation(userProfileInformation?.userId as string);
 
                 setIsRequestingBoosts(false);
             })
