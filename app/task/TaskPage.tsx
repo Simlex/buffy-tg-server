@@ -69,7 +69,7 @@ const TaskPage: FunctionComponent = (): ReactElement => {
         await updateUserPoints(data)
             .then((response) => {
                 console.log("🚀 ~ .then ~ response:", response)
-                fetchUserProfileInformation();
+                fetchUserProfileInformation(userProfileInformation?.userId as string);
 
                 switch (specifiedTask) {
                     case Task.TELEGRAM:
@@ -116,7 +116,7 @@ const TaskPage: FunctionComponent = (): ReactElement => {
 
         await claimReferralBonus(data)
             .then(() => {
-                fetchUserProfileInformation();
+                fetchUserProfileInformation(userProfileInformation?.userId as string);
                 setIsBonusClaimedModalVisible(true);
             })
             .catch((error) => {

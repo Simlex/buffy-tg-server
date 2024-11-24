@@ -37,7 +37,7 @@ const Homepage: FunctionComponent = (): ReactElement => {
         await updateUserPoints(data)
             .then(() => {
                 // console.log(response);
-                fetchUserProfileInformation();
+                fetchUserProfileInformation(userProfileInformation?.userId as string);
             })
             .catch((error) => {
                 console.error(error);
