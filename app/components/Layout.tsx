@@ -7,10 +7,8 @@ import Topbar from "./Topbar";
 import BottomBar from "./BottomBar";
 import { ApplicationContext, ApplicationContextData } from "../context/ApplicationContext";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { UserProfileInformation } from "../models/IUser";
-import { StorageKeys } from "../constants/storageKeys";
 import { splashScreenVariant } from "../animations/splashScreen";
-import { useCreateReferral, useCreateUser, useFetchUserBoostRefillEndTime, useUpdateBoostRefillEndTime, useUpdateUserPoints } from "../api/apiClient";
+import { useCreateReferral, useFetchUserBoostRefillEndTime, useUpdateBoostRefillEndTime, useUpdateUserPoints } from "../api/apiClient";
 import { ReferralCreationRequest } from "../models/IReferral";
 import { debounce } from "lodash"
 import { Toaster } from "sonner";
@@ -25,7 +23,7 @@ interface LayoutProps {
 
 const Layout: FunctionComponent<LayoutProps> = ({ children }): ReactElement => {
 
-    const createUser = useCreateUser();
+    // const createUser = useCreateUser();
     const createReferral = useCreateReferral();
     const fetchUserBoostRefillEndTime = useFetchUserBoostRefillEndTime();
     const updateBoostRefillEndTime = useUpdateBoostRefillEndTime();
@@ -43,7 +41,7 @@ const Layout: FunctionComponent<LayoutProps> = ({ children }): ReactElement => {
     const [isReferralCreated, setIsReferralCreated] = useState(false);
     const [isBoostTimeRetrieved, setIsBoostTimeRetrieved] = useState(false);
 
-    let isCreatingUser = false;
+    // let isCreatingUser = false;
 
     const iswindow = typeof window !== 'undefined' ? true : false;
 
@@ -52,20 +50,20 @@ const Layout: FunctionComponent<LayoutProps> = ({ children }): ReactElement => {
     const userName = params.get('userName');
     const referralId = params.get('referralId');
 
-    async function handleCreateUser(userInfo: UserProfileInformation) {
-        if (isCreatingUser) return;
+    // async function handleCreateUser(userInfo: UserProfileInformation) {
+    //     if (isCreatingUser) return;
 
-        isCreatingUser = true;
+    //     isCreatingUser = true;
 
-        await createUser(userInfo)
-            .then(() => {
-                fetchUserProfileInformation();
-                // console.log(response);
-            })
-            .catch((error) => {
-                console.error(error);
-            });
-    };
+    //     await createUser(userInfo)
+    //         .then(() => {
+    //             fetchUserProfileInformation();
+    //             // console.log(response);
+    //         })
+    //         .catch((error) => {
+    //             console.error(error);
+    //         });
+    // };
 
     async function handleCreateReferral(userId: string, referrerId: string) {
 
@@ -123,54 +121,62 @@ const Layout: FunctionComponent<LayoutProps> = ({ children }): ReactElement => {
         return () => clearInterval(interval);
     }, [nextUpdateTimestamp]);
 
-    function generate8RandomCharacters() {
-        // generate 8 random characters involving letters and numbers
-        const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-        let result = '';
-        for (let i = 0; i < 8; i++) {
-            const randomIndex = Math.floor(Math.random() * characters.length);
-            result += characters[randomIndex];
-        }
-        return result;
-    };
-
     // hook to create user profile
-    useMemo(() => {
-        if (!iswindow) return;
+    // useMemo(() => {
+    //     if (!iswindow) return;
+
+    //     if (userId) {
+
+    //         fetchUserProfileInformation(userId);
+
+    //         // construct user information
+    //         // const userInfo: UserProfileInformation = {
+    //         //     id: userId,
+    //         //     userId: userId,
+    //         //     dailyFreeBoosters: 4,
+    //         //     telegramTaskDone: false,
+    //         //     twitterTaskDone: false,
+    //         //     isWalletConnected: false,
+    //         //     hadMadeFirstTonTransaction: false,
+    //         //     level: 1,
+    //         //     tapPoints: 0,
+    //         //     diceRollsPoints: 0,
+    //         //     totalPoints: 0,
+    //         //     triviaPoints: 0,
+    //         //     username: userName == 'None' || !userName ? generate8RandomCharacters() : userName
+    //         // };
+
+    //         // handleCreateUser(userInfo);
+
+    //         // save to session storage
+    //         // sessionStorage.setItem(StorageKeys.UserInformation, JSON.stringify(userInfo));
+
+    //         router.refresh();
+    //     }
+
+    //     // const userProfileInformation = sessionStorage.getItem(StorageKeys.UserInformation);
+
+    //     // if (userProfileInformation) {
+    //     //     fetchUserProfileInformation(userId);
+    //     // }
+    // }, [userId, userName, iswindow]);
+
+    useEffect(() => {
+        // if (!iswindow) return;
+        console.log("🚀 ~ useEffect ~ iswindow:", iswindow)
 
         if (userId) {
+            console.log("🚀 ~ useEffect ~ userId:", userId);
 
-            // construct user information
-            const userInfo: UserProfileInformation = {
-                id: userId,
-                userId: userId,
-                dailyFreeBoosters: 4,
-                telegramTaskDone: false,
-                twitterTaskDone: false,
-                isWalletConnected: false,
-                hadMadeFirstTonTransaction: false,
-                level: 1,
-                tapPoints: 0,
-                diceRollsPoints: 0,
-                totalPoints: 0,
-                triviaPoints: 0,
-                username: userName == 'None' || !userName ? generate8RandomCharacters() : userName
-            };
-
-            handleCreateUser(userInfo);
-
-            // save to session storage
-            sessionStorage.setItem(StorageKeys.UserInformation, JSON.stringify(userInfo));
-
-            router.refresh();
+            // (async () => {
+            //     console.log("Fetching user profile information");
+            //     await fetchUserProfileInformation(userId);
+            // })();
+            // router.refresh();
+            
+            fetchUserProfileInformation(userId)
         }
-
-        const userProfileInformation = sessionStorage.getItem(StorageKeys.UserInformation);
-
-        if (userProfileInformation) {
-            fetchUserProfileInformation();
-        }
-    }, [userId, userName, iswindow]);
+    }, [userId])
 
     // hook to create referral if referralId & user info is available, and referral is not created yet
     useMemo(() => {
@@ -360,10 +366,7 @@ const Layout: FunctionComponent<LayoutProps> = ({ children }): ReactElement => {
 
     return (
         <>
-            <motion.div
-                initial="opened"
-                animate={loaderIsVisible ? "opened" : "closed"}
-            >
+            <div>
                 <Toaster
                     position='bottom-center'
                     richColors
@@ -388,14 +391,15 @@ const Layout: FunctionComponent<LayoutProps> = ({ children }): ReactElement => {
                         </main>
                 )}
 
-                <motion.div
-                    variants={splashScreenVariant}
-                    className='w-[100vw] h-[100vh] fixed top-0 left-0 z-30 min-h-[100vh] grid place-items-center bg-white pointer-events-none'>
-                    <div className='w-60 h-60 animate-pulse transition-all duration-150 ease-in-out object-contain relative'>
-                        <CustomImage src={images.splash} alt='logo' />
-                    </div>
-                </motion.div>
-            </motion.div>
+                {loaderIsVisible &&
+                    <motion.div
+                        variants={splashScreenVariant}
+                        className='w-[100vw] h-[100vh] fixed top-0 left-0 z-30 min-h-[100vh] grid place-items-center bg-white pointer-events-none'>
+                        <div className='w-60 h-60 animate-pulse transition-all duration-150 ease-in-out object-contain relative'>
+                            <CustomImage src={images.splash} alt='logo' />
+                        </div>
+                    </motion.div>}
+            </div>
             <Script
                 src="https://telegram.org/js/telegram-web-app.js"
                 strategy="beforeInteractive" />
@@ -405,12 +409,19 @@ const Layout: FunctionComponent<LayoutProps> = ({ children }): ReactElement => {
 
 export default Layout;
 
-export const WrappedLayout = ({ children }: LayoutProps) => {
-    return (
-        <Suspense fallback={<div>Loading...</div>}>
-            <Layout>
-                {children}
-            </Layout>
-        </Suspense>
-    );
-};
+// export const WrappedLayout = ({ children }: LayoutProps) => {
+//     return (
+//         <Suspense fallback={
+//             <div
+//                 className='w-[100vw] h-[100vh] fixed top-0 left-0 z-30 min-h-[100vh] grid place-items-center bg-white pointer-events-none'>
+//                 <div className='w-60 h-60 animate-pulse transition-all duration-150 ease-in-out object-contain relative'>
+//                     <CustomImage src={images.splash} alt='logo' />
+//                 </div>
+//             </div>
+//         }>
+//             <Layout>
+//                 {children}
+//             </Layout>
+//         </Suspense>
+//     );
+// };
