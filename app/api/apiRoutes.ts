@@ -5,9 +5,9 @@ export class ApiRoutes {
   /**
    * The dev base url for the application
    */
-  static BASE_URL_DEV: string = "http://localhost:4055/";
+//   static BASE_URL_DEV: string = "http://localhost:4055/";
   //   static BASE_URL_DEV: string = "http://192.168.1.226:4040/";
-  //   static BASE_URL_DEV: string = "https://2c10-41-184-8-14.ngrok-free.app/";
+    static BASE_URL_DEV: string = "https://4dc8-102-88-36-243.ngrok-free.app/";
 
   /**
    * The test base url for the application
