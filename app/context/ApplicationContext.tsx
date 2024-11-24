@@ -1,6 +1,5 @@
 import { Dispatch, FunctionComponent, MutableRefObject, ReactNode, SetStateAction, createContext, useRef, useState } from "react";
 import { UserProfileInformation } from "../models/IUser";
-import { StorageKeys } from "../constants/storageKeys";
 import { fetchUserFromDb } from "../api/services/fetchUserFromDb";
 import { Game } from "../enums/Game";
 import { useUpdateUsersRollsStreakPoints } from "../api/apiClient";

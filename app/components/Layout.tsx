@@ -1,5 +1,5 @@
 "use client"
-import { FunctionComponent, ReactElement, ReactNode, useState, useEffect, useContext, useCallback, useMemo, Suspense } from "react";
+import { FunctionComponent, ReactElement, ReactNode, useState, useEffect, useContext, useCallback, useMemo } from "react";
 import CustomImage from "./ui/image";
 import images from "@/public/images";
 import { motion } from "framer-motion";
@@ -35,7 +35,7 @@ const Layout: FunctionComponent<LayoutProps> = ({ children }): ReactElement => {
         nextUpdateTimestamp, updateTimeLeft: setTimeLeft, updateTimesClickedPerSession,
     } = useContext(ApplicationContext) as ApplicationContextData;
 
-    const router = useRouter();
+    // const router = useRouter();
     const pathname = usePathname();
     const [loaderIsVisible, setLoaderIsVisible] = useState(true);
     const [isReferralCreated, setIsReferralCreated] = useState(false);
@@ -47,7 +47,7 @@ const Layout: FunctionComponent<LayoutProps> = ({ children }): ReactElement => {
 
     const params = useSearchParams();
     const userId = params.get('id');
-    const userName = params.get('userName');
+    // const userName = params.get('userName');
     const referralId = params.get('referralId');
 
     // async function handleCreateUser(userInfo: UserProfileInformation) {
