@@ -1,5 +1,8 @@
 {
     "name": "Buffy Durov",
     "url": "https://buffy-tg-server.vercel.app",
-    "iconUrl": "https://buffy-tg-server.vercel.app/images/coin.png"
+    "iconUrl": "https://buffy-tg-server.vercel.app/images/coin.png",
+    "permissions": [
+      "ton_account" 
+    ]
 }
