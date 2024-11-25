@@ -3,6 +3,7 @@ import ModalWrapper from './ModalWrapper'
 import { Icons } from '../ui/icons'
 import { motion } from "framer-motion"
 import { ApplicationContext, ApplicationContextData } from '@/app/context/ApplicationContext'
+import { RollsStreakConfig } from '@/app/constants/rollsStreakConfig'
 
 interface Props {
     visibility: boolean
@@ -31,16 +32,15 @@ export default function DailyStreakModal({ visibility, setVisibility }: Props) {
 
     // assign a variable that specifies that a user is a valid premium user
     const isValidPremiumUser = isPremiumUser && isWithinPremiumSubscriptionPeriod;
-    console.log("🚀 ~ DailyStreakModal ~ isValidPremiumUser:", isValidPremiumUser)
 
-    const premiumUserRolls = 4;
-    const normalUserRolls = 1;
+    const premiumUserRolls = RollsStreakConfig.Premium;
+    const normalUserRolls = RollsStreakConfig.Normal;
 
     const userDailyRollsStreak = userProfileInformation?.dailyFreeDiceRollsStreak ? userProfileInformation.dailyFreeDiceRollsStreak - 1 : 0;
 
-    const addedRolls = streakHasExpired ?
-        isValidPremiumUser ? premiumUserRolls : normalUserRolls
-        : isValidPremiumUser ? premiumUserRolls + userDailyRollsStreak : normalUserRolls + userDailyRollsStreak;
+    // const addedRolls = streakHasExpired ?
+    //     isValidPremiumUser ? premiumUserRolls : normalUserRolls
+    //     : isValidPremiumUser ? premiumUserRolls + userDailyRollsStreak : normalUserRolls + userDailyRollsStreak;
 
     return (
         <ModalWrapper visibility={visibility} setVisibility={setVisibility}>
@@ -59,8 +59,9 @@ export default function DailyStreakModal({ visibility, setVisibility }: Props) {
                     animate={{ scale: 1, opacity: 1, filter: "blur(0px)" }}
                     transition={{ delay: 0.25, duration: 0.35 }}
                     className='text-4xl font-bold text-center mb-5'>
-                    +{addedRolls} {userDailyRollsStreak > 1 ? 'Rolls' : 'Roll'}
+                    +{normalUserRolls + userDailyRollsStreak} {userDailyRollsStreak > 1 ? 'Rolls' : 'Roll'}
                 </motion.h1>
+                {isValidPremiumUser ? <span className='text-center bg-[#24A1DE] p-3 rounded-xl text-white'>+{RollsStreakConfig.Premium} points from premium subscription</span> : <></>}
             </div>
         </ModalWrapper>
     )
