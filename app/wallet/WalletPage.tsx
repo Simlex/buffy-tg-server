@@ -8,6 +8,7 @@ import { useUpdateUserRollsPoints } from '../api/apiClient'
 import { ApplicationContext, ApplicationContextData } from '../context/ApplicationContext'
 import { PointsUpdateRequest } from '../models/IPoints'
 import { ButtonLoader } from '../components/Loader/ComponentLoader'
+import { RollsStreakConfig } from '../constants/rollsStreakConfig';
 
 export default function WalletPage() {
     const updateUserRollsPoints = useUpdateUserRollsPoints();
@@ -167,7 +168,7 @@ export default function WalletPage() {
                     <span className='text-white mb-2'>Premium {isSubscribedToPremium ? "(You are currently subscribed to this)" : ""}</span>
                     <div className={`bg-gradient-to-br from-[#24A1DE] to-[#086b9c] p-4 rounded-3xl flex items-center justify-between mb-4 ${isSubscribedToPremium ? 'opacity-50 pointer-events-none' : ''}`}>
                         <div>
-                            <h3 className='text-white font-bold'>4 daily rolls + other perks</h3>
+                            <h3 className='text-white font-bold'>{RollsStreakConfig.Premium} daily rolls + other perks</h3>
                             <p className='text-white/60'>{premiumSubscriptionTonFee} TON</p>
                         </div>
                         <motion.button
