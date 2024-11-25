@@ -13,11 +13,6 @@ export default function WalletPage() {
     const updateUserRollsPoints = useUpdateUserRollsPoints();
     const { userProfileInformation, updateUserProfileInformation } = useContext(ApplicationContext) as ApplicationContextData;
     const tonConnectUI = useContext(TonConnectUIContext);
-    
-    if (!tonConnectUI) {
-        console.error("TonConnectUIContext is not initialized.");
-        return null; // Handle this gracefully
-    }
 
     const walletAddress = process.env.NEXT_PUBLIC_WALLET_ADDRESS!;
 
@@ -119,6 +114,12 @@ export default function WalletPage() {
     //         return;
     //     }
     // }, [tonConnectUI]);
+
+    
+    if (!tonConnectUI) {
+        console.error("TonConnectUIContext is not initialized.");
+        return null; // Handle this gracefully
+    }
 
     return (
         <>
