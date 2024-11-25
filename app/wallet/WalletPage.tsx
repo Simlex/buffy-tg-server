@@ -15,23 +15,21 @@ export default function WalletPage() {
     const { userProfileInformation, updateUserProfileInformation } = useContext(ApplicationContext) as ApplicationContextData;
     const tonConnectUI = useContext(TonConnectUIContext);
 
-    // const walletAddress = process.env.NEXT_PUBLIC_WALLET_ADDRESS!;
-    // const walletAddress = "UQA4tJOARNgCF5A029rQISCA4ts3iqchbgyjjkbJdMIhxLzB";
-    // const walletAddress = "UQD4XoY3xrY_JotTrYAhMMnKP_CTt46eZvTzu7QonR-QsYF6";
+    const walletAddress = process.env.NEXT_PUBLIC_WALLET_ADDRESS!;
 
     // const userFriendlyAddress = useTonAddress();
-    // console.log("🚀 ~ WalletPage ~ userFriendlyAddress:", userFriendlyAddress)
     // const rawAddress = useTonAddress(false);
     // const wallet = useTonWallet();
     // const { state, open, close } = useTonConnectModal(); // for opening and closing the modal
+
     const { open } = useTonConnectModal(); // for opening and closing the modal
 
     const [isModalVisible, setIsModalVisible] = React.useState(false);
 
-    // const destination = Address.parse(userFriendlyAddress).toRawString();
-    // console.log("🚀 ~ WalletPage ~ destination:", destination)
     const [depositAmount, setDepositAmount] = React.useState<number>();
     const [isDepositing, setIsDepositing] = React.useState(false);
+
+    const isSubscribedToPremium = userProfileInformation?.isSubscribedToPremium;
 
     const premiumSubscriptionTonFee = 2.5;
 
@@ -43,8 +41,7 @@ export default function WalletPage() {
     const paymentRequest: SendTransactionRequest = {
         messages: [
             {
-                // address: "UQA4tJOARNgCF5A029rQISCA4ts3iqchbgyjjkbJdMIhxLzB",
-                address: Address.parse("UQA4tJOARNgCF5A029rQISCA4ts3iqchbgyjjkbJdMIhxLzB").toRawString(),
+                address: Address.parse(walletAddress).toRawString(),
                 
                 amount: toNano(depositAmount || 0).toString(),
                 payload: body.toBoc().toString('base64'), // Optional: Additional data
@@ -53,17 +50,14 @@ export default function WalletPage() {
 
         validUntil: Math.floor(Date.now() / 1000) + 360, // Expiration time in seconds since epoch = now + 360 seconds
     };
-    console.log("🚀 ~ WalletPage ~ paymentRequest:", paymentRequest)
 
     const handleBuyRolls = () => {
         if (!depositAmount) {
-            console.log("🚀 ~ handleBuyRolls ~ depositAmount:", depositAmount)
             return;
         };
 
         if (!tonConnectUI?.connected) {
             open();
-            // setIsModalVisible(true);
             return;
         }
 
@@ -163,8 +157,8 @@ export default function WalletPage() {
                 </div> */}
 
                 <div className='flex flex-col w-full mb-4'>
-                    <span className='text-white mb-2'>Premium</span>
-                    <div className=' bg-gradient-to-br from-[#24A1DE] to-[#086b9c] p-4 rounded-3xl flex items-center justify-between mb-4'>
+                    <span className='text-white mb-2'>Premium {isSubscribedToPremium ? "(You are currently subscribed to this)" : ""}</span>
+                    <div className={`bg-gradient-to-br from-[#24A1DE] to-[#086b9c] p-4 rounded-3xl flex items-center justify-between mb-4 ${isSubscribedToPremium ? 'opacity-50 pointer-events-none' : ''}`}>
                         <div>
                             <h3 className='text-white font-bold'>4 daily rolls + other perks</h3>
                             <p className='text-white/60'>{premiumSubscriptionTonFee} TON</p>
