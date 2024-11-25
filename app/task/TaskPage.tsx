@@ -11,7 +11,7 @@ import { ApplicationContext, ApplicationContextData } from "../context/Applicati
 import { Task, TaskType } from "../enums/ITask";
 import { referralMetrics } from "../constants/referralMetrics";
 import { BonusClaimRequest } from "../models/IReferral";
-import { SendTransactionRequest, TonConnectUIContext } from "@tonconnect/ui-react";
+import { SendTransactionRequest, TonConnectUIContext, useTonConnectModal } from "@tonconnect/ui-react";
 import { Address, beginCell, toNano } from "@ton/ton";
 import { PointsConfig } from "../constants/globalPointsConfig";
 
@@ -47,6 +47,8 @@ const TaskPage: FunctionComponent = (): ReactElement => {
     // const [depositAmount, setDepositAmount] = useState<number>();
     const [isMakingATransaction, setIsMakingATransaction] = useState(false);
 
+    const { open } = useTonConnectModal();
+
     const telegramPoints = PointsConfig.Telegram;
     const twitterPoints = PointsConfig.Twitter;
     const walletConnectPoints = PointsConfig.walletConnectPoints;
@@ -54,6 +56,7 @@ const TaskPage: FunctionComponent = (): ReactElement => {
 
     // const userFriendlyAddress = useTonAddress();
     // const destination = userFriendlyAddress ? Address.parse(userFriendlyAddress).toRawString() : '';
+    const walletAddress = process.env.NEXT_PUBLIC_WALLET_ADDRESS!;
 
     async function handleVerifyTask(specifiedTask: Task) {
         // Show loader
@@ -137,7 +140,7 @@ const TaskPage: FunctionComponent = (): ReactElement => {
         return {
             messages: [
                 {
-                    address: Address.parse("UQA4tJOARNgCF5A029rQISCA4ts3iqchbgyjjkbJdMIhxLzB").toRawString(),
+                    address: Address.parse(walletAddress).toRawString(),
                     amount: toNano(depositAmount || 0).toString(),
                     payload: body.toBoc().toString('base64'), // Optional: Additional data
                 },
