@@ -1,5 +1,6 @@
 import { ApplicationError } from "@/app/constants/applicationError";
 import { RollsPurchasesConfig } from "@/app/constants/purchases";
+import { RollsStreakConfig } from "@/app/constants/rollsStreakConfig";
 import { PointsUpdateRequest } from "@/app/models/IPoints";
 import { StatusCodes } from "@/app/models/IStatusCodes";
 import { prisma } from "@/lib/prisma";
@@ -55,7 +56,7 @@ export async function updateUserRollsPoints(req: NextRequest) {
         ? new Date(premiumSubscriptionExpiryDate)
         : user.premiumSubscriptionExp,
       availableDiceRolls: {
-        increment: request.forPremiumSubscription ? 4 : diceRolls,
+        increment: request.forPremiumSubscription ? RollsStreakConfig.Premium : diceRolls,
       },
       tonEarned: {
         increment: request.forPremiumSubscription ? 0 : request.ton ?? 0,
@@ -191,8 +192,8 @@ export async function updateUserDailyRollStreak(req: NextRequest) {
   //     new Date(user.dailyFreeDiceRollsNextClaimableDateExp) < now;
 
   // Define rolls for premium and normal users
-  const premiumUserRolls = 4;
-  const normalUserRolls = 1;
+  const premiumUserRolls = RollsStreakConfig.Premium;
+  const normalUserRolls = RollsStreakConfig.Normal;
 
   // Calculate the dice rolls to be awarded based on whether the streak has expired and if the user is premium
   const rollsToAward = streakHasExpired
@@ -200,7 +201,7 @@ export async function updateUserDailyRollStreak(req: NextRequest) {
       ? premiumUserRolls
       : normalUserRolls
     : isValidPremiumUser
-    ? premiumUserRolls + user.dailyFreeDiceRollsStreak
+    ? premiumUserRolls + normalUserRolls + user.dailyFreeDiceRollsStreak
     : normalUserRolls + user.dailyFreeDiceRollsStreak;
 
   // Update the user's dice roll points
