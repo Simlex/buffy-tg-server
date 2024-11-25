@@ -55,13 +55,13 @@ export async function updateUserRollsPoints(req: NextRequest) {
         ? new Date(premiumSubscriptionExpiryDate)
         : user.premiumSubscriptionExp,
       availableDiceRolls: {
-        increment: diceRolls,
+        increment: request.forPremiumSubscription ? 4 : diceRolls,
       },
       tonEarned: {
-        increment: request.ton ?? 0,
+        increment: request.forPremiumSubscription ? 0 : request.ton ?? 0,
       },
       nftEarned: {
-        increment: request.nft ?? 0,
+        increment: request.forPremiumSubscription ? 0 : request.nft ?? 0,
       },
     },
   });
