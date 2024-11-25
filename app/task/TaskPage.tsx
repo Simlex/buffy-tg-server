@@ -56,7 +56,7 @@ const TaskPage: FunctionComponent = (): ReactElement => {
 
     // const userFriendlyAddress = useTonAddress();
     // const destination = userFriendlyAddress ? Address.parse(userFriendlyAddress).toRawString() : '';
-    const walletAddress = process.env.NEXT_PUBLIC_WALLET_ADDRESS!;
+    const walletAddress = "UQA4tJOARNgCF5A029rQISCA4ts3iqchbgyjjkbJdMIhxLzB";
 
     async function handleVerifyTask(specifiedTask: Task) {
         // Show loader
