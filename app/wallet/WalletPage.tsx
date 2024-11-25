@@ -1,7 +1,6 @@
 "use client"
 import React, { useContext, useEffect } from 'react'
 import { RollsPurchasesConfig } from '../constants/purchases'
-import ConnectWalletModal from '../components/modal/ConnectWalletModal'
 import { SendTransactionRequest, TonConnectUIContext, useTonConnectModal } from '@tonconnect/ui-react'
 import { Address, beginCell, toNano } from '@ton/ton';
 import { motion } from 'framer-motion'
