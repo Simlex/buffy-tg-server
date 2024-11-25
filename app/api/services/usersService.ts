@@ -199,7 +199,7 @@ export async function updateUserPoints(req: NextRequest) {
       await incrementUserTotalPoints(
         request.points,
         request.userId,
-        user.isWalletConnected ? user.totalPoints : user.totalPoints + PointsConfig.walletConnectPoints
+        user.isWalletConnected ? user.totalPoints : user.totalPoints + PointsConfig.WalletConnectPoints
       );
 
       // update the user's telegram task status
