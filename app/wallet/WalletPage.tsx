@@ -105,14 +105,14 @@ export default function WalletPage() {
         handleBuyRolls();
     }, [depositAmount]);
 
-    useEffect(() => {
-        if (!tonConnectUI) return;
-        if (!tonConnectUI.connected) {
-            open();
-            // setIsModalVisible(true);
-            return;
-        }
-    }, [tonConnectUI]);
+    // useEffect(() => {
+    //     if (!tonConnectUI) return;
+    //     if (!tonConnectUI.connected) {
+    //         open();
+    //         // setIsModalVisible(true);
+    //         return;
+    //     }
+    // }, [tonConnectUI]);
 
     return (
         <>
