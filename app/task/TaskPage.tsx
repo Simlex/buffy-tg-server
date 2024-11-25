@@ -51,8 +51,8 @@ const TaskPage: FunctionComponent = (): ReactElement => {
 
     const telegramPoints = PointsConfig.Telegram;
     const twitterPoints = PointsConfig.Twitter;
-    const walletConnectPoints = PointsConfig.walletConnectPoints;
-    const tonTransactionPoints = PointsConfig.tonTransactionPoints;
+    const walletConnectPoints = PointsConfig.WalletConnectPoints;
+    const tonTransactionPoints = PointsConfig.TonTransactionPoints;
 
     // const userFriendlyAddress = useTonAddress();
     // const destination = userFriendlyAddress ? Address.parse(userFriendlyAddress).toRawString() : '';
