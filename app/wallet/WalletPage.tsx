@@ -14,6 +14,11 @@ export default function WalletPage() {
     const updateUserRollsPoints = useUpdateUserRollsPoints();
     const { userProfileInformation, updateUserProfileInformation } = useContext(ApplicationContext) as ApplicationContextData;
     const tonConnectUI = useContext(TonConnectUIContext);
+    
+    if (!tonConnectUI) {
+        console.error("TonConnectUIContext is not initialized.");
+        return null; // Handle this gracefully
+    }
 
     const walletAddress = process.env.NEXT_PUBLIC_WALLET_ADDRESS!;
 
@@ -24,7 +29,7 @@ export default function WalletPage() {
 
     const { open } = useTonConnectModal(); // for opening and closing the modal
 
-    const [isModalVisible, setIsModalVisible] = React.useState(false);
+    // const [isModalVisible, setIsModalVisible] = React.useState(false);
 
     const [depositAmount, setDepositAmount] = React.useState<number>();
     const [isDepositing, setIsDepositing] = React.useState(false);
@@ -55,6 +60,8 @@ export default function WalletPage() {
         if (!depositAmount) {
             return;
         };
+        
+        console.log("🚀 ~ WalletPage ~ depositAmount:", depositAmount)
 
         if (!tonConnectUI?.connected) {
             open();
@@ -116,10 +123,10 @@ export default function WalletPage() {
 
     return (
         <>
-            <ConnectWalletModal
+            {/* <ConnectWalletModal
                 visibility={isModalVisible}
                 setVisibility={setIsModalVisible}
-            />
+            /> */}
             <main className="flex min-h-screen flex-col items-center py-14 pb-32">
                 <span className='w-28 h-28 rounded-full bg-white/0 grid place-items-center border-[10px] border-[#24A1DE]/5 mb-3'>
                     {/* <Icons.Cart className='w-12 h-12' fill='#fff' /> */}
