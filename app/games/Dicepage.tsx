@@ -167,6 +167,9 @@ const Dicepage: FunctionComponent = (): ReactElement => {
                 setTimeout(() => {
                     updateUserProfileInformation(response.data);
                 }, 4050);
+                setTimeout(() => {
+                    setRolledNumbers([]);
+                }, 7050);
             })
             .catch((error) => {
                 console.log("🚀 ~ .catch ~ error:", error)
@@ -367,7 +370,7 @@ const Dicepage: FunctionComponent = (): ReactElement => {
 
             <div className="flex flex-col items-center">
                 <Button
-                    disabled={isRollingDice || rollsLeft == 0}
+                    disabled={isRollingDice || rollsLeft == 0 || rolledNumbers.length > 0}
                     onClick={() => rollDice()}
                     // onClick={() => simulateRolls(100)}
                     className="!w-fit mb-3 !bg-orange-500 !text-white">
@@ -375,13 +378,13 @@ const Dicepage: FunctionComponent = (): ReactElement => {
                 </Button>
                 <div className="flex flex-row gap-2">
                     <Button
-                        disabled={isRollingDice || rollsLeft < 5}
+                        disabled={isRollingDice || rollsLeft < 5 || rolledNumbers.length > 0}
                         onClick={() => rollDice(5)}
                         className="!w-fit mb-3">
                         <h2>Roll x5</h2>
                     </Button>
                     <Button
-                        disabled={isRollingDice || rollsLeft < 10}
+                        disabled={isRollingDice || rollsLeft < 10 || rolledNumbers.length > 0}
                         onClick={() => rollDice(10)}
                         className="!w-fit mb-3">
                         <h2>Roll x10</h2>
@@ -390,10 +393,9 @@ const Dicepage: FunctionComponent = (): ReactElement => {
             </div>
             <p className="text-white">{rollsLeft} {rollsLeft > 1 ? 'rolls' : 'roll'} left.</p>
             {
-                rolledNumbers.length > 1 &&
                 <div className="my-3 mt-5 flex flex-col items-center w-full gap-2 bg-white/5 p-4 pb-5 rounded-2xl">
                     <p className="text-white font-semibold">Multi-roll points</p>
-                    <div className="flex flex-row flex-wrap gap-2 w-full justify-between">
+                    <div className="grid grid-cols-5 gap-2 w-full justify-between">
                         <AnimatePresence>
                             {
                                 !isRollingDice && rolledNumbers.map((number, index) => (
