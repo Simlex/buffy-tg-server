@@ -61,7 +61,7 @@ export default function DailyStreakModal({ visibility, setVisibility }: Props) {
                     className='text-4xl font-bold text-center mb-5'>
                     +{normalUserRolls + userDailyRollsStreak} {userDailyRollsStreak > 1 ? 'Rolls' : 'Roll'}
                 </motion.h1>
-                {isValidPremiumUser ? <span className='text-center bg-[#24A1DE] p-3 rounded-xl text-white'>+{premiumUserRolls} points from premium subscription</span> : <></>}
+                {isValidPremiumUser ? <span className='text-center bg-[#24A1DE] p-3 rounded-xl text-white'>+{premiumUserRolls} rolls from premium subscription</span> : <></>}
             </div>
         </ModalWrapper>
     )
