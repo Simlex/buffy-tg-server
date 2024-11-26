@@ -35,7 +35,7 @@ export default function WalletPage() {
 
     const body = beginCell()
         .storeUint(0, 32) // Write 32 zero bits to indicate a text comment will follow
-        .storeStringTail("Some random comment here") // Write the text comment
+        .storeStringTail("TON payment to Buffy Durov") // Write the text comment
         .endCell();
 
     const paymentRequest: SendTransactionRequest = {
