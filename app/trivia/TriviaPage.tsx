@@ -121,6 +121,9 @@ const TriviaPage: FunctionComponent = (): ReactElement => {
                         <h3 className="font-semibold text-xl mb-3 text-center">
                             Wrong answer, try again tomorrow.
                         </h3>
+                        <span>
+                            The correct answer was: <span className="font-semibold">{TriviaConfig.questionsAndAnswers[daysSinceStart].answer}</span>
+                        </span>
                         <div className="flex flex-row gap-4 w-full">
                             <button
                                 onClick={() => { setIsPostSubmissionModalVisible(false) }}
