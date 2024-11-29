@@ -154,4 +154,12 @@ export function useUpdateUserTriviaPoints() {
   return updateUserTriviaPoints;
 }
 
+export function useFetchBotUsers() {
+  async function fetchBotUsers(passkey: string) {
+    return API.get(ApiRoutes.Admin(passkey));
+  }
+
+  return fetchBotUsers;
+}
+
 //#endregion
