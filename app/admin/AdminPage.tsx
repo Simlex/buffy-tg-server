@@ -78,7 +78,7 @@ export default function AdminPage() {
                     </div>
                     : <div>
                         <div className='flex flex-col gap-4 items-center md:flex-row md:justify-between mb-8'>
-                            <h3 className='text-white text-xl font-bold'>Bot Users</h3>
+                            <h3 className='text-white text-xl font-bold'>Bot Users ({botUsers.length})</h3>
                             <Button className='md:w-fit'>Download all</Button>
                         </div>
 
