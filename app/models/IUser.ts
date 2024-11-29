@@ -39,6 +39,7 @@ export interface UserProfileInformation {
 
   telegramTaskDone: boolean;
   twitterTaskDone: boolean;
+  websiteViewTaskDone: boolean;
   highestReferralBonusClaimed?: number;
   createdAt?: Date;
   updatedAt?: Date;
