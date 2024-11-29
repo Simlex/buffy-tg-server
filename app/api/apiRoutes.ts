@@ -7,7 +7,7 @@ export class ApiRoutes {
    */
   static BASE_URL_DEV: string = "http://localhost:4055/";
   //   static BASE_URL_DEV: string = "http://192.168.1.226:4040/";
-    // static BASE_URL_DEV: string = "https://4dc8-102-88-36-243.ngrok-free.app/";
+  // static BASE_URL_DEV: string = "https://4dc8-102-88-36-243.ngrok-free.app/";
 
   /**
    * The test base url for the application
@@ -80,4 +80,10 @@ export class ApiRoutes {
    * The route to Leaderboard endpoint
    */
   static Leaderboard: string = "api/leaderboard";
+
+  /**
+   * The route to admin endpoint
+   */
+  static Admin: (passkey: string) => string = (passkey: string) =>
+    `api/admin?passkey=${passkey}`;
 }
