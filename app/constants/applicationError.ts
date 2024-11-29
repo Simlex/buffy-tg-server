@@ -265,6 +265,15 @@ export class ApplicationError extends BaseApplicationError {
       Code: "TASKS_1004",
     }
 
+    /**
+     * The error message for ~ Website View task already completed
+     */
+    static WebsiteViewTaskAlreadyCompleted: IApplicationError = {
+      Text: "Website View task already completed",
+      Code: "TASKS_1005",
+    };
+
+
   //#endregion
 
   //#region Level Errors
