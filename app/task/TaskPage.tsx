@@ -41,6 +41,7 @@ const TaskPage: FunctionComponent = (): ReactElement => {
 
     const [isJoinChannelBtnClicked, setIsJoinChannelBtnClicked] = useState(false);
     const [isFollowUsBtnClicked, setIsFollowUsBtnClicked] = useState(false);
+    const [isWalletViewBtnClicked, setIsWalletViewBtnClicked] = useState(false);
 
     const [isVerifyingTask, setIsVerifyingTask] = useState(false);
     const [isClaimingBonus, setIsClaimingBonus] = useState(false);
@@ -53,6 +54,7 @@ const TaskPage: FunctionComponent = (): ReactElement => {
     const twitterPoints = PointsConfig.Twitter;
     const walletConnectPoints = PointsConfig.WalletConnectPoints;
     const tonTransactionPoints = PointsConfig.TonTransactionPoints;
+    const websiteViewPoints = PointsConfig.WebsiteViewPoints;
 
     // const userFriendlyAddress = useTonAddress();
     // const destination = userFriendlyAddress ? Address.parse(userFriendlyAddress).toRawString() : '';
@@ -62,10 +64,24 @@ const TaskPage: FunctionComponent = (): ReactElement => {
         // Show loader
         setIsVerifyingTask(true);
 
+        const getPointsBasedOnSpecifiedTask = () => {
+            switch (specifiedTask) {
+                case Task.TELEGRAM:
+                    return telegramPoints;
+                case Task.TWITTER:
+                    return twitterPoints;
+                case Task.WEBSITE_VIEW:
+                    return websiteViewPoints;
+            
+                default:
+                    return 0;
+            }
+        }
+
         // construct the data 
         const data: PointsUpdateRequest = {
             userId: userProfileInformation?.userId as string,
-            points: specifiedTask === Task.TELEGRAM ? telegramPoints : twitterPoints,
+            points: getPointsBasedOnSpecifiedTask(),
             task: specifiedTask
         };
 
@@ -257,6 +273,19 @@ const TaskPage: FunctionComponent = (): ReactElement => {
                 handleMakeATransaction(0.3);
             },
             verificationFunction: () => handleAwardPoints(Task.TON_TRANSACTION)
+        },
+        {
+            icon: (className?: string) => <Icons.Website fill="#fff" className={`w-8 h-8 ${className}`} />,
+            task: Task.WEBSITE_VIEW,
+            title: "Visit our website",
+            points: websiteViewPoints,
+            action: "Visit",
+            isDone: isWalletViewBtnClicked,
+            actionFunction: () => {
+                setIsWalletViewBtnClicked(true)
+                window.open("https://buffydurov.art", "_blank");
+            },
+            verificationFunction: () => handleVerifyTask(Task.WEBSITE_VIEW)
         }
     ];
 
@@ -484,6 +513,29 @@ const TaskPage: FunctionComponent = (): ReactElement => {
                                     <span className="w-7 h-7 rounded-full bg-white/30 grid place-items-center">
                                         {
                                             userProfileInformation.twitterTaskDone ?
+                                                <Icons.CheckFill className="fill-white" /> :
+                                                <Icons.CloseFill className="fill-white" />
+                                        }
+                                    </span>
+                                </button>
+                                <button
+                                    onClick={() => {
+                                        setSelectedTask(Task.WEBSITE_VIEW);
+                                        setIsModalVisible(true);
+                                    }}
+                                    className={`bg-gray-700 rounded-3xl flex flex-row items-center justify-between p-4 pr-5 hover:bg-gray-600 ${userProfileInformation.twitterTaskDone ? "pointer-events-none opacity-70" : ""}`}>
+                                    <div className="flex flex-row items-center gap-3">
+                                        <span className="w-7 h-7 relative grid place-items-center">
+                                            <Icons.Website className="fill-white w-6 h-6" />
+                                        </span>
+                                        <div className="flex flex-col gap-[2px] items-start">
+                                            <h5 className="text-white font-medium leading-3 text-base">Visit our website</h5>
+                                            <TaskStatus status={userProfileInformation.websiteViewTaskDone} />
+                                        </div>
+                                    </div>
+                                    <span className="w-7 h-7 rounded-full bg-white/30 grid place-items-center">
+                                        {
+                                            userProfileInformation.websiteViewTaskDone ?
                                                 <Icons.CheckFill className="fill-white" /> :
                                                 <Icons.CloseFill className="fill-white" />
                                         }
