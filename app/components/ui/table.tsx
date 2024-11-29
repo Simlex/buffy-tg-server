@@ -1,7 +1,7 @@
 import ComponentLoader from '@/app/components/Loader/ComponentLoader';
 import React, { ReactElement } from 'react'
 
-type Props = {
+interface Props {
     tableHeaders: ReactElement[];
     tableHeaderStyle?: string;
     tableDataStyle?: string;
