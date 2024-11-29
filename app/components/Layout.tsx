@@ -173,7 +173,7 @@ const Layout: FunctionComponent<LayoutProps> = ({ children }): ReactElement => {
             //     await fetchUserProfileInformation(userId);
             // })();
             // router.refresh();
-            
+
             fetchUserProfileInformation(userId)
         }
     }, [userId])
@@ -366,40 +366,46 @@ const Layout: FunctionComponent<LayoutProps> = ({ children }): ReactElement => {
 
     return (
         <>
-            <div>
-                <Toaster
-                    position='bottom-center'
-                    richColors
-                    closeButton
-                    toastOptions={{
-                        duration: 3000,
-                        unstyled: false,
-                    }}
-                />
-                {!loaderIsVisible && (
-                    isShowingNewUserInfo ?
-                        <NewUserMetrics
-                            isDisplayingYears={isDisplayingYears}
-                            setIsDisplayingYears={setIsDisplayingYears}
-                            setIsShowingNewUserInfo={setIsShowingNewUserInfo}
-                            userId={userId}
-                        /> :
-                        <main className="">
-                            <Topbar />
-                            {children}
-                            <BottomBar />
-                        </main>
-                )}
+            <Toaster
+                position='bottom-center'
+                richColors
+                closeButton
+                toastOptions={{
+                    duration: 3000,
+                    unstyled: false,
+                }}
+            />
+            {
+                pathname === "/admin" ?
+                    <main className="h-screen">
+                        {children}
+                    </main> :
+                    <div>
+                        {!loaderIsVisible && (
+                            isShowingNewUserInfo ?
+                                <NewUserMetrics
+                                    isDisplayingYears={isDisplayingYears}
+                                    setIsDisplayingYears={setIsDisplayingYears}
+                                    setIsShowingNewUserInfo={setIsShowingNewUserInfo}
+                                    userId={userId}
+                                /> :
+                                <main className="">
+                                    <Topbar />
+                                    {children}
+                                    <BottomBar />
+                                </main>
+                        )}
 
-                {loaderIsVisible &&
-                    <motion.div
-                        variants={splashScreenVariant}
-                        className='w-[100vw] h-[100vh] fixed top-0 left-0 z-30 min-h-[100vh] grid place-items-center bg-white pointer-events-none'>
-                        <div className='w-60 h-60 animate-pulse transition-all duration-150 ease-in-out object-contain relative'>
-                            <CustomImage src={images.splash} alt='logo' />
-                        </div>
-                    </motion.div>}
-            </div>
+                        {loaderIsVisible &&
+                            <motion.div
+                                variants={splashScreenVariant}
+                                className='w-[100vw] h-[100vh] fixed top-0 left-0 z-30 min-h-[100vh] grid place-items-center bg-white pointer-events-none'>
+                                <div className='w-60 h-60 animate-pulse transition-all duration-150 ease-in-out object-contain relative'>
+                                    <CustomImage src={images.splash} alt='logo' />
+                                </div>
+                            </motion.div>}
+                    </div>
+            }
             <Script
                 src="https://telegram.org/js/telegram-web-app.js"
                 strategy="beforeInteractive" />
