@@ -3,4 +3,5 @@ export const PointsConfig = {
   Twitter: 4000,
   WalletConnectPoints: 4000,
   TonTransactionPoints: 50000,
+  WebsiteViewPoints: 2000,
 };
