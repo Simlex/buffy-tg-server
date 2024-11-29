@@ -523,7 +523,7 @@ const TaskPage: FunctionComponent = (): ReactElement => {
                                         setSelectedTask(Task.WEBSITE_VIEW);
                                         setIsModalVisible(true);
                                     }}
-                                    className={`bg-gray-700 rounded-3xl flex flex-row items-center justify-between p-4 pr-5 hover:bg-gray-600 ${userProfileInformation.twitterTaskDone ? "pointer-events-none opacity-70" : ""}`}>
+                                    className={`bg-gray-700 rounded-3xl flex flex-row items-center justify-between p-4 pr-5 hover:bg-gray-600 ${userProfileInformation.websiteViewTaskDone ? "pointer-events-none opacity-70" : ""}`}>
                                     <div className="flex flex-row items-center gap-3">
                                         <span className="w-7 h-7 relative grid place-items-center">
                                             <Icons.Website className="fill-white w-6 h-6" />
