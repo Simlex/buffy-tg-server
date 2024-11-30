@@ -15,6 +15,7 @@
     "@tonconnect/ui-react": "^2.0.9",
     "axios": "^1.7.2",
     "framer-motion": "^11.2.12",
+    "jsonexport": "^3.2.0",
     "lodash": "^4.17.21",
     "moment": "^2.30.1",
     "next": "^14.2.14",
@@ -29,6 +30,7 @@
     "telegram-webapps-types": "^1.0.5"
   },
   "devDependencies": {
+    "@types/jsonexport": "^3.0.5",
     "@types/lodash": "^4.17.6",
     "@types/node": "^20",
     "@types/react": "^18",
