@@ -1,5 +1,5 @@
 'use client'
-import React, { useEffect, useState } from 'react'
+import React, { MouseEvent, useEffect, useState } from 'react'
 import Button from '../components/ui/button'
 import Input from '../components/ui/input'
 import Table from '../components/ui/table'
@@ -7,6 +7,7 @@ import { BotUser } from '../models/IBotUser'
 import { useFetchBotUsers } from '../api/apiClient'
 import { toast } from 'sonner'
 import moment from 'moment'
+import jsonexport from 'jsonexport'
 
 export default function AdminPage() {
 
@@ -16,6 +17,7 @@ export default function AdminPage() {
     const [isLoginBtnClicked, setIsLoginBtnClicked] = useState(false);
     const [authenticated, setAuthenticated] = useState(false);
     const [isFetchingInformation, setIsFetchingInformation] = useState(false);
+    const [isDownloadingBotUsers, setIsDownloadingBotUsers] = useState(false);
 
     const [botUsers, setBotUsers] = useState<BotUser[]>([]);
 
@@ -24,7 +26,7 @@ export default function AdminPage() {
             setAuthenticated(true);
             await handleFetchBotUsers();
             return;
-        } 
+        }
 
         toast.error("Invalid passkey");
         setAuthenticated(false);
@@ -32,7 +34,7 @@ export default function AdminPage() {
 
     const handleFetchBotUsers = async () => {
         console.log("Fetching bot users");
-        
+
         setIsFetchingInformation(true);
 
         await fetchBotUsers(passkey as string)
@@ -48,6 +50,41 @@ export default function AdminPage() {
                 setIsFetchingInformation(false);
             })
     };
+
+    async function handleDownloadAllUsersInfo(e: MouseEvent<HTMLButtonElement>) {
+        e.preventDefault();
+        setIsDownloadingBotUsers(true);
+
+        try {
+            const formattedData = botUsers.map((user) => ({
+                "User ID": user.userId,
+                "Total Points": user.totalPoints,
+                "TON Earned": user.tonEarned,
+                "NFT Earned": user.nftEarned,
+                "Referral count": user.referralCount,
+                "Date Joined": user.createdAt
+            }));
+
+            const csvData = await jsonexport(formattedData);
+            const fileName = 'users.csv';
+            const blob = new Blob([csvData], { type: 'text/csv' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.style.display = 'none';
+            a.href = url;
+            a.download = fileName;
+
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            toast('Customers information downloaded successfully');
+        } catch (error) {
+            console.error('Error exporting CSV:', error);
+            toast('Failed to download Customer information.');
+        } finally {
+            setIsDownloadingBotUsers(false);
+        }
+    }
 
     useEffect(() => {
         if (passkey && authenticated) {
@@ -79,7 +116,12 @@ export default function AdminPage() {
                     : <div>
                         <div className='flex flex-col gap-4 items-center md:flex-row md:justify-between mb-8'>
                             <h3 className='text-white text-xl font-bold'>Bot Users ({botUsers.length})</h3>
-                            <Button className='md:w-fit'>Download all</Button>
+                            <Button
+                            disabled={isDownloadingBotUsers}
+                                onClick={handleDownloadAllUsersInfo}
+                                className='md:w-fit'>
+                                Download all
+                            </Button>
                         </div>
 
                         <Table
