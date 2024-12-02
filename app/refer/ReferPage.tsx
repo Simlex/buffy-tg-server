@@ -29,8 +29,8 @@ const ReferPage: FunctionComponent = (): ReactElement => {
         }
     }, [isLinkCopied]);
 
-    // const userLink = `https://t.me/BuffyDurov_bot?start=${userProfileInformation?.username}${userProfileInformation?.userId}`;
-    const userLink = `https://t.me/SimlexBot?start=${userProfileInformation?.username}${userProfileInformation?.userId}`;
+    const userLink = `https://t.me/BuffyDurov_bot?start=${userProfileInformation?.username}${userProfileInformation?.userId}`;
+    // const userLink = `https://t.me/SimlexBot?start=${userProfileInformation?.username}${userProfileInformation?.userId}`;
 
     return (
         <main className="flex min-h-screen flex-col items-center py-20">
