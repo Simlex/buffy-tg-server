@@ -257,6 +257,6 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Method not allowed" }, { status: 405 });
   }
 }
-// curl -F "url=https://4dc8-102-88-36-243.ngrok-free.app/api/bot" https://api.telegram.org/bot7321219493:AAHKXfqUa68bcqkhdLrUF_Eqo4AeDvLNfbk/setWebhook
-// curl -F "url=https://buffy-tg-server.vercel.app/api/bot" https://api.telegram.org/bot7321219493:AAHKXfqUa68bcqkhdLrUF_Eqo4AeDvLNfbk/setWebhook
-// curl "https://api.telegram.org/bot7321219493:AAHKXfqUa68bcqkhdLrUF_Eqo4AeDvLNfbk/getWebhookInfo"
+// curl -F "url=https://4dc8-102-88-36-243.ngrok-free.app/api/bot" https://api.telegram.org/bot6277421390:AAEdpn0AcM9v4VEw6NA3qCOnwQg6Ez5Z5hA/setWebhook
+// curl -F "url=https://buffy-tg-server.vercel.app/api/bot" https://api.telegram.org/bot6277421390:AAEdpn0AcM9v4VEw6NA3qCOnwQg6Ez5Z5hA/setWebhook
+// curl "https://api.telegram.org/bot6277421390:AAEdpn0AcM9v4VEw6NA3qCOnwQg6Ez5Z5hA/getWebhookInfo"
