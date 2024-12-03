@@ -1,6 +1,6 @@
 export const TriviaConfig = {
   startDate: new Date("2024-11-25T00:00:00Z"),
-//   endDate: new Date("2021-10-31T23:59:59Z"),
+  //   endDate: new Date("2021-10-31T23:59:59Z"),
   dailyTriviaPoints: 1000,
   // questionsAndAnswers: [
   //     {
@@ -611,5 +611,229 @@ export const TriviaConfig = {
       ],
       answer: "To execute smart contracts and decentralized applications",
     },
-  ],
+    {
+      question: "What does the term 'gas' refer to in the Ethereum network?",
+      options: [
+        "The energy required to mine new coins",
+        "The fee paid to execute transactions and smart contracts",
+        "A type of cryptocurrency",
+        "A method of securing wallets",
+      ],
+      answer: "The fee paid to execute transactions and smart contracts",
+    },
+    {
+      question: "What is the role of miners in a blockchain network?",
+      options: [
+        "To create new cryptocurrencies",
+        "To validate transactions and add them to the blockchain",
+        "To manage user accounts",
+        "To trade cryptocurrencies",
+      ],
+      answer: "To validate transactions and add them to the blockchain",
+    },
+    {
+      question: "Which of the following describes a bull market?",
+      options: [
+        "A period of falling cryptocurrency prices",
+        "A period of rising cryptocurrency prices",
+        "A stable market with no price changes",
+        "A market with low trading volume",
+      ],
+      answer: "A period of rising cryptocurrency prices",
+    },
+    {
+      question: "What is a smart contract?",
+      options: [
+        "A traditional legal contract",
+        "A self-executing contract with the terms of the agreement directly written into code",
+        "A type of cryptocurrency wallet",
+        "A method of trading assets",
+      ],
+      answer:
+        "A self-executing contract with the terms of the agreement directly written into code",
+    },
+    {
+      question: "What is a DAO (Decentralized Autonomous Organization)?",
+      options: [
+        "An organization that operates without any human intervention",
+        "A company that is run by a board of directors",
+        "An organization governed by smart contracts and community voting",
+        "A traditional nonprofit organization",
+      ],
+      answer:
+        "An organization governed by smart contracts and community voting",
+    },
+    {
+      question: "What is the main purpose of a liquidity pool in DeFi?",
+      options: [
+        "To store private keys securely",
+        "To provide liquidity for trading pairs on decentralized exchanges",
+        "To facilitate mining operations",
+        "To create new cryptocurrencies",
+      ],
+      answer:
+        "To provide liquidity for trading pairs on decentralized exchanges",
+    },
+    {
+      question: "Which of the following is NOT a consensus mechanism?",
+      options: [
+        "Proof of Work (PoW)",
+        "Proof of Stake (PoS)",
+        "Delegated Proof of Stake (DPoS)",
+        "Digital Asset Management (DAM)",
+      ],
+      answer: "Digital Asset Management (DAM)",
+    },
+    {
+      question: "What is the main advantage of using a hardware wallet?",
+      options: [
+        "It allows for faster transactions",
+        "It provides enhanced security for storing private keys",
+        "It offers trading features",
+        "It is always connected to the internet",
+      ],
+      answer: "It provides enhanced security for storing private keys",
+    },
+    {
+      question: "What is 'market capitalization' in cryptocurrency?",
+      options: [
+        "The total number of coins mined",
+        "The total value of a cryptocurrency, calculated by multiplying its price by the total supply",
+        "The amount of liquidity available in the market",
+        "The number of active users on a blockchain",
+      ],
+      answer:
+        "The total value of a cryptocurrency, calculated by multiplying its price by the total supply",
+    },
+    {
+      question: "What is the primary goal of a blockchain network?",
+      options: [
+        "To centralize control over digital currencies",
+        "To create a decentralized and secure ledger for recording transactions",
+        "To provide financial services to traditional banks",
+        "To eliminate all forms of currency",
+      ],
+      answer:
+        "To create a decentralized and secure ledger for recording transactions",
+    },
+    {
+      question:
+        "What does the term 'FOMO' stand for in the context of investing?",
+      options: [
+        "Fear of Missing Out",
+        "Future of Market Operations",
+        "Financial Obligation Management",
+        "Formulating Online Market Offers",
+      ],
+      answer: "Fear of Missing Out",
+    },
+    {
+      question: "What does 'slippage' mean in trading?",
+      options: [
+        "The difference between expected and actual transaction prices",
+        "A type of trading strategy",
+        "A method of securing wallets",
+        "A term for market volatility",
+      ],
+      answer: "The difference between expected and actual transaction prices",
+    },
+    {
+      question: "What does the term 'HODL' mean?",
+      options: [
+        "A trading strategy focused on short-term gains",
+        "A misspelling of 'hold,' referring to keeping and not selling cryptocurrencies",
+        "A method of securing cryptocurrency investments",
+        "A type of market analysis",
+      ],
+      answer:
+        "A misspelling of 'hold,' referring to keeping and not selling cryptocurrencies",
+    },
+    {
+      question: "What is a 'hard cap' in an ICO?",
+      options: [
+        "The minimum amount of funds needed to proceed with the project",
+        "The maximum amount of funds that can be raised during the fundraising period",
+        "The total number of tokens available for sale",
+        "The initial price of the tokens",
+      ],
+      answer:
+        "The maximum amount of funds that can be raised during the fundraising period",
+    },
+    {
+      question: "What does 'KYC' stand for in cryptocurrency exchanges?",
+      options: [
+        "Know Your Customer",
+        "Keep Your Coins",
+        "Key Yield Calculation",
+        "Keep Your Crypto",
+      ],
+      answer: "Know Your Customer",
+    },
+    {
+      question: "What does 'altcoin' refer to?",
+      options: [
+        "Any cryptocurrency that is not Bitcoin",
+        "The first cryptocurrency created",
+        "A type of mining hardware",
+        "A specific trading strategy",
+      ],
+      answer: "Any cryptocurrency that is not Bitcoin",
+    },
+    {
+      question:
+        "What is the role of a validator in a Proof of Stake (PoS) blockchain?",
+      options: [
+        "To mine new blocks",
+        "To validate transactions and create new blocks based on the amount of cryptocurrency they hold and stake",
+        "To trade cryptocurrencies for profit",
+        "To manage user accounts",
+      ],
+      answer:
+        "To validate transactions and create new blocks based on the amount of cryptocurrency they hold and stake",
+    },
+    {
+      question:
+        "What does 'decentralization' mean in the context of blockchain technology?",
+      options: [
+        "Control is held by a single entity",
+        "The distribution of control and decision-making across a network of nodes",
+        "A process of centralizing information",
+        "The elimination of all intermediaries",
+      ],
+      answer:
+        "The distribution of control and decision-making across a network of nodes",
+    },
+    {
+      question: "What is the significance of 'block height' in a blockchain?",
+      options: [
+        "The total number of transactions in a block",
+        "The number of blocks in the blockchain, indicating its length",
+        "The size of the blockchain in megabytes",
+        "The time taken to mine a block",
+      ],
+      answer: "The number of blocks in the blockchain, indicating its length",
+    },
+    {
+      question: "What is 'crypto arbitrage'?",
+      options: [
+        "The process of trading one cryptocurrency for another",
+        "The practice of taking advantage of price differences for the same asset on different exchanges",
+        "A method of mining coins",
+        "A strategy for long-term investing",
+      ],
+      answer:
+        "The practice of taking advantage of price differences for the same asset on different exchanges",
+    },
+    {
+      question: "What is 'price discovery'?",
+      options: [
+        "The process of determining the value of a cryptocurrency based on market supply and demand",
+        "A method of trading cryptocurrencies",
+        "A strategy for investing in coins",
+        "The act of creating new tokens",
+      ],
+      answer:
+        "The process of determining the value of a cryptocurrency based on market supply and demand",
+    }
+  ]
 };
