@@ -58,12 +58,12 @@ export async function updateUserRollsPoints(req: NextRequest) {
       availableDiceRolls: {
         increment: request.forPremiumSubscription ? RollsStreakConfig.Premium : diceRolls,
       },
-      tonEarned: {
-        increment: request.forPremiumSubscription ? 0 : request.ton ?? 0,
-      },
-      nftEarned: {
-        increment: request.forPremiumSubscription ? 0 : request.nft ?? 0,
-      },
+    //   tonEarned: {
+    //     increment: request.forPremiumSubscription ? 0 : request.ton ?? 0,
+    //   },
+    //   nftEarned: {
+    //     increment: request.forPremiumSubscription ? 0 : request.nft ?? 0,
+    //   },
     },
   });
 
