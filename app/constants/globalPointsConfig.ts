@@ -4,4 +4,6 @@ export const PointsConfig = {
   WalletConnectPoints: 4000,
   TonTransactionPoints: 50000,
   WebsiteViewPoints: 2000,
+  DiceSpin15Points: 25000,
+  DiceSpin75Points: 75000,
 };
