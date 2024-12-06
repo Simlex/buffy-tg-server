@@ -17,10 +17,18 @@ import { PointsConfig } from "../constants/globalPointsConfig";
 
 interface TaskStatusProps {
     status: boolean;
+    claimer?: boolean
 }
 
-const TaskStatus: FunctionComponent<TaskStatusProps> = ({ status }) => {
-    return (<p className={`text-sm ${status ? "text-green-300/80" : "text-white/60"}`}>{status ? "Done" : "Not done"}</p>);
+const TaskStatus: FunctionComponent<TaskStatusProps> = ({ status, claimer }) => {
+    return (
+        <p className={`text-sm ${status ? "text-green-300/80" : "text-white/60"}`}>
+            {
+                claimer ? status ? "Claimed" : "Not claimed" : status ? "Done" : "Not done"
+            }
+            {/* {status ? "Done" : "Not done"} */}
+        </p>
+    );
 }
 
 const TaskPage: FunctionComponent = (): ReactElement => {
@@ -55,6 +63,8 @@ const TaskPage: FunctionComponent = (): ReactElement => {
     const walletConnectPoints = PointsConfig.WalletConnectPoints;
     const tonTransactionPoints = PointsConfig.TonTransactionPoints;
     const websiteViewPoints = PointsConfig.WebsiteViewPoints;
+    const diceSpin15Points = PointsConfig.DiceSpin15Points;
+    const diceSpin75Points = PointsConfig.DiceSpin75Points;
 
     // const userFriendlyAddress = useTonAddress();
     // const destination = userFriendlyAddress ? Address.parse(userFriendlyAddress).toRawString() : '';
@@ -72,7 +82,11 @@ const TaskPage: FunctionComponent = (): ReactElement => {
                     return twitterPoints;
                 case Task.WEBSITE_VIEW:
                     return websiteViewPoints;
-            
+                case Task.DICE_SPIN_15:
+                    return diceSpin15Points;
+                case Task.DICE_SPIN_75:
+                    return diceSpin75Points;
+
                 default:
                     return 0;
             }
@@ -87,7 +101,6 @@ const TaskPage: FunctionComponent = (): ReactElement => {
 
         await updateUserPoints(data)
             .then((response) => {
-                console.log("🚀 ~ .then ~ response:", response)
                 fetchUserProfileInformation(userProfileInformation?.userId as string);
 
                 switch (specifiedTask) {
@@ -286,7 +299,33 @@ const TaskPage: FunctionComponent = (): ReactElement => {
                 window.open("https://buffydurov.art", "_blank");
             },
             verificationFunction: () => handleVerifyTask(Task.WEBSITE_VIEW)
-        }
+        },
+        {
+            icon: (className?: string) => <Icons.Games fill="#fff" className={`w-8 h-8 ${className}`} />,
+            task: Task.DICE_SPIN_15,
+            title: "Spin the Dice 15 times",
+            points: diceSpin15Points,
+            action: "Claim",
+            isDone: userProfileInformation?.diceSpin15Claimed ?? false,
+            hideRhsBtn: true,
+            actionFunction: () => {
+                handleVerifyTask(Task.DICE_SPIN_15)
+            },
+            verificationFunction: () => { }
+        },
+        {
+            icon: (className?: string) => <Icons.Games fill="#fff" className={`w-8 h-8 ${className}`} />,
+            task: Task.DICE_SPIN_75,
+            title: "Spin the Dice 75 times",
+            points: diceSpin75Points,
+            action: "Claim",
+            isDone: userProfileInformation?.diceSpin75Claimed ?? false,
+            hideRhsBtn: true,
+            actionFunction: () => {
+                handleVerifyTask(Task.DICE_SPIN_75)
+            },
+            verificationFunction: () => { }
+        },
     ];
 
     const selectedTaskInfo = taskInfo.find(task => task.task === selectedTask);
@@ -536,6 +575,58 @@ const TaskPage: FunctionComponent = (): ReactElement => {
                                     <span className="w-7 h-7 rounded-full bg-white/30 grid place-items-center">
                                         {
                                             userProfileInformation.websiteViewTaskDone ?
+                                                <Icons.CheckFill className="fill-white" /> :
+                                                <Icons.CloseFill className="fill-white" />
+                                        }
+                                    </span>
+                                </button>
+                                <button
+                                    onClick={() => {
+                                        setSelectedTask(Task.DICE_SPIN_15);
+                                        setIsModalVisible(true);
+                                    }}
+                                    className={`bg-gray-700 rounded-3xl flex flex-row items-center justify-between p-4 pr-5 hover:bg-gray-600 ${userProfileInformation.diceSpin15Claimed ? "pointer-events-none opacity-70" : ""}`}>
+                                    <div className="flex flex-row items-center gap-3">
+                                        <span className="w-7 h-7 relative grid place-items-center">
+                                            <Icons.Games className="w-6 h-6" />
+                                        </span>
+                                        <div className="flex flex-col gap-[2px] items-start">
+                                            <h5 className="text-white font-medium leading-3 text-base">Spin 15 times</h5>
+                                            <TaskStatus
+                                                claimer
+                                                status={userProfileInformation.diceSpin15Claimed ?? false}
+                                            />
+                                        </div>
+                                    </div>
+                                    <span className="w-7 h-7 rounded-full bg-white/30 grid place-items-center">
+                                        {
+                                            userProfileInformation.diceSpin15Claimed ?
+                                                <Icons.CheckFill className="fill-white" /> :
+                                                <Icons.CloseFill className="fill-white" />
+                                        }
+                                    </span>
+                                </button>
+                                <button
+                                    onClick={() => {
+                                        setSelectedTask(Task.DICE_SPIN_75);
+                                        setIsModalVisible(true);
+                                    }}
+                                    className={`bg-gray-700 rounded-3xl flex flex-row items-center justify-between p-4 pr-5 hover:bg-gray-600 ${userProfileInformation.diceSpin75Claimed ? "pointer-events-none opacity-70" : ""}`}>
+                                    <div className="flex flex-row items-center gap-3">
+                                        <span className="w-7 h-7 relative grid place-items-center">
+                                            <Icons.Games className="w-6 h-6" />
+                                        </span>
+                                        <div className="flex flex-col gap-[2px] items-start">
+                                            <h5 className="text-white font-medium leading-3 text-base">Become a Dice master</h5>
+                                            <TaskStatus
+                                                claimer
+                                                status={userProfileInformation.diceSpin75Claimed ?? false}
+                                            />
+                                        </div>
+                                    </div>
+                                    <span className="w-7 h-7 rounded-full bg-white/30 grid place-items-center">
+                                        {
+                                            userProfileInformation.diceSpin75Claimed ?
                                                 <Icons.CheckFill className="fill-white" /> :
                                                 <Icons.CloseFill className="fill-white" />
                                         }
