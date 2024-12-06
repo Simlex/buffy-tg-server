@@ -35,6 +35,8 @@ model Users {
     totalPoints            Int       @default(0)
     diceRollsPoints        Int       @default(0)
     totalDiceRolls         Int       @default(0) // total number of dice rolls the user has made
+    diceSpin15Claimed      Boolean   @default(false)
+    diceSpin75Claimed      Boolean   @default(false)
     triviaPoints           Int       @default(0)
     lastAnsweredTriviaDate DateTime?
     agePoints              Int       @default(0) // points earned from age verification
