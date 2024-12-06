@@ -58,11 +58,11 @@ const Homepage: FunctionComponent = (): ReactElement => {
                 </div> */}
                     <div className="flex flex-row gap-2 items-center text-white/80 mb-4">
                         <div className="flex flex-row items-center gap-2 p-2 px-3 pr-2 bg-white/10 rounded-3xl">
-                            <p>{userProfileInformation?.tonEarned} TON</p>
+                            <p>{userProfileInformation?.tonEarned?.toFixed(1)} TON</p>
                             <span><Icons.Ton fill="#fff" className="w-5 h-5" /></span>
                         </div>
                         <div className="flex flex-row items-center gap-2 p-2 px-3 pr-2 bg-white/10 rounded-3xl">
-                            <p>{userProfileInformation?.nftEarned} NFT</p>
+                            <p>{userProfileInformation?.nftEarned?.toFixed(1)} NFT</p>
                             <span>
                                 <Image src={images.nft_coin} alt="Nft coin" className="w-5 h-5" />
                             </span>
