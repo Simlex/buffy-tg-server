@@ -189,13 +189,13 @@ export class ApplicationError extends BaseApplicationError {
     Code: "USER_1018",
   };
 
-    /**
-     * The error message for ~ User already claimed the daily free dice roll
-     */
-    static DailyFreeDiceRollAlreadyClaimed: IApplicationError = {
-      Text: "User already claimed the daily free dice roll",
-      Code: "USER_1019",
-    };
+  /**
+   * The error message for ~ User already claimed the daily free dice roll
+   */
+  static DailyFreeDiceRollAlreadyClaimed: IApplicationError = {
+    Text: "User already claimed the daily free dice roll",
+    Code: "USER_1019",
+  };
 
   //#endregion
 
@@ -241,38 +241,61 @@ export class ApplicationError extends BaseApplicationError {
     Code: "TASKS_1001",
   };
 
-    /**
-     * The error message for ~ Wallet Connect task already completed
-     */
-    static WalletConnectTaskAlreadyCompleted: IApplicationError = {
-      Text: "Wallet Connect task already completed",
-      Code: "TASKS_1002",
-    };
+  /**
+   * The error message for ~ Wallet Connect task already completed
+   */
+  static WalletConnectTaskAlreadyCompleted: IApplicationError = {
+    Text: "Wallet Connect task already completed",
+    Code: "TASKS_1002",
+  };
 
-    /**
-     * The error message for ~ TON Transaction task already completed
-     */
-    static TonTransactionTaskAlreadyCompleted: IApplicationError = {
-      Text: "TON Transaction task already completed",
-      Code: "TASKS_1003",
-    };
+  /**
+   * The error message for ~ TON Transaction task already completed
+   */
+  static TonTransactionTaskAlreadyCompleted: IApplicationError = {
+    Text: "TON Transaction task already completed",
+    Code: "TASKS_1003",
+  };
 
-    /**
-     * The error message for ~ user already answered the trivia for the day
-     */
-    static UserAlreadyAnsweredTrivia: IApplicationError = {
-      Text: "User already answered the trivia for the day",
-      Code: "TASKS_1004",
-    }
+  /**
+   * The error message for ~ user already answered the trivia for the day
+   */
+  static UserAlreadyAnsweredTrivia: IApplicationError = {
+    Text: "User already answered the trivia for the day",
+    Code: "TASKS_1004",
+  };
 
-    /**
-     * The error message for ~ Website View task already completed
-     */
-    static WebsiteViewTaskAlreadyCompleted: IApplicationError = {
-      Text: "Website View task already completed",
-      Code: "TASKS_1005",
-    };
+  /**
+   * The error message for ~ Website View task already completed
+   */
+  static WebsiteViewTaskAlreadyCompleted: IApplicationError = {
+    Text: "Website View task already completed",
+    Code: "TASKS_1005",
+  };
 
+  /**
+   * The error message for ~ Dice Spin 15 task already completed
+   */
+  static DiceSpin15TaskAlreadyCompleted: IApplicationError = {
+    Text: "Dice Spin 15 task already completed",
+    Code: "TASKS_1006",
+  };
+
+  /**
+   * The error message for ~ Dice Spin 75 task already completed
+   */
+  static DiceSpin75TaskAlreadyCompleted: IApplicationError = {
+    Text: "Dice Spin 75 task already completed",
+    Code: "TASKS_1007",
+  };
+
+  /**
+   * The error message for ~ Not enough dice rolls
+   */
+  static NotEnoughDiceRolls: IApplicationError = {
+    Text: "Not enough dice rolls",
+    Code: "TASKS_1008",
+  };
 
   //#endregion
 
@@ -330,13 +353,13 @@ export class ApplicationError extends BaseApplicationError {
     Code: "REFERRAL_1001",
   };
 
-    /**
-     * The error message for ~ Invalid Referral Count
-     */
-    static InvalidReferralCount: IApplicationError = {
-      Text: "Invalid Referral Count",
-      Code: "REFERRAL_1002",
-    }
+  /**
+   * The error message for ~ Invalid Referral Count
+   */
+  static InvalidReferralCount: IApplicationError = {
+    Text: "Invalid Referral Count",
+    Code: "REFERRAL_1002",
+  };
 
   //#endregion
 }
