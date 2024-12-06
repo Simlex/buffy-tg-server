@@ -92,10 +92,17 @@ export async function POST(req: NextRequest) {
 
       // Check for commands
       if (text === "/start" || text.startsWith("/start")) {
+        // const messageText = (refName?: string) => `
+        // Welcome ${user_name ?? ""} to BUFFY DUROV! 🐩 ${
+        //   refName ? `You were referred by ${refName}\n` : " "
+        // }Tap to watch your balance rise.\n\nExplore BUFFY DUROV on TON, the dog-themed platform that rewards you for playing. Don’t miss our daily trivia on our X! ${trivia_link}\n\nPoints accumulated convert to $BUVEL tokens for all players.\n\nInvite friends and family for more $BUVEL rewards! More woof buddies🐩, more earnings.\n\n——————————————————\n\nИсследуйте BUFFY DUROV 🐩 на платформе TON и зарабатывайте токены $BUVEL.\nПриглашайте друзей для получения\nдополнительные наград $BUVEL.
+        // `;
         const messageText = (refName?: string) => `
-        Welcome ${user_name ?? ""} to BUFFY DUROV! 🐩 ${
+        🐩 Welcome ${user_name ?? ""} to BUFFY DUROV! ${
           refName ? `You were referred by ${refName}\n` : " "
-        }Tap to watch your balance rise.\n\nExplore BUFFY DUROV on TON, the dog-themed platform that rewards you for playing. Don’t miss our daily trivia on our X! ${trivia_link}\n\nPoints accumulated convert to $BUVEL tokens for all players.\n\nInvite friends and family for more $BUVEL rewards! More woof buddies🐩, more earnings.\n\n——————————————————\n\nИсследуйте BUFFY DUROV 🐩 на платформе TON и зарабатывайте токены $BUVEL.\nПриглашайте друзей для получения\nдополнительные наград $BUVEL.
+        }🎮 Play games, earn points, and unlock exciting rewards like $BUVEL tokens and exclusive NFTs.\n\n
+        🎲 Roll the dice, 🖱️ tap to win, and 🚀 boost your rewards by inviting friends!\n\n
+        Start your BUFFY adventure now! 🐩✨
         `;
 
         // Split the text to extract the referral ID (if it exists)
