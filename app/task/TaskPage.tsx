@@ -100,7 +100,7 @@ const TaskPage: FunctionComponent = (): ReactElement => {
         };
 
         await updateUserPoints(data)
-            .then((response) => {
+            .then(() => {
                 fetchUserProfileInformation(userProfileInformation?.userId as string);
 
                 switch (specifiedTask) {
