@@ -16,6 +16,9 @@ export interface UserProfileInformation {
   hadMadeFirstTonTransaction: boolean;
 
   diceRollsPoints?: number;
+  totalDiceRolls?: number;
+  diceSpin15Claimed?: boolean;
+  diceSpin75Claimed?: boolean;
   tapPoints?: number;
   totalPoints?: number;
   triviaPoints?: number;
