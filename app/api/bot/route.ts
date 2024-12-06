@@ -88,7 +88,7 @@ export async function POST(req: NextRequest) {
       const user_name = message.chat.username;
       const user_id = message.chat.id;
       const text: string = message.text;
-      const trivia_link = "https://x.com/BuffyDurov";
+    //   const trivia_link = "https://x.com/BuffyDurov";
 
       // Check for commands
       if (text === "/start" || text.startsWith("/start")) {
