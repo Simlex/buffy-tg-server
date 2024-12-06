@@ -90,7 +90,6 @@ export async function fetchUsers(req: NextRequest) {
 export async function updateUserPoints(req: NextRequest) {
   // Get the body of the request
   const request = (await req.json()) as PointsUpdateRequest;
-  console.log("🚀 ~ updateUserPoints ~ request:", request)
 
   // Check if all required fields are provided
   if (!request.userId) {
@@ -199,7 +198,9 @@ export async function updateUserPoints(req: NextRequest) {
       await incrementUserTotalPoints(
         request.points,
         request.userId,
-        user.isWalletConnected ? user.totalPoints : user.totalPoints + PointsConfig.WalletConnectPoints
+        user.isWalletConnected
+          ? user.totalPoints
+          : user.totalPoints + PointsConfig.WalletConnectPoints
       );
 
       // update the user's telegram task status
@@ -275,7 +276,97 @@ export async function updateUserPoints(req: NextRequest) {
           userId: request.userId,
         },
         data: {
-            websiteViewTaskDone: true,
+          websiteViewTaskDone: true,
+        },
+      });
+
+      return { ...updatedUser };
+    }
+
+    // If the specified task is dice spin 15
+    if (specifiedTask === Task.DICE_SPIN_15) {
+      // if the total dice rolls of the user is not up to 15, show error
+      if (user.totalDiceRolls < 15) {
+        return {
+          error: ApplicationError.NotEnoughDiceRolls.Text,
+          errorCode: ApplicationError.NotEnoughDiceRolls.Code,
+          statusCode: StatusCodes.BadRequest,
+        };
+      }
+
+      // If the user has done the task, show error
+      if (user.diceSpin15Claimed) {
+        return {
+          error: ApplicationError.DiceSpin15TaskAlreadyCompleted.Text,
+          errorCode: ApplicationError.DiceSpin15TaskAlreadyCompleted.Code,
+          statusCode: StatusCodes.BadRequest,
+        };
+      }
+
+      // if we get here, it means the user has not done the task...
+
+      // increment the user's points
+      await incrementUserTotalPoints(
+        request.points,
+        request.userId,
+        user.totalPoints
+      );
+
+      // decrement the user's total dice rolls
+      const updatedUser = await prisma.users.update({
+        where: {
+          userId: request.userId,
+        },
+        data: {
+          totalDiceRolls: {
+            decrement: 15,
+          },
+          diceSpin15Claimed: true,
+        },
+      });
+
+      return { ...updatedUser };
+    }
+
+    // If the specified task is dice spin 75
+    if (specifiedTask === Task.DICE_SPIN_75) {
+      // if the total dice rolls of the user is not up to 75, show error
+      if (user.totalDiceRolls < 75) {
+        return {
+          error: ApplicationError.NotEnoughDiceRolls.Text,
+          errorCode: ApplicationError.NotEnoughDiceRolls.Code,
+          statusCode: StatusCodes.BadRequest,
+        };
+      }
+
+      // If the user has done the task, show error
+      if (user.diceSpin75Claimed) {
+        return {
+          error: ApplicationError.DiceSpin75TaskAlreadyCompleted.Text,
+          errorCode: ApplicationError.DiceSpin75TaskAlreadyCompleted.Code,
+          statusCode: StatusCodes.BadRequest,
+        };
+      }
+
+      // if we get here, it means the user has not done the task...
+
+      // increment the user's points
+      await incrementUserTotalPoints(
+        request.points,
+        request.userId,
+        user.totalPoints
+      );
+
+      // decrement the user's total dice rolls
+      const updatedUser = await prisma.users.update({
+        where: {
+          userId: request.userId,
+        },
+        data: {
+          totalDiceRolls: {
+            decrement: 75,
+          },
+          diceSpin75Claimed: true,
         },
       });
 
@@ -343,6 +434,9 @@ export async function updateUserPoints(req: NextRequest) {
           diceRollsPoints: {
             increment: request.points,
           },
+          totalDiceRolls: {
+            increment: request.diceRollsUsed,
+          },
           availableDiceRolls: {
             decrement: request.diceRollsUsed,
           },
@@ -400,7 +494,7 @@ export async function updateUserPoints(req: NextRequest) {
           },
         },
       });
-      console.log("🚀 ~ updateUserPoints ~ updatedUser:", updatedUser)
+      console.log("🚀 ~ updateUserPoints ~ updatedUser:", updatedUser);
 
       // Return the response
       return { ...updatedUser };
@@ -423,7 +517,7 @@ export async function updateUserPoints(req: NextRequest) {
           },
         },
       });
-      console.log("🚀 ~ updateUserPoints ~ updatedUser:", updatedUser)
+      console.log("🚀 ~ updateUserPoints ~ updatedUser:", updatedUser);
 
       // Return the response
       return { ...updatedUser };
@@ -764,4 +858,54 @@ export async function updateUserLevel(req: NextRequest) {
 
   // Return the response
   return { message: "Successfully updated user's level", data: updatedUser };
+}
+
+export async function updateTotalNumberOfRolls(req: NextRequest) {
+  // Get the body of the request
+  const request = (await req.json()) as {
+    rolls: number;
+    userId: string;
+  };
+
+  // Check if all required fields are provided
+  if (!request.userId) {
+    return {
+      error: ApplicationError.MissingRequiredParameters.Text,
+      statusCode: StatusCodes.BadRequest,
+    };
+  }
+
+  // Check if user exists
+  const user = await prisma.users.findUnique({
+    where: {
+      userId: request.userId,
+    },
+  });
+
+  // If user does not exists, return error
+  if (!user) {
+    return {
+      error: ApplicationError.UserWithIdNotFound.Text,
+      errorCode: ApplicationError.UserWithIdNotFound.Code,
+      statusCode: StatusCodes.NotFound,
+    };
+  }
+
+  // Update the user's total dice rolls
+  const updatedUser = await prisma.users.update({
+    where: {
+      userId: request.userId,
+    },
+    data: {
+      totalDiceRolls: {
+        increment: request.rolls,
+      },
+    },
+  });
+
+  // Return the response
+  return {
+    message: "Successfully updated user's total dice rolls",
+    data: updatedUser,
+  };
 }
