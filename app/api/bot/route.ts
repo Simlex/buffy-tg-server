@@ -100,9 +100,7 @@ export async function POST(req: NextRequest) {
         const messageText = (refName?: string) => `
         🐩 Welcome ${user_name ?? ""} to BUFFY DUROV! ${
           refName ? `You were referred by ${refName}\n` : " "
-        }🎮 Play games, earn points, and unlock exciting rewards like $BUVEL tokens and exclusive NFTs.\n\n
-        🎲 Roll the dice, 🖱️ tap to win, and 🚀 boost your rewards by inviting friends!\n\n
-        Start your BUFFY adventure now! 🐩✨
+        }🎮 Play games, earn points, and unlock exciting rewards like $BUVEL tokens and exclusive NFTs.\n\n🎲 Roll the dice, 🖱️ tap to win, and 🚀 boost your rewards by inviting friends!\n\nStart your BUFFY adventure now! 🐩✨
         `;
 
         // Split the text to extract the referral ID (if it exists)
