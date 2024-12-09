@@ -35,7 +35,7 @@ export default function BlockConfirmationModal(
                         disabled={isRestrictingBotUser}
                         isLoading={isRestrictingBotUser}
                         onClick={handleRestrictBotUser}
-                        className='bg-black text-white !p-2 !px-4 rounded-full w-1/2'>
+                        className='!bg-black !text-white !p-2 !px-4 rounded-full w-1/2'>
                         Block
                     </Button>
                 </div>
