@@ -197,6 +197,14 @@ export class ApplicationError extends BaseApplicationError {
     Code: "USER_1019",
   };
 
+  /**
+   * The error message for ~ Failed to restrict user
+   */
+  static FailedToRestrictUser: IApplicationError = {
+    Text: "Failed to restrict user",
+    Code: "USER_1020",
+  };
+
   //#endregion
 
   //#region Referral Errors
