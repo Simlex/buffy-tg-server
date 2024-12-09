@@ -567,6 +567,7 @@ export async function fetchLeaderboard() {
       // order by points in descending order
       totalPoints: "desc",
     },
+    take: 100
   });
 
   // Return all users
