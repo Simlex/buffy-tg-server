@@ -4,20 +4,25 @@ import Button from '../components/ui/button'
 import Input from '../components/ui/input'
 import Table from '../components/ui/table'
 import { BotUser } from '../models/IBotUser'
-import { useFetchBotUsers } from '../api/apiClient'
+import { useFetchBotUsers, useRestrictBotUser } from '../api/apiClient'
 import { toast } from 'sonner'
 import moment from 'moment'
 import jsonexport from 'jsonexport'
+import BlockConfirmationModal from '../components/modal/BlockConfirmationModal'
 
 export default function AdminPage() {
 
     const fetchBotUsers = useFetchBotUsers();
+    const restrictBotUser = useRestrictBotUser();
 
     const [passkey, setPassKey] = useState<string>();
     const [isLoginBtnClicked, setIsLoginBtnClicked] = useState(false);
     const [authenticated, setAuthenticated] = useState(false);
     const [isFetchingInformation, setIsFetchingInformation] = useState(false);
     const [isDownloadingBotUsers, setIsDownloadingBotUsers] = useState(false);
+    const [isRestrictingBotUser, setIsRestrictingBotUser] = useState(false);
+    const [selectedBotUser, setSelectedBotUser] = useState<BotUser>();
+    const [isBlockConfirmationModalVisible, setIsBlockConfirmationModalVisible] = useState(false);
 
     const [botUsers, setBotUsers] = useState<BotUser[]>([]);
 
@@ -50,6 +55,28 @@ export default function AdminPage() {
                 setIsFetchingInformation(false);
             })
     };
+
+    const handleRestrictBotUser = async () => {
+        // show loading spinner
+        setIsRestrictingBotUser(true);
+
+        // call the restrict bot user function
+        await restrictBotUser(passkey as string, selectedBotUser?.userId as string)
+            .then(async (response) => {
+                console.log("🚀 ~ .then ~ response:", response);
+                toast.success("User restricted successfully");
+                setIsBlockConfirmationModalVisible(false);
+                await handleFetchBotUsers();
+            })
+            .catch((error) => {
+                toast.error("An error occured while restricting user")
+                console.log("🚀 ~ handleRestrictBotUser ~ error:", error)
+            })
+            .finally(() => {
+                // hide loading spinner
+                setIsRestrictingBotUser(false);
+            })
+    }
 
     async function handleDownloadAllUsersInfo(e: MouseEvent<HTMLButtonElement>) {
         e.preventDefault();
@@ -94,6 +121,13 @@ export default function AdminPage() {
 
     return (
         <>
+            <BlockConfirmationModal
+                visibility={isBlockConfirmationModalVisible}
+                setVisibility={setIsBlockConfirmationModalVisible}
+                handleRestrictBotUser={handleRestrictBotUser}
+                selectedBotUser={selectedBotUser}
+                isRestrictingBotUser={isRestrictingBotUser}
+            />
             {
                 !authenticated
                     ? <div className='flex flex-col items-center justify-center h-full gap-8'>
@@ -117,7 +151,7 @@ export default function AdminPage() {
                         <div className='flex flex-col gap-4 items-center md:flex-row md:justify-between mb-8'>
                             <h3 className='text-white text-xl font-bold'>Bot Users ({botUsers.length})</h3>
                             <Button
-                            disabled={isDownloadingBotUsers}
+                                disabled={isDownloadingBotUsers}
                                 onClick={handleDownloadAllUsersInfo}
                                 className='md:w-fit'>
                                 Download all
@@ -126,16 +160,34 @@ export default function AdminPage() {
 
                         <Table
                             tableHeaders={[
-                                <>Name</>,
+                                <>User ID</>,
+                                <>Username</>,
                                 <>Points</>,
                                 <>TON</>,
                                 <>NFT</>,
                                 <>Date joined</>,
                                 <>Referrals</>,
+                                <>Action</>,
                             ]}
                             tableRowsData={
                                 botUsers.map((user) => [
-                                    <>{user.userId}</>, <>{user.totalPoints}</>, <>{user.tonEarned}</>, <>{user.nftEarned}</>, <>{moment(user.createdAt).format("Do MMM, YYYY")}</>, <>{user.referralCount}</>
+                                    <>{user.userId}</>,
+                                    <>{user.username}</>,
+                                    <>{user.totalPoints}</>,
+                                    <>{user.tonEarned}</>,
+                                    <>{user.nftEarned}</>,
+                                    <>{moment(user.createdAt).format("Do MMM, YYYY")}</>,
+                                    <>{user.referralCount}</>,
+                                    <>
+                                        <button
+                                            onClick={() => {
+                                                setSelectedBotUser(user)
+                                                setIsBlockConfirmationModalVisible(true)
+                                            }}
+                                            className='bg-black text-white p-2 px-4 rounded-full'>
+                                            Block
+                                        </button>
+                                    </>
                                 ])
                             }
                             isLoading={isFetchingInformation}
