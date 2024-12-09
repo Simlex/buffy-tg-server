@@ -1,5 +1,5 @@
 export const TriviaConfig = {
-  startDate: new Date("2024-11-25T00:00:00Z"),
+  startDate: new Date("2024-12-09T00:00:00Z"),
   //   endDate: new Date("2021-10-31T23:59:59Z"),
   dailyTriviaPoints: 1000,
   // questionsAndAnswers: [
