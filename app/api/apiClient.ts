@@ -162,4 +162,12 @@ export function useFetchBotUsers() {
   return fetchBotUsers;
 }
 
+export function useRestrictBotUser() {
+  async function restrictBotUser(passkey: string, userId: string) {
+    return API.delete(ApiRoutes.RestricBotUser(passkey, userId));
+  }
+
+  return restrictBotUser;
+}
+
 //#endregion
