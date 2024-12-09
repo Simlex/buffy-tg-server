@@ -86,4 +86,12 @@ export class ApiRoutes {
    */
   static Admin: (passkey: string) => string = (passkey: string) =>
     `api/admin?passkey=${passkey}`;
+
+  /**
+   * The route to admin endpoint
+   */
+  static RestricBotUser: (passkey: string, userId: string) => string = (
+    passkey: string,
+    userId: string
+  ) => `api/admin/bot-users?passkey=${passkey}&userId=${userId}`;
 }
