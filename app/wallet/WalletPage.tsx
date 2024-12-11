@@ -1,7 +1,7 @@
 "use client"
 import React, { useContext, useEffect } from 'react'
 import { RollsPurchasesConfig } from '../constants/purchases'
-import { SendTransactionRequest, TonConnectUIContext, useTonConnectModal } from '@tonconnect/ui-react'
+import { SendTransactionRequest, TonConnectUIContext, useTonAddress, useTonConnectModal } from '@tonconnect/ui-react'
 import { Address, beginCell, toNano } from '@ton/ton';
 import { motion } from 'framer-motion'
 import { useUpdateUserRollsPoints } from '../api/apiClient'
@@ -17,7 +17,7 @@ export default function WalletPage() {
 
     const walletAddress = "UQA4tJOARNgCF5A029rQISCA4ts3iqchbgyjjkbJdMIhxLzB";
 
-    // const userFriendlyAddress = useTonAddress();
+    const userFriendlyAddress = useTonAddress();
     // const rawAddress = useTonAddress(false);
     // const wallet = useTonWallet();
     // const { state, open, close } = useTonConnectModal(); // for opening and closing the modal
@@ -77,7 +77,8 @@ export default function WalletPage() {
                         userId: userProfileInformation?.userId as string,
                         ton: depositAmount,
                         points: RollsPurchasesConfig.find(purchase => purchase.tonPrice === depositAmount)?.roll || 0,
-                        forPremiumSubscription: depositAmount === premiumSubscriptionTonFee
+                        forPremiumSubscription: depositAmount === premiumSubscriptionTonFee,
+                        walletAddress: userFriendlyAddress
                     }
 
                     await updateUserRollsPoints(data)
