@@ -15,21 +15,22 @@ datasource db {
 }
 
 model Users {
-    id                         String  @id @default(uuid())
-    userId                     String  @unique
+    id                         String             @id @default(uuid())
+    userId                     String             @unique
     username                   String
-    email                      String? @unique
-    emailVerified              Boolean @default(false)
-    role                       String  @default("user")
-    level                      Int     @default(1)
+    email                      String?            @unique
+    emailVerified              Boolean            @default(false)
+    role                       String             @default("user")
+    level                      Int                @default(1)
     firstName                  String?
     lastName                   String?
     profilePhoto               String?
     phone                      String?
-    referralCode               String  @unique
-    referralCount              Int     @default(0)
-    isWalletConnected          Boolean @default(false)
-    hadMadeFirstTonTransaction Boolean @default(false)
+    referralCode               String             @unique
+    referralCount              Int                @default(0)
+    isWalletConnected          Boolean            @default(false)
+    hadMadeFirstTonTransaction Boolean            @default(false)
+    connectedWallets           ConnectedWallets[]
 
     tapPoints              Int       @default(0)
     totalPoints            Int       @default(0)
@@ -43,6 +44,7 @@ model Users {
     messagesPoints         Int       @default(0) // points earned from messages sent
     tonEarned              Float     @default(0.0) // total ton earned
     nftEarned              Float     @default(0.0) // total nft earned
+    tonSent                Float     @default(0.0) // total ton transacted (sent)
 
     dailyFreeBoosters                      Int       @default(4)
     boostRefillEndTime                     DateTime?
@@ -72,4 +74,16 @@ model Referrals {
     updatedAt  DateTime @updatedAt
 
     @@unique([userId, referredId])
+}
+
+model ConnectedWallets {
+    id            String   @id @default(uuid())
+    userId        String   @unique
+    user          Users    @relation(fields: [userId], references: [userId])
+    walletType    String
+    walletAddress String
+    createdAt     DateTime @default(now())
+    updatedAt     DateTime @updatedAt
+
+    @@unique([walletType, walletAddress])
 }
