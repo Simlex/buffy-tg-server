@@ -11,7 +11,7 @@ import { ApplicationContext, ApplicationContextData } from "../context/Applicati
 import { Task, TaskType } from "../enums/ITask";
 import { referralMetrics } from "../constants/referralMetrics";
 import { BonusClaimRequest } from "../models/IReferral";
-import { SendTransactionRequest, TonConnectUIContext, useTonConnectModal } from "@tonconnect/ui-react";
+import { SendTransactionRequest, TonConnectUIContext, useTonAddress, useTonConnectModal } from "@tonconnect/ui-react";
 import { Address, beginCell, toNano } from "@ton/ton";
 import { PointsConfig } from "../constants/globalPointsConfig";
 
@@ -66,7 +66,7 @@ const TaskPage: FunctionComponent = (): ReactElement => {
     const diceSpin15Points = PointsConfig.DiceSpin15Points;
     const diceSpin75Points = PointsConfig.DiceSpin75Points;
 
-    // const userFriendlyAddress = useTonAddress();
+    const userFriendlyAddress = useTonAddress();
     // const destination = userFriendlyAddress ? Address.parse(userFriendlyAddress).toRawString() : '';
     const walletAddress = "UQA4tJOARNgCF5A029rQISCA4ts3iqchbgyjjkbJdMIhxLzB";
 
@@ -96,7 +96,8 @@ const TaskPage: FunctionComponent = (): ReactElement => {
         const data: PointsUpdateRequest = {
             userId: userProfileInformation?.userId as string,
             points: getPointsBasedOnSpecifiedTask(),
-            task: specifiedTask
+            task: specifiedTask,
+            walletAddress: specifiedTask == Task.WALLET_CONNECT ? userFriendlyAddress : undefined
         };
 
         await updateUserPoints(data)
@@ -209,6 +210,7 @@ const TaskPage: FunctionComponent = (): ReactElement => {
                         userId: userProfileInformation?.userId as string,
                         points: tonTransactionPoints,
                         task: Task.TON_TRANSACTION,
+                        walletAddress: userFriendlyAddress
                     }
 
                     await updateUserPoints(data)
