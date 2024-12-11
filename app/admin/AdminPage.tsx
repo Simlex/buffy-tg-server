@@ -85,11 +85,14 @@ export default function AdminPage() {
         try {
             const formattedData = botUsers.map((user) => ({
                 "User ID": user.userId,
+                "Username": user.username,
                 "Total Points": user.totalPoints,
                 "TON Earned": user.tonEarned,
                 "NFT Earned": user.nftEarned,
+                "TON Spent": user.tonSent,
                 "Referral count": user.referralCount,
-                "Date Joined": user.createdAt
+                "Date Joined": user.createdAt,
+                "Connected wallet": user.connectedWallets.length > 0 ? user.connectedWallets[0].walletAddress : 'None',
             }));
 
             const csvData = await jsonexport(formattedData);
