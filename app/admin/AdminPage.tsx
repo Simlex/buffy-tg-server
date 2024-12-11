@@ -76,7 +76,7 @@ export default function AdminPage() {
                 // hide loading spinner
                 setIsRestrictingBotUser(false);
             })
-    }
+    };
 
     async function handleDownloadAllUsersInfo(e: MouseEvent<HTMLButtonElement>) {
         e.preventDefault();
@@ -111,13 +111,13 @@ export default function AdminPage() {
         } finally {
             setIsDownloadingBotUsers(false);
         }
-    }
+    };
 
     useEffect(() => {
         if (passkey && authenticated) {
             handleFetchBotUsers();
         }
-    }, [passkey])
+    }, [passkey]);
 
     return (
         <>
@@ -165,8 +165,10 @@ export default function AdminPage() {
                                 <>Points</>,
                                 <>TON</>,
                                 <>NFT</>,
+                                <>TON Sent</>,
                                 <>Date joined</>,
                                 <>Referrals</>,
+                                <>Connected wallet</>,
                                 <>Action</>,
                             ]}
                             tableRowsData={
@@ -176,8 +178,10 @@ export default function AdminPage() {
                                     <>{user.totalPoints}</>,
                                     <>{user.tonEarned}</>,
                                     <>{user.nftEarned}</>,
+                                    <>{user.tonSent}</>,
                                     <>{moment(user.createdAt).format("Do MMM, YYYY")}</>,
                                     <>{user.referralCount}</>,
+                                    <>{user.connectedWallets[0].walletAddress}</>,
                                     <>
                                         <button
                                             onClick={() => {
