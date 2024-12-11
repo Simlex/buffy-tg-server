@@ -211,6 +211,9 @@ export async function updateUserPoints(req: NextRequest) {
         data: {
           hadMadeFirstTonTransaction: true,
           isWalletConnected: user.isWalletConnected || true,
+          tonSent: {
+            increment: request.ton,
+          },
         },
       });
 
@@ -245,6 +248,12 @@ export async function updateUserPoints(req: NextRequest) {
         data: {
           isWalletConnected: true,
         },
+      });
+
+      await addWallet({
+        userId: request.userId,
+        walletAddress: request.walletAddress as string,
+        walletType: "TON",
       });
 
       return { ...updatedUser };
@@ -567,7 +576,7 @@ export async function fetchLeaderboard() {
       // order by points in descending order
       totalPoints: "desc",
     },
-    take: 100
+    take: 100,
   });
 
   // Return all users
@@ -909,4 +918,44 @@ export async function updateTotalNumberOfRolls(req: NextRequest) {
     message: "Successfully updated user's total dice rolls",
     data: updatedUser,
   };
+}
+
+async function addWallet(request: {
+  userId: string;
+  walletAddress: string;
+  walletType: string;
+}) {
+  console.log("🚀 ~ walletType:", request.walletType);
+  console.log("🚀 ~ walletAddress:", request.walletAddress);
+  console.log("🚀 ~ userId:", request.userId);
+
+  // Check if wallet already exists
+  const existingWallet = await prisma.connectedWallets.findUnique({
+    where: {
+      walletType_walletAddress: {
+        walletAddress: request.walletAddress,
+        walletType: request.walletType,
+      },
+    },
+  });
+
+  if (existingWallet) {
+    console.log("Wallet already connected");
+    return;
+  }
+
+  // Create the wallet if it doesn't exist and link it to the user
+  const updatedUser = await prisma.users.update({
+    where: { userId: request.userId },
+    data: {
+      connectedWallets: {
+        create: {
+          walletAddress: request.walletAddress,
+          walletType: request.walletType,
+        },
+      },
+    },
+  });
+
+  console.log("Wallet added:", updatedUser);
 }
