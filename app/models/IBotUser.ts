@@ -6,4 +6,8 @@ export interface BotUser {
   nftEarned: string;
   createdAt: string;
   referralCount: string;
+  tonSent: string;
+  connectedWallets: {
+    walletAddress: string;
+  }[];
 }
