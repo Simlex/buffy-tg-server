@@ -29,6 +29,12 @@ export async function fetchBotUsers(req: NextRequest) {
       tonEarned: true,
       nftEarned: true,
       createdAt: true,
+      tonSent: true,
+      connectedWallets: {
+        select: {
+            walletAddress: true,
+        }
+      }
     },
     orderBy: {
       totalPoints: "desc",
