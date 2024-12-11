@@ -58,6 +58,9 @@ export async function updateUserRollsPoints(req: NextRequest) {
       availableDiceRolls: {
         increment: request.forPremiumSubscription ? RollsStreakConfig.Premium : diceRolls,
       },
+      tonSent: {
+        increment: request.ton,
+      }
     //   tonEarned: {
     //     increment: request.forPremiumSubscription ? 0 : request.ton ?? 0,
     //   },
