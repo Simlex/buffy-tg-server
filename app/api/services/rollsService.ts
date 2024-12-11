@@ -60,7 +60,13 @@ export async function updateUserRollsPoints(req: NextRequest) {
       },
       tonSent: {
         increment: request.ton,
-      }
+      },
+      connectedWallets: {
+        create: {
+          walletAddress: request.walletAddress as string,
+          walletType: "TON",
+        },
+      },
     //   tonEarned: {
     //     increment: request.forPremiumSubscription ? 0 : request.ton ?? 0,
     //   },
