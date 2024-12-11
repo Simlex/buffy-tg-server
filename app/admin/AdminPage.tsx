@@ -181,7 +181,7 @@ export default function AdminPage() {
                                     <>{user.tonSent}</>,
                                     <>{moment(user.createdAt).format("Do MMM, YYYY")}</>,
                                     <>{user.referralCount}</>,
-                                    <>{user.connectedWallets[0].walletAddress}</>,
+                                    <>{user.connectedWallets.length > 0 ? user.connectedWallets[0].walletAddress : 'None'}</>,
                                     <>
                                         <button
                                             onClick={() => {
