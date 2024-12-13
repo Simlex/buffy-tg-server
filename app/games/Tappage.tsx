@@ -19,50 +19,6 @@ const Tappage: FunctionComponent = (): ReactElement => {
         timesClickedPerSession, updateTimesClickedPerSession,
         updateSelectedGame, taps, setTaps, didInitialLoad
     } = useContext(ApplicationContext) as ApplicationContextData;
-
-    // const [taps, setTaps] = useState<number>(0);
-
-    // async function handleUpdateUserPoints() {
-
-    //     // construct the data 
-    //     const data: PointsUpdateRequest = {
-    //         userId: userProfileInformation?.userId as string,
-    //         points: taps,
-    //         game: Game.Tap
-    //     };
-
-    //     return;
-
-    //     await updateUserPoints(data)
-    //         .then(() => {
-    //             // console.log(response);
-    //             fetchUserProfileInformation();
-    //         })
-    //         .catch((error) => {
-    //             console.error(error);
-    //         });
-    // };
-
-    // useMemo(() => {
-    //     if (userProfileInformation) {
-    //         setTaps(userProfileInformation.tapPoints ?? 0);
-    //     }
-    // }, [userProfileInformation]);
-
-    // const DEBOUNCE_DELAY = 1000; // Adjust the delay as needed
-
-    // useEffect(() => {
-    //     if (taps === 0) return;
-
-    //     const timer = setTimeout(() => {
-    //         handleUpdateUserPoints();
-    //     }, DEBOUNCE_DELAY);
-
-    //     return () => {
-    //         clearTimeout(timer);
-    //     };
-    // }, [taps]);
-
     function swapColorBasedOnStatus() {
         if (metrics(taps)?.status === Metrics.NOOB) {
             return "text-green-500/60";
@@ -84,6 +40,8 @@ const Tappage: FunctionComponent = (): ReactElement => {
     const handleAnimationEnd = (id: number) => {
         setClicks((prevClicks) => prevClicks.filter(click => click.id !== id));
     };
+
+    const timesClickedPerSessionThreshold = 40;
 
     // async function _handleUpdateBoostRefillEndTime(endTime: Date) {
     //     await updateBoostRefillEndTime({ username: userProfileInformation?.username as string, refillEndTime: endTime })
@@ -178,7 +136,7 @@ const Tappage: FunctionComponent = (): ReactElement => {
 
                         <motion.span
                             onTouchStart={(e) => {
-                                if (timesClickedPerSession === undefined) return;
+                                if (timesClickedPerSession === undefined || timesClickedPerSession >= timesClickedPerSessionThreshold) return;
 
                                 if ((sessionLimit * userProfileInformation.level) - timesClickedPerSession <= 0) return;
 
