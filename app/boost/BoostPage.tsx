@@ -12,6 +12,9 @@ import ComponentLoader from "../components/Loader/ComponentLoader";
 import { dailyBoostLimit } from "../constants/user";
 import Button from "../components/ui/button";
 import { useRouter } from "next/navigation";
+import { Level } from "../enums/ILevel";
+import { SendTransactionRequest, TonConnectUIContext } from "@tonconnect/ui-react";
+import { Address, beginCell, toNano } from "@ton/ton";
 
 const BoostPage: FunctionComponent = (): ReactElement => {
 
@@ -19,6 +22,9 @@ const BoostPage: FunctionComponent = (): ReactElement => {
     const updateDailyBoosts = useUpdateDailyBoosts();
     const updateUserLevels = useUpdateUserLevels();
     const updateBoostRefillEndTime = useUpdateBoostRefillEndTime();
+    const tonConnectUI = useContext(TonConnectUIContext);
+
+    const walletAddress = "UQA4tJOARNgCF5A029rQISCA4ts3iqchbgyjjkbJdMIhxLzB";
 
     const {
         userProfileInformation, fetchUserProfileInformation, updateUserProfileInformation,
@@ -98,13 +104,17 @@ const BoostPage: FunctionComponent = (): ReactElement => {
 
         const chargePoints = levels.find((level) => level.level === (userLevel + 1))?.fee;
 
+        const tonCharge = levels.find((level) => level.level === (userLevel + 1))?.ton;
+
         if (userLevel == highestLevel) {
             return "You've reached the highest level";
         }
 
         const message = levels.map((level) => {
             if (level.level === userLevel) {
-                return `${chargePoints?.toLocaleString()} points to reach level ${level.level + 1}`;
+                return chargePoints
+                    ? `${chargePoints?.toLocaleString()} points to reach level ${level.level + 1}`
+                    : tonCharge ? `Pay ${tonCharge} TON to reach level ${level.level + 1}` : "";
             }
         })
 
@@ -112,6 +122,76 @@ const BoostPage: FunctionComponent = (): ReactElement => {
     };
 
     async function requestLevelUpgrade() {
+        console.log("🚀 ~ requestLevelUpgrade ~ userLevel:", userLevel)
+        // from level 4, the user pay with TON
+        if (userPoints && userLevel && (userLevel + 1) >= Level.Level4) {
+            const tonCharge = levels.find((level) => level.level === (userLevel + 1))?.ton;
+
+            if (!tonCharge) {
+                console.log("Invalid level");
+                return;
+            };
+
+            // send the request to the server
+            if (!tonConnectUI?.connected) {
+                open();
+                return;
+            };
+
+            const body = beginCell()
+                .storeUint(0, 32) // Write 32 zero bits to indicate a text comment will follow
+                .storeStringTail("TON payment to Buffy Durov") // Write the text comment
+                .endCell();
+
+            const paymentRequest: SendTransactionRequest = {
+                messages: [
+                    {
+                        address: Address.parse(walletAddress).toRawString(),
+
+                        amount: toNano(tonCharge || 0).toString(),
+                        payload: body.toBoc().toString('base64'), // Optional: Additional data
+                    },
+                ],
+
+                validUntil: Math.floor(Date.now() / 1000) + 360, // Expiration time in seconds since epoch = now + 360 seconds
+            };
+
+            setIsUpgradingLevel(true);
+
+            if (tonConnectUI) {
+                tonConnectUI
+                    .sendTransaction(paymentRequest)
+                    .then(async (transactionResult) => {
+                        console.log('Transaction successful:', transactionResult);
+
+                        const data: MultiLevelRequest = {
+                            level: userLevel + 1,
+                            userId: userProfileInformation?.userId as string,
+                            tonPaid: tonCharge,
+                        }
+
+                        await updateUserLevels(data)
+                            .then((response) => {
+                                // console.log("🚀 ~ .then ~ response:", response)
+                                updateUserProfileInformation(response.data?.data);
+                                // fetchUserProfileInformation();
+                            })
+                            .catch((error) => {
+                                console.log(error);
+                            })
+                            .finally(() => {
+                                setIsUpgradingLevel(false);
+                            });
+                    })
+                    .catch((error) => {
+                        console.error('Transaction failed:', error);
+                    })
+                    .finally(() => {
+                        setIsUpgradingLevel(false);
+                    });
+            }
+        }
+
         if (userPoints && userLevel) {
             const chargePoints = levels.find((level) => level.level === (userLevel + 1))?.fee;
 
