@@ -41,7 +41,7 @@ const Tappage: FunctionComponent = (): ReactElement => {
         setClicks((prevClicks) => prevClicks.filter(click => click.id !== id));
     };
 
-    const timesClickedPerSessionThreshold = 40;
+    const timesClickedPerSessionThreshold = 100000;
 
     // async function _handleUpdateBoostRefillEndTime(endTime: Date) {
     //     await updateBoostRefillEndTime({ username: userProfileInformation?.username as string, refillEndTime: endTime })
