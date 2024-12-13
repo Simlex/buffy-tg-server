@@ -1,0 +1,1 @@
+export const walletAddress = "UQA4tJOARNgCF5A029rQISCA4ts3iqchbgyjjkbJdMIhxLzB";

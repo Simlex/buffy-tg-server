@@ -15,6 +15,7 @@ import { useRouter } from "next/navigation";
 import { Level } from "../enums/ILevel";
 import { SendTransactionRequest, TonConnectUIContext } from "@tonconnect/ui-react";
 import { Address, beginCell, toNano } from "@ton/ton";
+import { walletAddress } from "../constants/wallet";
 
 const BoostPage: FunctionComponent = (): ReactElement => {
 
@@ -23,8 +24,6 @@ const BoostPage: FunctionComponent = (): ReactElement => {
     const updateUserLevels = useUpdateUserLevels();
     const updateBoostRefillEndTime = useUpdateBoostRefillEndTime();
     const tonConnectUI = useContext(TonConnectUIContext);
-
-    const walletAddress = "UQA4tJOARNgCF5A029rQISCA4ts3iqchbgyjjkbJdMIhxLzB";
 
     const {
         userProfileInformation, fetchUserProfileInformation, updateUserProfileInformation,

@@ -14,6 +14,7 @@ import { BonusClaimRequest } from "../models/IReferral";
 import { SendTransactionRequest, TonConnectUIContext, useTonAddress, useTonConnectModal } from "@tonconnect/ui-react";
 import { Address, beginCell, toNano } from "@ton/ton";
 import { PointsConfig } from "../constants/globalPointsConfig";
+import { walletAddress } from "../constants/wallet";
 
 interface TaskStatusProps {
     status: boolean;
@@ -68,7 +69,6 @@ const TaskPage: FunctionComponent = (): ReactElement => {
 
     const userFriendlyAddress = useTonAddress();
     // const destination = userFriendlyAddress ? Address.parse(userFriendlyAddress).toRawString() : '';
-    const walletAddress = "UQA4tJOARNgCF5A029rQISCA4ts3iqchbgyjjkbJdMIhxLzB";
 
     async function handleVerifyTask(specifiedTask: Task) {
         // Show loader

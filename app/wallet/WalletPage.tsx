@@ -9,13 +9,12 @@ import { ApplicationContext, ApplicationContextData } from '../context/Applicati
 import { PointsUpdateRequest } from '../models/IPoints'
 import { ButtonLoader } from '../components/Loader/ComponentLoader'
 import { RollsStreakConfig } from '../constants/rollsStreakConfig';
+import { walletAddress } from '../constants/wallet';
 
 export default function WalletPage() {
     const updateUserRollsPoints = useUpdateUserRollsPoints();
     const { userProfileInformation, updateUserProfileInformation } = useContext(ApplicationContext) as ApplicationContextData;
     const tonConnectUI = useContext(TonConnectUIContext);
-
-    const walletAddress = "UQA4tJOARNgCF5A029rQISCA4ts3iqchbgyjjkbJdMIhxLzB";
 
     const userFriendlyAddress = useTonAddress();
     // const rawAddress = useTonAddress(false);
