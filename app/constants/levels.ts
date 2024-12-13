@@ -16,34 +16,37 @@ export const levels: Level[] = [
     },
     {
         level: LevelEnum.Level4,
-        fee: 100000,
+        fee: 0,
+        ton: 0.1,
     },
     {
         level: LevelEnum.Level5,
-        fee: 200000,
+        fee: 0,
+        ton: 0.2,
     },
     {
         level: LevelEnum.Level6,
-        fee: 500000,
+        fee: 0,
+        ton: 0.4,
     },
     {
         level: LevelEnum.Level7,
-        fee: 1000000,
+        fee: 0,
+        ton: 0.8,
     },
     {
         level: LevelEnum.Level8,
-        fee: 1650000,
+        fee: 0,
+        ton: 1.6,
     },
     {
         level: LevelEnum.Level9,
-        fee: 2200000,
+        fee: 0,
+        ton: 3.2,
     },
     {
         level: LevelEnum.Level10,
-        fee: 3500000,
-    },
-    {
-        level: LevelEnum.Level11,
-        fee: 6600000,
+        fee: 0,
+        ton: 6.4,
     },
 ]
