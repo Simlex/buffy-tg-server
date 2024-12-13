@@ -815,7 +815,7 @@ export async function updateUserLevel(req: NextRequest) {
   const currentLevel = user.level;
 
   // define the maximum level
-  const maximumLevel = 10;
+  const maximumLevel = levels.length;
 
   // If the user's level is already at the maximum level, return error
   if (currentLevel >= maximumLevel) {
@@ -843,6 +843,26 @@ export async function updateUserLevel(req: NextRequest) {
 
   console.log("🚀 ~ updateUserLevel ~ requestedLevelFee:", requestedLevelFee);
   console.log("🚀 ~ updateUserLevel ~ points:", user.totalPoints);
+
+  // Check if the level is to be paid with TON
+  if (requestedLevel.ton) {
+
+    // Update the user's level and update the ton spent
+    const updatedUser = await prisma.users.update({
+      where: {
+        userId: request.userId,
+      },
+      data: {
+        level: request.level,
+        tonSent: {
+            increment: requestedLevel.ton,
+        }
+      },
+    });
+
+    // Return the response
+    return { message: "Successfully updated user's level", data: updatedUser };
+  }
 
   // Check if the user's totalPoints are enough to level up
   if (user.totalPoints < requestedLevelFee) {
