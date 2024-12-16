@@ -718,7 +718,7 @@ const TaskPage: FunctionComponent = (): ReactElement => {
                         {
                             selectedTaskType === TaskType.Partners &&
                             <>
-                                {/* <button
+                                <button
                                     onClick={() => {
                                         setSelectedTask(Task.JOIN_ERAX);
                                         setIsModalVisible(true);
@@ -740,7 +740,7 @@ const TaskPage: FunctionComponent = (): ReactElement => {
                                                 <Icons.CloseFill className="fill-white" />
                                         }
                                     </span>
-                                </button> */}
+                                </button>
                                 <button
                                     onClick={() => {
                                         setSelectedTask(Task.ZAE_CRYPTO_SUBSCRIPTION);
