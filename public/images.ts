@@ -21,6 +21,7 @@ import face_4 from "./images/dice/face_4.png";
 import face_5 from "./images/dice/face_5.png";
 import face_6 from "./images/dice/face_6.png";
 import erax from "./images/erax.webp";
+import zae from "./images/zae.jpeg";
 
 export default {
   avatar,
@@ -42,5 +43,6 @@ export default {
   face_4,
   face_5,
   face_6,
-  erax
+  erax,
+  zae
 };
