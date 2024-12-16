@@ -1,13 +1,15 @@
 "use client"
-import { FunctionComponent, ReactElement, useState, useEffect } from "react";
+import { FunctionComponent, ReactElement, useState, useEffect, useContext } from "react";
 import { useFetchLeaderboard } from "../api/apiClient";
 import { useRouter } from "next/navigation";
+import { ApplicationContext, ApplicationContextData } from "../context/ApplicationContext";
 
 // interface StatsPageProps {
 
 // }
 
 interface LeaderboardData {
+    rank: number;
     username: string;
     totalPoints: number;
 }
@@ -16,6 +18,7 @@ const StatsPage: FunctionComponent = (): ReactElement => {
 
     const fetchLeaderboard = useFetchLeaderboard();
     const router = useRouter();
+    const { userProfileInformation } = useContext(ApplicationContext) as ApplicationContextData;
 
     const [leaderboard, setLeaderboard] = useState<LeaderboardData[]>();
     const [isFetchingStats, setIsFetchingStats] = useState(true);
@@ -67,16 +70,31 @@ const StatsPage: FunctionComponent = (): ReactElement => {
                         </thead>
                         <tbody>
                             {
-                                leaderboard?.map((user, index) => (
-                                    <tr key={index}>
-                                        <td className="text-white p-2">{index + 1}</td>
-                                        <td className="text-white p-2 flex items-baseline gap-2">
-                                            <p className="max-w-[180px] overflow-ellipsis overflow-hidden whitespace-nowrap">@{user.username}</p>
-                                            {/* <span className="text-xs text-yellow-400 bg-yellow-300/20 py-[2px] px-1 rounded-md font-medium">{metrics(Number(user.points))?.status}</span> */}
-                                        </td>
-                                        <td className="text-white text-right p-2 font-semibold">{user.totalPoints.toLocaleString()}</td>
-                                    </tr>
-                                ))
+                                leaderboard?.map((user, index) => {
+                                    if (user.username == userProfileInformation?.username) {
+                                        return (
+                                            <tr key={index}>
+                                                <td className="text-white p-2">{user.rank}</td>
+                                                <td className="text-white p-2 flex items-baseline gap-2">
+                                                    <p className="max-w-[180px] overflow-ellipsis overflow-hidden whitespace-nowrap">@{user.username}</p>
+                                                    {/* <span className="text-xs text-yellow-400 bg-yellow-300/20 py-[2px] px-1 rounded-md font-medium">{metrics(Number(user.points))?.status}</span> */}
+                                                </td>
+                                                <td className="text-white text-left p-2 font-semibold">{user.totalPoints.toLocaleString()}</td>
+                                            </tr>
+                                        )
+                                    } 
+
+                                    return (
+                                        <tr key={index}>
+                                            <td className="text-white p-2">{user.rank}</td>
+                                            <td className="text-white p-2 flex items-baseline gap-2">
+                                                <p className="max-w-[180px] overflow-ellipsis overflow-hidden whitespace-nowrap">@{user.username}</p>
+                                                {/* <span className="text-xs text-yellow-400 bg-yellow-300/20 py-[2px] px-1 rounded-md font-medium">{metrics(Number(user.points))?.status}</span> */}
+                                            </td>
+                                            <td className="text-white text-left p-2 font-semibold">{user.totalPoints.toLocaleString()}</td>
+                                        </tr>
+                                    )
+                                })
                             }
                         </tbody>
                     </table>
