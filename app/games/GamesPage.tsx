@@ -41,7 +41,7 @@ const GamesPage: FunctionComponent = (): ReactElement => {
                                 </Button>
                             </div>
                         </div>
-                        {/* <div className="rounded-2xl overflow-hidden flex flex-col">
+                        <div className="rounded-2xl overflow-hidden flex flex-col">
                             <div className="w-full h-40 bg-black/50 grid place-items-center relative">
                                 <div className='w-full h-full scale-[1] absolute top-0 left-0 pointer-events-none opacity-5 bg-[url(/images/pattern.png)] bg-center bg-cover bg-fixed bg-no-repeat'></div>
                                 <span className="w-24 h-24 block relative overflow-hidden">
@@ -57,7 +57,7 @@ const GamesPage: FunctionComponent = (): ReactElement => {
                                     Play
                                 </Button>
                             </div>
-                        </div> */}
+                        </div>
                     </div>
                 </main>
             }
