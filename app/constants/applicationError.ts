@@ -305,13 +305,21 @@ export class ApplicationError extends BaseApplicationError {
     Code: "TASKS_1008",
   };
 
-    /**
-     * The error message for ~ Erax task already completed
-     */
-    static EraxTaskAlreadyCompleted: IApplicationError = {
-        Text: "Erax task already completed",
-        Code: "TASKS_1009",
-    };
+  /**
+   * The error message for ~ Erax task already completed
+   */
+  static EraxTaskAlreadyCompleted: IApplicationError = {
+    Text: "Erax task already completed",
+    Code: "TASKS_1009",
+  };
+
+  /**
+   * The error message for ~ Zae Subscription task already completed
+   */
+  static ZaeSubTaskAlreadyCompleted: IApplicationError = {
+    Text: "Zae sub task already completed",
+    Code: "TASKS_1010",
+  };
 
   //#endregion
 
