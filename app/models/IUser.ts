@@ -20,6 +20,7 @@ export interface UserProfileInformation {
   diceSpin15Claimed?: boolean;
   diceSpin75Claimed?: boolean;
   joinedErax: boolean;
+  subscribedToZae: boolean;
   tapPoints?: number;
   totalPoints?: number;
   triviaPoints?: number;
