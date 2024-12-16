@@ -474,11 +474,11 @@ const TaskPage: FunctionComponent = (): ReactElement => {
                                 className={`py-2 p-5 rounded-full font-bold text-sm ${selectedTaskType === TaskType.Referral ? "bg-white text-gray-700" : "bg-white/20 text-white"}`}>
                                 Referral
                             </button>
-                            <button
+                            {/* <button
                                 onClick={() => setSelectedTaskType(TaskType.Partners)}
                                 className={`py-2 p-5 rounded-full font-bold text-sm ${selectedTaskType === TaskType.Partners ? "bg-white text-gray-700" : "bg-white/20 text-white"}`}>
                                 Partners
-                            </button>
+                            </button> */}
                         </div>
 
                         {
@@ -697,7 +697,7 @@ const TaskPage: FunctionComponent = (): ReactElement => {
                                 }
                             </div>
                         }
-                        {
+                        {/* {
                             selectedTaskType === TaskType.Partners &&
                             <>
                                 <button
@@ -708,7 +708,6 @@ const TaskPage: FunctionComponent = (): ReactElement => {
                                     className={`bg-gray-700 rounded-3xl flex flex-row items-center justify-between p-4 pr-5 hover:bg-gray-600 ${userProfileInformation.joinedErax ? "pointer-events-none opacity-70" : ""}`}>
                                     <div className="flex flex-row items-center gap-3">
                                         <span className="w-7 h-7 rounded-full overflow-hidden relative grid place-items-center">
-                                            {/* <Icons.Telegram /> */}
                                             <CustomImage src={images.erax} alt="Erax" />
                                         </span>
                                         <div className="flex flex-col gap-[2px] items-start">
@@ -725,7 +724,7 @@ const TaskPage: FunctionComponent = (): ReactElement => {
                                     </span>
                                 </button>
                             </>
-                        }
+                        } */}
                     </div>
                 }
             </main>
