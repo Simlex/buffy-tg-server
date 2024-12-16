@@ -4,6 +4,7 @@ export enum Task {
     WALLET_CONNECT = "walletConnect",
     TON_TRANSACTION = "tonTransaction",
     JOIN_ERAX = "joinErax",
+    ZAE_CRYPTO_SUBSCRIPTION = "zaeCryptoSubscription",
     WEBSITE_VIEW = "website_view",
     DICE_SPIN_15 = "dice_spin_15",
     DICE_SPIN_75 = "dice_spin_75",
