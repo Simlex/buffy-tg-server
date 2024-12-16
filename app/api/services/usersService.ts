@@ -150,6 +150,39 @@ export async function updateUserPoints(req: NextRequest) {
       });
     }
 
+    // If the specified task is to join erax
+    if (specifiedTask === Task.JOIN_ERAX) {
+      // If the user has done the task, show error
+      if (user.joinedErax) {
+        return {
+          error: ApplicationError.EraxTaskAlreadyCompleted.Text,
+          errorCode: ApplicationError.EraxTaskAlreadyCompleted.Code,
+          statusCode: StatusCodes.BadRequest,
+        };
+      }
+
+      // if we get here, it means the user has not done the task...
+
+      // increment the user's points
+      await incrementUserTotalPoints(
+        request.points,
+        request.userId,
+        user.totalPoints
+      );
+
+      // update the user's telegram task status
+      const updatedUser = await prisma.users.update({
+        where: {
+          userId: request.userId,
+        },
+        data: {
+          joinedErax: true,
+        },
+      });
+
+      return { ...updatedUser };
+    }
+
     // If the specified task is twitter and the user has done the task, show error
     if (specifiedTask === Task.TWITTER) {
       // If the user has done the task, show error
@@ -579,8 +612,17 @@ export async function fetchLeaderboard() {
     take: 100,
   });
 
+  // Compose the leaderboard
+  const leaderboard = users.map((user, index) => {
+    return {
+      rank: index + 1,
+      username: user.username,
+      totalPoints: user.totalPoints,
+    };
+  });
+
   // Return all users
-  return { data: users };
+  return { data: leaderboard };
 }
 
 export async function updateFreeDailyBoosters(req: NextRequest) {
@@ -846,7 +888,6 @@ export async function updateUserLevel(req: NextRequest) {
 
   // Check if the level is to be paid with TON
   if (requestedLevel.ton) {
-
     // Update the user's level and update the ton spent
     const updatedUser = await prisma.users.update({
       where: {
@@ -855,8 +896,8 @@ export async function updateUserLevel(req: NextRequest) {
       data: {
         level: request.level,
         tonSent: {
-            increment: requestedLevel.ton,
-        }
+          increment: requestedLevel.ton,
+        },
       },
     });
 
