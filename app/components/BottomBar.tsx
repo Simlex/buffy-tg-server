@@ -51,12 +51,12 @@ const BottomBar: FunctionComponent = (): ReactElement => {
             icon: <Icons.Wallet />,
             href: "/wallet"
         },
-        // {
-        //     title: "Stats",
-        //     // icon: images.stats,
-        //     icon: <Icons.Stats />,
-        //     href: "/stats"
-        // },
+        {
+            title: "Stats",
+            // icon: images.stats,
+            icon: <Icons.Stats />,
+            href: "/stats"
+        },
         // {
         //     title: "NFT",
         //     icon: images.nft_coin,
