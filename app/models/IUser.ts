@@ -19,6 +19,7 @@ export interface UserProfileInformation {
   totalDiceRolls?: number;
   diceSpin15Claimed?: boolean;
   diceSpin75Claimed?: boolean;
+  joinedErax: boolean;
   tapPoints?: number;
   totalPoints?: number;
   triviaPoints?: number;
