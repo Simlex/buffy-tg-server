@@ -305,6 +305,14 @@ export class ApplicationError extends BaseApplicationError {
     Code: "TASKS_1008",
   };
 
+    /**
+     * The error message for ~ Erax task already completed
+     */
+    static EraxTaskAlreadyCompleted: IApplicationError = {
+        Text: "Erax task already completed",
+        Code: "TASKS_1009",
+    };
+
   //#endregion
 
   //#region Level Errors
