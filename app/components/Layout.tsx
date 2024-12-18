@@ -31,7 +31,7 @@ const Layout: FunctionComponent<LayoutProps> = ({ children }): ReactElement => {
 
     const {
         userProfileInformation, fetchUserProfileInformation, updateUserProfileInformation,
-        updateNextUpdateTimestamp, timesClickedPerSession, taps, didInitialLoad, updateSelectedGame,
+        updateNextUpdateTimestamp, timesClickedPerSession, taps, newClicks, setNewClicks, didInitialLoad, updateSelectedGame,
         nextUpdateTimestamp, updateTimeLeft: setTimeLeft, updateTimesClickedPerSession,
     } = useContext(ApplicationContext) as ApplicationContextData;
 
@@ -236,7 +236,7 @@ const Layout: FunctionComponent<LayoutProps> = ({ children }): ReactElement => {
         // construct the data 
         const data: PointsUpdateRequest = {
             userId: userProfileInformation?.userId as string,
-            points: taps,
+            points: newClicks * (userProfileInformation?.level as number ?? 1),
             game: Game.Tap
         };
 
@@ -251,7 +251,10 @@ const Layout: FunctionComponent<LayoutProps> = ({ children }): ReactElement => {
             })
             .catch((error) => {
                 console.error(error);
-            });
+            })
+            .finally(() => {
+                setNewClicks(0);
+            })
     };
 
     // const DEBOUNCE_DELAY_FOR_SESSION = 32400; // Delay for 3 clicks for 3hrs
@@ -344,7 +347,7 @@ const Layout: FunctionComponent<LayoutProps> = ({ children }): ReactElement => {
 
     useEffect(() => {
         // Skip update if taps is zero
-        if (taps == 0) return;
+        if (newClicks == 0) return;
 
         // Skip if this is the initial load
         if (!didInitialLoad.current) return;
@@ -356,7 +359,7 @@ const Layout: FunctionComponent<LayoutProps> = ({ children }): ReactElement => {
         return () => {
             clearTimeout(timer);
         };
-    }, [taps]);
+    }, [newClicks]);
 
     useEffect(() => {
         if (pathname !== '/games') {

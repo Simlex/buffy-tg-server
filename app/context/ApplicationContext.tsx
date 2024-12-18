@@ -29,6 +29,8 @@ export interface ApplicationContextData {
     handleUpdateUserRollsStreak: () => void;
     isDailyStreakModalVisible: boolean;
     setIsDailyStreakModalVisible: Dispatch<SetStateAction<boolean>>
+    setNewClicks: Dispatch<SetStateAction<number>>;
+    newClicks: number;
 };
 
 // Create a context with the specified data type
@@ -53,6 +55,7 @@ const AppProvider: FunctionComponent<AppProviderProps> = ({ children }) => {
     const didInitialLoad = useRef(false); // New ref to track initial load
     const dailyStreakUpdated = useRef(false); // New ref to track daily streak update
     const [isDailyStreakModalVisible, setIsDailyStreakModalVisible] = useState(false);
+    const [newClicks, setNewClicks] = useState<number>(0);
 
     // Define state for displaying login prompt
     const [showUserLoginPrompt, setShowUserLoginPrompt] = useState(false);
@@ -136,7 +139,9 @@ const AppProvider: FunctionComponent<AppProviderProps> = ({ children }) => {
         dailyStreakUpdated,
         handleUpdateUserRollsStreak,
         isDailyStreakModalVisible,
-        setIsDailyStreakModalVisible
+        setIsDailyStreakModalVisible,
+        setNewClicks,
+        newClicks,
     };
 
     return (

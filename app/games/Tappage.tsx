@@ -17,7 +17,7 @@ const Tappage: FunctionComponent = (): ReactElement => {
     const {
         userProfileInformation,
         timesClickedPerSession, updateTimesClickedPerSession,
-        updateSelectedGame, taps, setTaps, didInitialLoad
+        updateSelectedGame, taps, setTaps, didInitialLoad, setNewClicks,
     } = useContext(ApplicationContext) as ApplicationContextData;
     function swapColorBasedOnStatus() {
         if (metrics(taps)?.status === Metrics.NOOB) {
@@ -151,7 +151,9 @@ const Tappage: FunctionComponent = (): ReactElement => {
 
                                     card.style.transform = `perspective(1000px) rotateX(${-y / 10}deg) rotateY(${x / 10}deg)`;
 
-                                    setTaps(taps + (1 * userProfileInformation.level));
+                                    // setTaps(taps + (1 * userProfileInformation.level));
+                                    // setTaps(clicks.length + (1 * userProfileInformation.level));
+                                    setNewClicks((prevClicks) => prevClicks + 1);
 
                                     updateTimesClickedPerSession(timesClickedPerSession + 1);
                                 });
@@ -162,6 +164,41 @@ const Tappage: FunctionComponent = (): ReactElement => {
 
                                 // setIsClicked(!isClicked);
                             }}
+                            // onClick={(e) => {
+                            //     if (timesClickedPerSession === undefined || timesClickedPerSession >= timesClickedPerSessionThreshold) return;
+
+                            //     if ((sessionLimit * userProfileInformation.level) - timesClickedPerSession <= 0) return;
+
+                            //     const card = e.currentTarget;
+                            //     const rect = card.getBoundingClientRect();
+
+                            //     // Calculate click position relative to the element
+                            //     const x = e.clientX - rect.left - rect.width / 2;
+                            //     const y = e.clientY - rect.top - rect.height / 2;
+
+                            //     // Add click to the state
+                            //     setClicks([...clicks, { id: Date.now(), x: e.pageX, y: e.pageY }]);
+
+                            //     // Apply perspective rotation based on click position
+                            //     card.style.transform = `perspective(1000px) rotateX(${-y / 10}deg) rotateY(${x / 10}deg)`;
+
+                            //     // Update the number of taps
+                            //     // setTaps((prevTaps) => prevTaps + (1 * userProfileInformation.level));
+                            //     setNewClicks((prevClicks) => prevClicks + 1);
+
+                            //     // Increment times clicked for the session
+                            //     updateTimesClickedPerSession(timesClickedPerSession + 1);
+
+                            //     // Reset the transform after 100ms
+                            //     setTimeout(() => {
+                            //         card.style.transform = '';
+                            //     }, 100);
+
+                            //     setTimeout(() => {
+                            //         didInitialLoad.current = true;
+                            //     }, 800);
+                            // }}
+
                             onTouchEnd={() => {
                                 // run the function to update the user points after a delay of 1 second
                                 setTimeout(() => {
