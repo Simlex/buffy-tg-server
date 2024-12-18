@@ -31,7 +31,7 @@ const Layout: FunctionComponent<LayoutProps> = ({ children }): ReactElement => {
 
     const {
         userProfileInformation, fetchUserProfileInformation, updateUserProfileInformation,
-        updateNextUpdateTimestamp, timesClickedPerSession, taps, newClicks, setNewClicks, didInitialLoad, updateSelectedGame,
+        updateNextUpdateTimestamp, timesClickedPerSession, newClicks, setNewClicks, didInitialLoad, updateSelectedGame,
         nextUpdateTimestamp, updateTimeLeft: setTimeLeft, updateTimesClickedPerSession,
     } = useContext(ApplicationContext) as ApplicationContextData;
 
