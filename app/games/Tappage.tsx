@@ -17,7 +17,7 @@ const Tappage: FunctionComponent = (): ReactElement => {
     const {
         userProfileInformation,
         timesClickedPerSession, updateTimesClickedPerSession,
-        updateSelectedGame, taps, setTaps, didInitialLoad, setNewClicks,
+        updateSelectedGame, taps, didInitialLoad, setNewClicks,
     } = useContext(ApplicationContext) as ApplicationContextData;
     function swapColorBasedOnStatus() {
         if (metrics(taps)?.status === Metrics.NOOB) {
