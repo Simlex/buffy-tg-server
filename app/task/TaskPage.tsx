@@ -492,11 +492,11 @@ const TaskPage: FunctionComponent = (): ReactElement => {
                                 className={`py-2 p-5 rounded-full font-bold text-sm ${selectedTaskType === TaskType.Referral ? "bg-white text-gray-700" : "bg-white/20 text-white"}`}>
                                 Referral
                             </button>
-                            <button
+                            {/* <button
                                 onClick={() => setSelectedTaskType(TaskType.Partners)}
                                 className={`py-2 p-5 rounded-full font-bold text-sm ${selectedTaskType === TaskType.Partners ? "bg-white text-gray-700" : "bg-white/20 text-white"}`}>
                                 Partners
-                            </button>
+                            </button> */}
                         </div>
 
                         {
@@ -715,7 +715,7 @@ const TaskPage: FunctionComponent = (): ReactElement => {
                                 }
                             </div>
                         }
-                        {
+                        {/* {
                             selectedTaskType === TaskType.Partners &&
                             <>
                                 <button
@@ -765,7 +765,7 @@ const TaskPage: FunctionComponent = (): ReactElement => {
                                     </span>
                                 </button>
                             </>
-                        }
+                        } */}
                     </div>
                 }
             </main>
