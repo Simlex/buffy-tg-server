@@ -24,6 +24,9 @@ export async function updateUserRollsPoints(req: NextRequest) {
     where: {
       userId: request.userId,
     },
+    include: {
+        connectedWallets: true,
+    }
   });
 
   // If user does not exists, return error
@@ -61,7 +64,7 @@ export async function updateUserRollsPoints(req: NextRequest) {
       tonSent: {
         increment: request.ton,
       },
-      connectedWallets: {
+      connectedWallets: user.connectedWallets.find((connectedWallet) => connectedWallet.walletAddress == request.walletAddress) ? undefined : {
         create: {
           walletAddress: request.walletAddress as string,
           walletType: "TON",
