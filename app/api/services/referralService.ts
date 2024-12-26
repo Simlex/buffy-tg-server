@@ -50,7 +50,7 @@ export async function fetchReferrals(req: NextRequest) {
   return { data: referrals };
 }
 
-export async function fetchReferralsLeaderboard(req: NextRequest) {
+export async function fetchReferralsLeaderboard() {
   // Get all users with the highest referral bonus claimed
   const users = await prisma.users.findMany({
     where: {

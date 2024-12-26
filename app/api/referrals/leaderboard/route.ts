@@ -1,12 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
 import { validateRequestMethod } from "../../services/reusable-services/requestMethodValidator";
-import { customNextResponseError } from "../../utils/customNextResponseError";
 import { StatusCodes } from "@/app/models/IStatusCodes";
 import { ApplicationError } from "@/app/constants/applicationError";
 import { fetchReferralsLeaderboard } from "../../services/referralService";
 
 export async function GET(req: NextRequest) {
-  // Call the request validation method
   await validateRequestMethod(req, "GET");
 
   try {
