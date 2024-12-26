@@ -12,6 +12,7 @@ export interface UserProfileInformation {
   phone?: string;
   referralCode?: string;
   referralCount?: number;
+  referralContestCount?: number;
   isWalletConnected: boolean;
   hadMadeFirstTonTransaction: boolean;
 
