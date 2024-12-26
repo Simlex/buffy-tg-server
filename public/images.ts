@@ -28,6 +28,7 @@ import emerald from "./images/emerald.jpg";
 import jewel from "./images/jewel.jpg";
 
 import buffy_ref from "./images/buffy_ref.png";
+import buffy_santa from "./images/buffy_santa.jpg";
 
 export default {
   avatar,
@@ -55,4 +56,5 @@ export default {
   emerald,
   jewel,
   buffy_ref,
+  buffy_santa
 };
