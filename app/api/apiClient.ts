@@ -9,7 +9,7 @@ import {
 import { MultiLevelRequest } from "../models/ILevel";
 import { TriviaUpdateRequest } from "../models/ITrivia";
 
-export const BaseUrl = ApiRoutes.BASE_URL_LIVE;
+export const BaseUrl = ApiRoutes.BASE_URL_DEV;
 
 export const API = axios.create({
   baseURL: BaseUrl,
@@ -99,6 +99,14 @@ export function useCreateReferral() {
   }
 
   return createReferral;
+}
+
+export function useFetchReferralLeaderboard() {
+    async function fetchReferralLeaderboard() {
+        return API.get(ApiRoutes.ReferralLeaderboard);
+    }
+    
+    return fetchReferralLeaderboard;
 }
 
 export function useClaimReferralBonus() {
