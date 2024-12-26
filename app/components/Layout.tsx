@@ -16,6 +16,7 @@ import Script from "next/script";
 import NewUserMetrics from "./IntroScreens/NewUserMetrics";
 import { PointsUpdateRequest } from "../models/IPoints";
 import { Game } from "../enums/Game";
+import Snowfall from 'react-snowfall';
 
 interface LayoutProps {
     children?: ReactNode;
@@ -377,6 +378,14 @@ const Layout: FunctionComponent<LayoutProps> = ({ children }): ReactElement => {
                     duration: 3000,
                     unstyled: false,
                 }}
+            />
+            <Snowfall
+                // Changes the snowflake color
+                color="#ffffff32"
+                // Applied to the canvas element
+                // style={{ background: '#fff' }}
+                // Controls the number of snowflakes that are created (default 150)
+                snowflakeCount={100}
             />
             {
                 pathname === "/admin" ?
