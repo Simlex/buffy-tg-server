@@ -23,6 +23,12 @@ import face_6 from "./images/dice/face_6.png";
 import erax from "./images/erax.webp";
 import zae from "./images/zae.jpeg";
 
+import diamond from "./images/diamond.jpg";
+import emerald from "./images/emerald.jpg";
+import jewel from "./images/jewel.jpg";
+
+import buffy_ref from "./images/buffy_ref.png";
+
 export default {
   avatar,
   coin,
@@ -44,5 +50,9 @@ export default {
   face_5,
   face_6,
   erax,
-  zae
+  zae,
+  diamond,
+  emerald,
+  jewel,
+  buffy_ref,
 };
