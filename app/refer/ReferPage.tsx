@@ -2,10 +2,7 @@
 import { FunctionComponent, ReactElement, useContext, useMemo, useState } from "react";
 import { ApplicationContext, ApplicationContextData } from "../context/ApplicationContext";
 import Button from "../components/ui/button";
-
-// interface ReferPageProps {
-
-// }
+import Link from "next/link";
 
 const ReferPage: FunctionComponent = (): ReactElement => {
 
@@ -30,7 +27,6 @@ const ReferPage: FunctionComponent = (): ReactElement => {
     }, [isLinkCopied]);
 
     const userLink = `https://t.me/BuffyDurov_bot?start=${userProfileInformation?.username}${userProfileInformation?.userId}`;
-    // const userLink = `https://t.me/SimlexBot?start=${userProfileInformation?.username}${userProfileInformation?.userId}`;
 
     return (
         <main className="flex min-h-screen flex-col items-center py-20">
@@ -43,20 +39,25 @@ const ReferPage: FunctionComponent = (): ReactElement => {
                     onClick={() => copyLink(userLink)}>
                     {isLinkCopied ? "Copied!" : "Copy Link"}
                 </Button>
+                <Link
+                    href={"/referral-board"}
+                    className="bg-gradient-to-r from-orange-400 to-orange-600 text-white w-full mt-4 text-center font-medium py-3 px-4 shadow rounded-xl hover:from-orange-500 hover:to-orange-700 transition duration-300">
+                    See Referral Leaderboard
+                </Link>
             </div>
 
             {
                 userProfileInformation && userProfileInformation.referralCount ?
-                <>
-                    <div className="text-white flex flex-col items-center mb-2">
-                        <h3 className="text-2xl font-medium text-slate-400">Number of referrals</h3>
-                        <span className="text-2xl">{userProfileInformation.referralCount}</span>
-                    </div>
-                    <div className="text-white flex flex-col items-center">
-                        <h3 className="text-2xl font-medium text-slate-400">Referral points</h3>
-                        <span className="text-2xl">{userProfileInformation.referralCount * 1000}</span>
-                    </div>
-                </> : <></>
+                    <>
+                        <div className="text-white flex flex-col items-center mb-2">
+                            <h3 className="text-2xl font-medium text-slate-400">Number of referrals</h3>
+                            <span className="text-2xl">{userProfileInformation.referralCount}</span>
+                        </div>
+                        <div className="text-white flex flex-col items-center">
+                            <h3 className="text-2xl font-medium text-slate-400">Referral points</h3>
+                            <span className="text-2xl">{userProfileInformation.referralCount * 1000}</span>
+                        </div>
+                    </> : <></>
             }
         </main>
     );
