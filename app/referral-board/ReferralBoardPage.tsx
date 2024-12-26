@@ -36,13 +36,15 @@ export default function ReferralBoardPage() {
     // check if the referral contest has started
     const referralContestStartDate = ReferralConfig.contestStartDate;
 
-    const hasReferralContestStarted =
-        new Date() <= new Date(referralContestStartDate);
+    const hasReferralContestStarted = new Date().toISOString() >= new Date(referralContestStartDate).toISOString();
+    console.log("🚀 ~ ReferralBoardPage ~ new Date(referralContestStartDate):", new Date(referralContestStartDate))
+    console.log("🚀 ~ ReferralBoardPage ~ new Date():", new Date())
+    console.log("🚀 ~ ReferralBoardPage ~ hasReferralContestStarted:", hasReferralContestStarted)
 
     return (
         <main className="flex min-h-screen flex-col items-center py-10 pb-24">
             {
-                !hasReferralContestStarted && 
+                !hasReferralContestStarted &&
                 <div className='h-32 w-full grid place-items-center bg-white/20 rounded-lg animate-pulse'>
                     <p className='text-white text-center'>Referral contest has not started yet</p>
                 </div>
