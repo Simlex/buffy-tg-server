@@ -217,6 +217,14 @@ export class ApplicationError extends BaseApplicationError {
     Code: "REFERRAL_1000",
   };
 
+  /**
+   * The error message for ~ Referral Context is not active
+   */
+  static ReferralContextNotActive: IApplicationError = {
+    Text: "Referral Context is not active",
+    Code: "REFERRAL_1001",
+  };
+
   //#endregion
 
   //#region Boosters Errors
