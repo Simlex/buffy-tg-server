@@ -50,6 +50,29 @@ export async function fetchReferrals(req: NextRequest) {
   return { data: referrals };
 }
 
+export async function fetchReferralsLeaderboard(req: NextRequest) {
+  // Get all users with the highest referral bonus claimed
+  const users = await prisma.users.findMany({
+    where: {
+        referralCount: {
+            gt: 0
+        }
+    },
+    orderBy: {
+      referralCount: "desc",
+    },
+    select: {
+        userId: true,
+        username: true,
+        referralCount: true,
+    },
+    take: 200,
+  });
+
+  // Return all users
+  return { data: users };
+}
+
 export async function createReferral(req: NextRequest) {
   // Get the body from the request
   const request = (await req.json()) as ReferralCreationRequest;
@@ -161,7 +184,7 @@ export async function claimReferralBonus(req: NextRequest) {
     (metric) => metric.friends == referralCount
   );
 
-  if(!equivBonus) {
+  if (!equivBonus) {
     return {
       error: ApplicationError.InvalidReferralCount.Text,
       statusCode: StatusCodes.BadRequest,
