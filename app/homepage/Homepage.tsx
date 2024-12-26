@@ -70,8 +70,14 @@ const Homepage: FunctionComponent = (): ReactElement => {
                     </div>
                 </div>
 
-                <Link href={"/referral-board"} className="w-full h-32 relative mb-8 overflow-hidden rounded-lg shadow-2xl shadow-white/10">
-                    <CustomImage src={images.buffy_ref} alt="Buffy Referral" />
+                <Link
+                    href={"/referral-board"}
+                    className="fixed top-48 left-2 flex flex-col items-center animate-pulse">
+                    <div
+                        className="w-10 h-10 mb-2 relative overflow-hidden rounded-lg shadow-2xl shadow-white/10">
+                        <CustomImage src={images.buffy_santa} alt="Buffy Referral" />
+                    </div>
+                    <p className="text-white w-24 text-wrap text-center text-xs">Win over $2k, and 10m $BUVEL</p>
                 </Link>
 
                 <div className="flex flex-col gap-2 w-full mt-auto mb-12">
