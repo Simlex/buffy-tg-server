@@ -1,4 +1,5 @@
 import { ApplicationError } from "@/app/constants/applicationError";
+import { ReferralConfig } from "@/app/constants/referralConfig";
 import { referralMetrics } from "@/app/constants/referralMetrics";
 import {
   BonusClaimRequest,
@@ -51,20 +52,33 @@ export async function fetchReferrals(req: NextRequest) {
 }
 
 export async function fetchReferralsLeaderboard() {
+  // check if the referral contest has started
+  const referralContestStartDate = ReferralConfig.contestStartDate;
+
+  const isReferralContestActive =
+    new Date() <= new Date(referralContestStartDate);
+
+  if (!isReferralContestActive) {
+    return {
+      error: ApplicationError.ReferralContextNotActive.Text,
+      statusCode: StatusCodes.BadRequest,
+    };
+  }
+
   // Get all users with the highest referral bonus claimed
   const users = await prisma.users.findMany({
     where: {
-        referralCount: {
-            gt: 0
-        }
+      referralContestCount: {
+        gt: 0,
+      },
     },
     orderBy: {
-      referralCount: "desc",
+        referralContestCount: "desc",
     },
     select: {
-        userId: true,
-        username: true,
-        referralCount: true,
+      userId: true,
+      username: true,
+      referralContestCount: true,
     },
     take: 200,
   });
@@ -102,6 +116,14 @@ export async function createReferral(req: NextRequest) {
     },
   });
 
+  // check if the today's date is still within the referral contest period
+  const referralContestStartDate = ReferralConfig.contestStartDate;
+  const referralContestEndDate = ReferralConfig.contestEndDate;
+
+  const isReferralContestActive =
+    new Date() >= new Date(referralContestStartDate) &&
+    new Date() <= new Date(referralContestEndDate);
+
   // If user or referredUser is not found, return 404
   if (!user || !referredUser) {
     return {
@@ -130,6 +152,9 @@ export async function createReferral(req: NextRequest) {
         referralCount: {
           increment: 1,
         },
+        referralContestCount: isReferralContestActive
+          ? { increment: 1 }
+          : undefined,
       },
     }),
   ]);
