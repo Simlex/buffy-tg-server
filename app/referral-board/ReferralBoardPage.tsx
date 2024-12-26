@@ -3,11 +3,12 @@ import React, { useEffect, useState } from 'react'
 import { useFetchReferralLeaderboard } from '../api/apiClient'
 import CustomImage from '../components/ui/image'
 import images from '@/public/images'
+import { ReferralConfig } from '../constants/referralConfig'
 
 interface ReferralLeaderboard {
     userId: string
     username: string
-    referralCount: number
+    referralContestCount: number
 }
 
 export default function ReferralBoardPage() {
@@ -32,14 +33,29 @@ export default function ReferralBoardPage() {
         handleFetchReferralLeaderboard();
     }, []);
 
+    // check if the referral contest has started
+    const referralContestStartDate = ReferralConfig.contestStartDate;
+
+    const hasReferralContestStarted =
+        new Date() <= new Date(referralContestStartDate);
+
     return (
         <main className="flex min-h-screen flex-col items-center py-10 pb-24">
-            {/* <div className='h-32 w-full grid place-items-center bg-white/30 rounded-lg'>
-
-            </div> */}
+            {
+                !hasReferralContestStarted && 
+                <div className='h-32 w-full grid place-items-center bg-white/20 rounded-lg animate-pulse'>
+                    <p className='text-white text-center'>Referral contest has not started yet</p>
+                </div>
+            }
+            {
+                hasReferralContestStarted && referralLeaderboard && referralLeaderboard.length == 0 && !isFetchingLeaderboard &&
+                <div className='h-32 w-full grid place-items-center bg-white/20 rounded-lg animate-pulse'>
+                    <p className='text-white text-center'>No data available yet.</p>
+                </div>
+            }
 
             {
-                referralLeaderboard && referralLeaderboard.length > 0 && !isFetchingLeaderboard &&
+                hasReferralContestStarted && referralLeaderboard && referralLeaderboard.length > 0 && !isFetchingLeaderboard &&
                 <>
                     <div className='flex flex-row py-5 items-center justify-between w-full'>
                         <div className='flex flex-col items-center w-[30%]'>
@@ -50,7 +66,7 @@ export default function ReferralBoardPage() {
                                 <CustomImage src={images.diamond} alt="Coin" />
                             </span>
                             <p className='text-sm text-white'>@{referralLeaderboard[1].username}</p>
-                            <p className='text-xs text-white font-semibold'>{referralLeaderboard[1].referralCount}</p>
+                            <p className='text-xs text-white font-semibold'>{referralLeaderboard[1].referralContestCount}</p>
                         </div>
                         <div className='flex flex-col items-center w-[30%]'>
                             {/* <div className='text-white font-medium text-3xl w-20 h-20 rounded-full bg-white/50 grid place-items-center border-[10px] border-[#24A1DE]/5 mb-1 uppercase'>
@@ -60,7 +76,7 @@ export default function ReferralBoardPage() {
                                 <CustomImage src={images.emerald} alt="Coin" />
                             </span>
                             <p className='text-sm text-white'>@{referralLeaderboard[0].username}</p>
-                            <p className='text-xs text-white font-semibold'>{referralLeaderboard[0].referralCount}</p>
+                            <p className='text-xs text-white font-semibold'>{referralLeaderboard[0].referralContestCount}</p>
                         </div>
                         <div className='flex flex-col items-center w-[30%]'>
                             {/* <div className='text-white font-medium text-2xl w-16 h-16 rounded-full bg-white/50 grid place-items-center border-[10px] border-[#24A1DE]/5 mb-1 uppercase'>
@@ -70,7 +86,7 @@ export default function ReferralBoardPage() {
                                 <CustomImage src={images.jewel} alt="Coin" />
                             </span>
                             <p className='text-sm text-white'>@{referralLeaderboard[2].username}</p>
-                            <p className='text-xs text-white font-semibold'>{referralLeaderboard[2].referralCount}</p>
+                            <p className='text-xs text-white font-semibold'>{referralLeaderboard[2].referralContestCount}</p>
                         </div>
                     </div>
 
@@ -111,7 +127,7 @@ export default function ReferralBoardPage() {
                                     <div key={index} className='flex flex-row justify-between items-center w-full py-3 px-5 bg-white/10 rounded-xl mb-2'>
                                         <span className={`w-10 h-10 ${rankColor ?? 'bg-white'} rounded-full grid place-items-center`}>{rank}</span>
                                         <p className='text-white'>@{user.username.slice(0, 13)}{user.username.length > 13 ? '...' : ''}</p>
-                                        <h4 className='text-sm text-white font-semibold'>{user.referralCount}</h4>
+                                        <h4 className='text-sm text-white font-semibold'>{user.referralContestCount}</h4>
                                     </div>
                                 )
                             })
@@ -121,7 +137,7 @@ export default function ReferralBoardPage() {
             }
 
             {
-                referralLeaderboard && referralLeaderboard.length == 0 && isFetchingLeaderboard &&
+                hasReferralContestStarted && referralLeaderboard && referralLeaderboard.length == 0 && isFetchingLeaderboard &&
                 <div className="w-16 h-16 mt-20 border-4 border-blue-400 border-t-transparent border-solid rounded-full animate-spin" />
             }
         </main>
