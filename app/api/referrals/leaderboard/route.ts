@@ -3,6 +3,7 @@ import { validateRequestMethod } from "../../services/reusable-services/requestM
 import { StatusCodes } from "@/app/models/IStatusCodes";
 import { ApplicationError } from "@/app/constants/applicationError";
 import { fetchReferralsLeaderboard } from "../../services/referralService";
+import { customNextResponseError } from "../../utils/customNextResponseError";
 
 export async function GET(req: NextRequest) {
   await validateRequestMethod(req, "GET");
@@ -12,9 +13,9 @@ export async function GET(req: NextRequest) {
     const operation = await fetchReferralsLeaderboard();
 
     // If the operation fails, return an error
-    // if (operation.error) {
-    //   return customNextResponseError(operation);
-    // }
+    if (operation.error) {
+      return customNextResponseError(operation);
+    }
 
     // Return the response
     return NextResponse.json(operation.data, { status: StatusCodes.Success });
