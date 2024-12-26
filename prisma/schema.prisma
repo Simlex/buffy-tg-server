@@ -28,6 +28,7 @@ model Users {
     phone                      String?
     referralCode               String             @unique
     referralCount              Int                @default(0)
+    referralContestCount       Int                @default(0)
     isWalletConnected          Boolean            @default(false)
     hadMadeFirstTonTransaction Boolean            @default(false)
     connectedWallets           ConnectedWallets[]
