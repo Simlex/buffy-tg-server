@@ -8,7 +8,7 @@ import { Icons } from "../components/ui/icons";
 import DailyStreakModal from "../components/modal/DailyStreakModal";
 import ReactConfetti from 'react-confetti';
 import { TonConnectButton } from "@tonconnect/ui-react";
-
+import CustomImage from "../components/ui/image";
 
 const Homepage: FunctionComponent = (): ReactElement => {
 
@@ -69,6 +69,11 @@ const Homepage: FunctionComponent = (): ReactElement => {
                         </div>
                     </div>
                 </div>
+
+                <Link href={"/referral-board"} className="w-full h-32 relative mb-8 overflow-hidden rounded-lg shadow-2xl shadow-white/10">
+                    <CustomImage src={images.buffy_ref} alt="Buffy Referral" />
+                </Link>
+
                 <div className="flex flex-col gap-2 w-full mt-auto mb-12">
                     <p className="text-white/50">Get more points</p>
                     <Link href={"/games"} className="bg-gradient-to-r from-orange-400 to-orange-600 text-white text-center font-bold py-3 px-4 shadow rounded-xl hover:from-orange-500 hover:to-orange-700 transition duration-300">Play Games</Link>
