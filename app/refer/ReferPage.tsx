@@ -59,6 +59,19 @@ const ReferPage: FunctionComponent = (): ReactElement => {
                         </div>
                     </> : <></>
             }
+            {
+                userProfileInformation && userProfileInformation.referralContestCount ?
+                    <>
+                        <div className="text-white flex flex-col items-center mt-4">
+                            <h3 className="text-2xl font-medium text-slate-400">Number of Contest Referrals</h3>
+                            <span className="text-2xl">{userProfileInformation.referralContestCount}</span>
+                        </div>
+                        <div className="text-white flex flex-col items-center">
+                            <h3 className="text-2xl font-medium text-slate-400">Contest points</h3>
+                            <span className="text-2xl">{userProfileInformation.referralContestCount * 1000}</span>
+                        </div>
+                    </> : <></>
+            }
         </main>
     );
 }
