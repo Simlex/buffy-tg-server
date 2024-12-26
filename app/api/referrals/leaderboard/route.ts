@@ -9,7 +9,7 @@ export async function GET(req: NextRequest) {
 
   try {
     // Call the function to fetch referrals leaderboard
-    const operation = await fetchReferralsLeaderboard(req);
+    const operation = await fetchReferralsLeaderboard();
 
     // If the operation fails, return an error
     // if (operation.error) {
