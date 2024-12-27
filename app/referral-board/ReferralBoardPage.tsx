@@ -21,10 +21,12 @@ export default function ReferralBoardPage() {
     const handleFetchReferralLeaderboard = async () => {
         await fetchReferralLeaderboard()
             .then((response) => {
+                // console.log("🚀 ~ .then ~ response:", response)
                 setReferralLeaderboard(response.data);
                 setIsFetchingLeaderboard(false);
             })
             .catch(() => {
+                // console.log("🚀 ~ handleFetchReferralLeaderboard ~ error:", error)
                 setIsFetchingLeaderboard(false);
             })
     };
@@ -37,9 +39,9 @@ export default function ReferralBoardPage() {
     const referralContestStartDate = ReferralConfig.contestStartDate;
 
     const hasReferralContestStarted = new Date().toISOString() >= new Date(referralContestStartDate).toISOString();
-    console.log("🚀 ~ ReferralBoardPage ~ new Date(referralContestStartDate):", new Date(referralContestStartDate))
-    console.log("🚀 ~ ReferralBoardPage ~ new Date():", new Date())
-    console.log("🚀 ~ ReferralBoardPage ~ hasReferralContestStarted:", hasReferralContestStarted)
+    // console.log("🚀 ~ ReferralBoardPage ~ new Date(referralContestStartDate):", new Date(referralContestStartDate))
+    // console.log("🚀 ~ ReferralBoardPage ~ new Date():", new Date())
+    // console.log("🚀 ~ ReferralBoardPage ~ hasReferralContestStarted:", hasReferralContestStarted)
 
     return (
         <main className="flex min-h-screen flex-col items-center py-10 pb-24">
