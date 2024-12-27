@@ -1,5 +1,5 @@
 import cron from "node-cron";
-import { prisma } from "@/lib/prisma";
+// import { prisma } from "@/lib/prisma";
 import fetch from "node-fetch";
 
 const TELEGRAM_API_URL = `https://api.telegram.org/bot${process.env.TELEGRAM_BOT_TOKEN}`;
