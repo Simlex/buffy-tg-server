@@ -31,10 +31,10 @@ export const startScheduler = () => {
     console.log("Running daily job to send messages to all users...");
 
     // Fetch all users from the database
-    const users = await prisma.users.findMany({ select: { userId: true } });
+    // const users = await prisma.users.findMany({ select: { userId: true } });
 
     // Send message to all users
-    for (const user of users) {
+    for (const user of [{userId: '625250960'}]) {
       await sendMessage(
         user.userId,
         "🎉 Hey there! Don't forget to play and earn points on Buffy!"
