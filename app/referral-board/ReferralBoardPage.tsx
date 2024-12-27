@@ -62,36 +62,45 @@ export default function ReferralBoardPage() {
                 hasReferralContestStarted && referralLeaderboard && referralLeaderboard.length > 0 && !isFetchingLeaderboard &&
                 <>
                     <div className='flex flex-row py-5 items-center justify-between w-full'>
-                        <div className='flex flex-col items-center w-[30%]'>
-                            {/* <div className='text-white font-medium text-2xl w-16 h-16 rounded-full bg-white/50 grid place-items-center border-[10px] border-[#24A1DE]/5 mb-1 uppercase'>
+                        {
+                            referralLeaderboard[1] &&
+                            <div className='flex flex-col items-center w-[30%]'>
+                                {/* <div className='text-white font-medium text-2xl w-16 h-16 rounded-full bg-white/50 grid place-items-center border-[10px] border-[#24A1DE]/5 mb-1 uppercase'>
                                 {`${referralLeaderboard[1].username[0]}${referralLeaderboard[1].username[1]}`}
                             </div> */}
-                            <span className="w-16 h-16 relative grid place-items-center rounded-full mb-1 overflow-hidden">
-                                <CustomImage src={images.diamond} alt="Coin" />
-                            </span>
-                            <p className='text-sm text-white'>@{referralLeaderboard[1].username}</p>
-                            <p className='text-xs text-white font-semibold'>{referralLeaderboard[1].referralContestCount}</p>
-                        </div>
-                        <div className='flex flex-col items-center w-[30%]'>
-                            {/* <div className='text-white font-medium text-3xl w-20 h-20 rounded-full bg-white/50 grid place-items-center border-[10px] border-[#24A1DE]/5 mb-1 uppercase'>
+                                <span className="w-16 h-16 relative grid place-items-center rounded-full mb-1 overflow-hidden">
+                                    <CustomImage src={images.diamond} alt="Coin" />
+                                </span>
+                                <p className='text-sm text-white'>@{referralLeaderboard[1].username}</p>
+                                <p className='text-xs text-white font-semibold'>{referralLeaderboard[1].referralContestCount}</p>
+                            </div>
+                        }
+                        {
+                            referralLeaderboard[0] &&
+                            <div className='flex flex-col items-center w-[30%]'>
+                                {/* <div className='text-white font-medium text-3xl w-20 h-20 rounded-full bg-white/50 grid place-items-center border-[10px] border-[#24A1DE]/5 mb-1 uppercase'>
                                 {`${referralLeaderboard[0].username[0]}${referralLeaderboard[0].username[1]}`}
                             </div> */}
-                            <span className="w-20 h-20 relative grid place-items-center rounded-full mb-1 overflow-hidden">
-                                <CustomImage src={images.emerald} alt="Coin" />
-                            </span>
-                            <p className='text-sm text-white'>@{referralLeaderboard[0].username}</p>
-                            <p className='text-xs text-white font-semibold'>{referralLeaderboard[0].referralContestCount}</p>
-                        </div>
-                        <div className='flex flex-col items-center w-[30%]'>
-                            {/* <div className='text-white font-medium text-2xl w-16 h-16 rounded-full bg-white/50 grid place-items-center border-[10px] border-[#24A1DE]/5 mb-1 uppercase'>
+                                <span className="w-20 h-20 relative grid place-items-center rounded-full mb-1 overflow-hidden">
+                                    <CustomImage src={images.emerald} alt="Coin" />
+                                </span>
+                                <p className='text-sm text-white'>@{referralLeaderboard[0].username}</p>
+                                <p className='text-xs text-white font-semibold'>{referralLeaderboard[0].referralContestCount}</p>
+                            </div>
+                        }
+                        {
+                            referralLeaderboard[2] &&
+                            <div className='flex flex-col items-center w-[30%]'>
+                                {/* <div className='text-white font-medium text-2xl w-16 h-16 rounded-full bg-white/50 grid place-items-center border-[10px] border-[#24A1DE]/5 mb-1 uppercase'>
                                 {`${referralLeaderboard[2].username[0]}${referralLeaderboard[2].username[1]}`}
                             </div> */}
-                            <span className="w-16 h-16 relative grid place-items-center rounded-full mb-1 overflow-hidden">
-                                <CustomImage src={images.jewel} alt="Coin" />
-                            </span>
-                            <p className='text-sm text-white'>@{referralLeaderboard[2].username}</p>
-                            <p className='text-xs text-white font-semibold'>{referralLeaderboard[2].referralContestCount}</p>
-                        </div>
+                                <span className="w-16 h-16 relative grid place-items-center rounded-full mb-1 overflow-hidden">
+                                    <CustomImage src={images.jewel} alt="Coin" />
+                                </span>
+                                <p className='text-sm text-white'>@{referralLeaderboard[2].username}</p>
+                                <p className='text-xs text-white font-semibold'>{referralLeaderboard[2].referralContestCount}</p>
+                            </div>
+                        }
                     </div>
 
                     <div className='flex flex-col w-full'>
