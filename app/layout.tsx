@@ -3,6 +3,7 @@ import { Outfit } from 'next/font/google'
 import './globals.scss';
 import GlobalProvider from './Provider';
 import { WrappedLayout } from './components/Layout';
+// import { startScheduler } from './scripts/scheduler';
 
 const dmSans = Outfit({ subsets: ['latin'] })
 
@@ -18,6 +19,8 @@ export default async function RootLayout({
 }) {
 
     //TODO Check if user is connected to internet
+
+    // startScheduler(); // Start the scheduler
 
     return (
         <html lang="en" data-theme={"light"} className='bg-white'>
