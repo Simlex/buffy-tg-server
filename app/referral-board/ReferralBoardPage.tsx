@@ -45,7 +45,7 @@ export default function ReferralBoardPage() {
 
     return (
         <main className="flex min-h-screen flex-col items-center py-10 pb-24">
-            <h2 className="text-white font-medium text-3xl mb-4">Referral leaderboard 🚀</h2>
+            <h2 className="text-white font-medium text-2xl mb-4">Referral leaderboard 🚀</h2>
 
             {
                 !hasReferralContestStarted &&
@@ -148,7 +148,7 @@ export default function ReferralBoardPage() {
                                 return (
                                     <div key={index} className='flex flex-row justify-between items-center w-full py-3 px-5 bg-white/10 rounded-xl mb-2'>
                                         <span className={`w-10 h-10 ${rankColor ?? 'bg-white'} rounded-full grid place-items-center`}>{rank}</span>
-                                        <p className='text-white'>@{user.username.slice(0, 13)}{user.username.length > 13 ? '...' : ''}</p>
+                                        <p className='text-white'>{user.username == "undefined" ? `@Anon0${index}` : `@${user.username.slice(0, 13)}{user.username.length > 13 ? '...' : ''}`}</p>
                                         <h4 className='text-sm text-white font-semibold'>{user.referralContestCount}</h4>
                                     </div>
                                 )
