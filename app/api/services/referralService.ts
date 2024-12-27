@@ -56,7 +56,7 @@ export async function fetchReferralsLeaderboard() {
   const referralContestStartDate = ReferralConfig.contestStartDate;
 
   const isReferralContestActive =
-    new Date() <= new Date(referralContestStartDate);
+    new Date() >= new Date(referralContestStartDate);
 
   if (!isReferralContestActive) {
     return {
