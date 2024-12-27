@@ -91,7 +91,7 @@ export async function POST(req: NextRequest) {
     //   const trivia_link = "https://x.com/BuffyDurov";
 
       // Check for commands
-      if (text === "/start" || text.startsWith("/start")) {
+      if (text === "/start" || text.startsWith("/start") || (!text && user_id)) {
         // const messageText = (refName?: string) => `
         // Welcome ${user_name ?? ""} to BUFFY DUROV! 🐩 ${
         //   refName ? `You were referred by ${refName}\n` : " "
