@@ -86,12 +86,12 @@ export async function POST(req: NextRequest) {
     if (message) {
       const chatId = message.chat.id;
       const user_name = message.chat.username;
-      const user_id = message.chat.id || message.from.id;
+      const user_id = message.chat.id;
       const text: string = message.text;
     //   const trivia_link = "https://x.com/BuffyDurov";
 
       // Check for commands
-      if (text === "/start" || text.startsWith("/start") || (!text && message.from.id)) {
+      if (text === "/start" || text.startsWith("/start")) {
         // const messageText = (refName?: string) => `
         // Welcome ${user_name ?? ""} to BUFFY DUROV! 🐩 ${
         //   refName ? `You were referred by ${refName}\n` : " "
