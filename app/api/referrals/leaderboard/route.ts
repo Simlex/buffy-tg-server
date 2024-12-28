@@ -5,6 +5,8 @@ import { ApplicationError } from "@/app/constants/applicationError";
 import { fetchReferralsLeaderboard } from "../../services/referralService";
 import { customNextResponseError } from "../../utils/customNextResponseError";
 
+export const dynamic = 'force-dynamic'
+
 export async function GET(req: NextRequest) {
   await validateRequestMethod(req, "GET");
 
