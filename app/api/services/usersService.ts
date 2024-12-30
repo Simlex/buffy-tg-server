@@ -183,6 +183,39 @@ export async function updateUserPoints(req: NextRequest) {
       return { ...updatedUser };
     }
 
+    // If the specified task is to play kolo
+    if (specifiedTask === Task.PLAY_KOLO_BLOCK) {
+      // If the user has done the task, show error
+      if (user.playedKolo) {
+        return {
+          error: ApplicationError.TaskAlreadyCompleted.Text,
+          errorCode: ApplicationError.TaskAlreadyCompleted.Code,
+          statusCode: StatusCodes.BadRequest,
+        };
+      }
+
+      // if we get here, it means the user has not done the task...
+
+      // increment the user's points
+      await incrementUserTotalPoints(
+        request.points,
+        request.userId,
+        user.totalPoints
+      );
+
+      // update the user's telegram task status
+      const updatedUser = await prisma.users.update({
+        where: {
+          userId: request.userId,
+        },
+        data: {
+          playedKolo: true,
+        },
+      });
+
+      return { ...updatedUser };
+    }
+
     // If the specified task is to subscribe to Zae
     if (specifiedTask === Task.ZAE_CRYPTO_SUBSCRIPTION) {
       // If the user has done the task, show error
