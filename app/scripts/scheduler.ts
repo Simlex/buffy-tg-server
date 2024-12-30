@@ -1,9 +1,9 @@
-import cron from "node-cron";
+// import cron from "node-cron";
 import { prisma } from "@/lib/prisma";
-import fetch from "node-fetch";
+// import fetch from "node-fetch";
 import { sendPhotoWithButtons } from "../api/bot/route";
 
-const TELEGRAM_API_URL = `https://api.telegram.org/bot${process.env.TELEGRAM_BOT_TOKEN}`;
+// const TELEGRAM_API_URL = `https://api.telegram.org/bot${process.env.TELEGRAM_BOT_TOKEN}`;
 const BATCH_SIZE = 25;
 
 const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
@@ -78,7 +78,7 @@ export const startScheduler = async () => {
   let isJobRunning = false;
 
   // Store progress in a variable or external storage (like Redis or a database)
-  let startIndex = 105290; // Set the initial index to start from
+  const startIndex = 105290; // Set the initial index to start from
   let countDone = 105290; // Set the initial count of users processed
 
   // Cron Job
