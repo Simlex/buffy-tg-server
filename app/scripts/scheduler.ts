@@ -78,7 +78,7 @@ export const startScheduler = async () => {
   let isJobRunning = false;
 
   // Store progress in a variable or external storage (like Redis or a database)
-  const startIndex = 105290; // Set the initial index to start from
+//   const startIndex = 105290; // Set the initial index to start from
 //   let countDone = 105290; // Set the initial count of users processed
 
   // Cron Job
