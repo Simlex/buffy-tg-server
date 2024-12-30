@@ -51,6 +51,7 @@ const TaskPage: FunctionComponent = (): ReactElement => {
     const [isJoinChannelBtnClicked, setIsJoinChannelBtnClicked] = useState(false);
     const [isJoinEraxBtnClicked, setIsJoinEraxBtnClicked] = useState(false);
     const [isZaeSubBtnClicked, setIsZaeSubBtnClicked] = useState(false);
+    const [isKoloSubBtnClicked, setIsKoloSubBtnClicked] = useState(false);
     const [isFollowUsBtnClicked, setIsFollowUsBtnClicked] = useState(false);
     const [isWalletViewBtnClicked, setIsWalletViewBtnClicked] = useState(false);
 
@@ -65,6 +66,7 @@ const TaskPage: FunctionComponent = (): ReactElement => {
     const twitterPoints = PointsConfig.Twitter;
     const joinEraxPoints = PointsConfig.JoinErax;
     const zaeSubscriptionPoints = PointsConfig.ZaeSubscription;
+    const koloParticipationPoints = PointsConfig.KoloParticipation;
     const walletConnectPoints = PointsConfig.WalletConnectPoints;
     const tonTransactionPoints = PointsConfig.TonTransactionPoints;
     const websiteViewPoints = PointsConfig.WebsiteViewPoints;
@@ -88,6 +90,8 @@ const TaskPage: FunctionComponent = (): ReactElement => {
                     return joinEraxPoints;
                 case Task.ZAE_CRYPTO_SUBSCRIPTION:
                     return zaeSubscriptionPoints;
+                case Task.PLAY_KOLO_BLOCK:
+                    return koloParticipationPoints;
                 case Task.WEBSITE_VIEW:
                     return websiteViewPoints;
                 case Task.DICE_SPIN_15:
@@ -273,6 +277,19 @@ const TaskPage: FunctionComponent = (): ReactElement => {
                 window.open("https://t.me/+tRmtS_cHAxViOThi", "_blank");
             },
             verificationFunction: () => handleVerifyTask(Task.ZAE_CRYPTO_SUBSCRIPTION)
+        },
+        {
+            icon: (className?: string) => <Icons.Telegram className={className} />,
+            task: Task.PLAY_KOLO_BLOCK,
+            title: "Play KoloBok",
+            points: koloParticipationPoints,
+            action: "Play",
+            isDone: isKoloSubBtnClicked,
+            actionFunction: () => {
+                setIsKoloSubBtnClicked(true);
+                window.open("https://t.me/bokgame_bot/kolobok?startapp=2077877692", "_blank");
+            },
+            verificationFunction: () => handleVerifyTask(Task.PLAY_KOLO_BLOCK)
         },
         {
             icon: (className?: string) => <Icons.Telegram className={className} />,
@@ -492,11 +509,11 @@ const TaskPage: FunctionComponent = (): ReactElement => {
                                 className={`py-2 p-5 rounded-full font-bold text-sm ${selectedTaskType === TaskType.Referral ? "bg-white text-gray-700" : "bg-white/20 text-white"}`}>
                                 Referral
                             </button>
-                            {/* <button
+                            <button
                                 onClick={() => setSelectedTaskType(TaskType.Partners)}
                                 className={`py-2 p-5 rounded-full font-bold text-sm ${selectedTaskType === TaskType.Partners ? "bg-white text-gray-700" : "bg-white/20 text-white"}`}>
                                 Partners
-                            </button> */}
+                            </button>
                         </div>
 
                         {
@@ -715,10 +732,10 @@ const TaskPage: FunctionComponent = (): ReactElement => {
                                 }
                             </div>
                         }
-                        {/* {
+                        {
                             selectedTaskType === TaskType.Partners &&
                             <>
-                                <button
+                                {/* <button
                                     onClick={() => {
                                         setSelectedTask(Task.JOIN_ERAX);
                                         setIsModalVisible(true);
@@ -763,9 +780,32 @@ const TaskPage: FunctionComponent = (): ReactElement => {
                                                 <Icons.CloseFill className="fill-white" />
                                         }
                                     </span>
+                                </button> */}
+                                <button
+                                    onClick={() => {
+                                        setSelectedTask(Task.PLAY_KOLO_BLOCK);
+                                        setIsModalVisible(true);
+                                    }}
+                                    className={`bg-gray-700 rounded-3xl flex flex-row items-center justify-between p-4 pr-5 hover:bg-gray-600 ${userProfileInformation.playedKolo ? "pointer-events-none opacity-70" : ""}`}>
+                                    <div className="flex flex-row items-center gap-3">
+                                        <span className="w-7 h-7 rounded-full overflow-hidden relative grid place-items-center">
+                                            <CustomImage src={images.koloblock} alt="koloblock" />
+                                        </span>
+                                        <div className="flex flex-col gap-[2px] items-start">
+                                            <h5 className="text-white font-medium leading-3 text-base">Play KoloBok</h5>
+                                            <TaskStatus status={userProfileInformation.playedKolo} />
+                                        </div>
+                                    </div>
+                                    <span className="w-7 h-7 rounded-full bg-white/30 grid place-items-center">
+                                        {
+                                            userProfileInformation.playedKolo ?
+                                                <Icons.CheckFill className="fill-white" /> :
+                                                <Icons.CloseFill className="fill-white" />
+                                        }
+                                    </span>
                                 </button>
                             </>
-                        } */}
+                        }
                     </div>
                 }
             </main>
