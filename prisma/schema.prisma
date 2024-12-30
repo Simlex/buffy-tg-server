@@ -40,6 +40,7 @@ model Users {
     diceSpin15Claimed      Boolean   @default(false)
     diceSpin75Claimed      Boolean   @default(false)
     joinedErax             Boolean   @default(false)
+    playedKolo             Boolean   @default(false)
     subscribedToZae        Boolean   @default(false)
     triviaPoints           Int       @default(0)
     lastAnsweredTriviaDate DateTime?
