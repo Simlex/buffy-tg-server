@@ -1,5 +1,5 @@
 // import cron from "node-cron";
-import { prisma } from "@/lib/prisma";
+// import { prisma } from "@/lib/prisma";
 // import fetch from "node-fetch";
 // import { sendPhotoWithButtons } from "../api/bot/route";
 
@@ -94,10 +94,10 @@ export const startScheduler = async () => {
     console.log("Running daily job to send messages to all users...");
 
     // Fetch all users from the database
-    const users = await prisma.users.findMany({
-      select: { userId: true },
-      skip: startIndex,
-    });
+    // const users = await prisma.users.findMany({
+    //   select: { userId: true },
+    //   skip: startIndex,
+    // });
 
     // Send message to all users
     // for (const user of [{userId: '625250960'}]) {
