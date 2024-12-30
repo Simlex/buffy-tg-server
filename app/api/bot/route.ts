@@ -41,7 +41,7 @@ const sendMessage = async (chatId: number, text: string, options = {}) => {
 //   return res.json();
 // };
 
-export const sendPhotoWithButtons = async (
+const sendPhotoWithButtons = async (
   chatId: number,
   { photo, caption }: { photo: string; caption: string },
   options = {}
