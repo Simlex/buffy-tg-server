@@ -22,6 +22,7 @@ export interface UserProfileInformation {
   diceSpin75Claimed?: boolean;
   joinedErax: boolean;
   subscribedToZae: boolean;
+  playedKolo: boolean;
   tapPoints?: number;
   totalPoints?: number;
   triviaPoints?: number;
