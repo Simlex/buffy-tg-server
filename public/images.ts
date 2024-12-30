@@ -22,6 +22,7 @@ import face_5 from "./images/dice/face_5.png";
 import face_6 from "./images/dice/face_6.png";
 import erax from "./images/erax.webp";
 import zae from "./images/zae.jpeg";
+import koloblock from "./images/koloblock.jpg";
 
 import diamond from "./images/diamond.jpg";
 import emerald from "./images/emerald.jpg";
@@ -56,5 +57,6 @@ export default {
   emerald,
   jewel,
   buffy_ref,
-  buffy_santa
+  buffy_santa,
+  koloblock
 };
