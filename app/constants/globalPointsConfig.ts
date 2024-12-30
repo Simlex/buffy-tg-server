@@ -3,6 +3,7 @@ export const PointsConfig = {
   Twitter: 4000,
   JoinErax: 5000,
   ZaeSubscription: 5000,
+  KoloParticipation: 5000,
   WalletConnectPoints: 4000,
   TonTransactionPoints: 50000,
   WebsiteViewPoints: 2000,
