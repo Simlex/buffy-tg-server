@@ -329,6 +329,14 @@ export class ApplicationError extends BaseApplicationError {
     Code: "TASKS_1010",
   };
 
+  /**
+   * The error message for ~ Task already completed
+   */
+  static TaskAlreadyCompleted: IApplicationError = {
+    Text: "Task already completed",
+    Code: "TASKS_1011",
+  };
+
   //#endregion
 
   //#region Level Errors
