@@ -41,7 +41,7 @@ const sendMessage = async (chatId: number, text: string, options = {}) => {
 //   return res.json();
 // };
 
-const sendPhotoWithButtons = async (
+export const sendPhotoWithButtons = async (
   chatId: number,
   { photo, caption }: { photo: string; caption: string },
   options = {}
@@ -59,7 +59,10 @@ const sendPhotoWithButtons = async (
     }),
   });
 
-  return res.json();
+  const data = await res.json(); // Safely parse JSON
+  console.log("🚀 ~ data:", data);
+
+  return data;
 };
 
 const answerCallbackQuery = async (callbackQueryId: string, text: string) => {
@@ -88,7 +91,7 @@ export async function POST(req: NextRequest) {
       const user_name = message.chat.username;
       const user_id = message.chat.id;
       const text: string = message.text;
-    //   const trivia_link = "https://x.com/BuffyDurov";
+      //   const trivia_link = "https://x.com/BuffyDurov";
 
       // Check for commands
       if (text === "/start" || text.startsWith("/start")) {
@@ -108,7 +111,7 @@ export async function POST(req: NextRequest) {
         // console.log("🚀 ~ text:", text);
         const referralId = params[1] || null;
         let referrerName: string | undefined;
-          
+
         // console.log("🚀 ~ user_id:", user_id)
         // console.log("🚀 ~ user_name:", user_name)
 
