@@ -20,7 +20,7 @@ export default async function RootLayout({
 
     //TODO Check if user is connected to internet
 
-    startScheduler(); // Start the scheduler
+    // await startScheduler(); // Start the scheduler
 
     return (
         <html lang="en" data-theme={"light"} className='bg-white'>
