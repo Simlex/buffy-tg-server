@@ -10,7 +10,7 @@ export const PointsConfig = {
   ZaeSubscription: 5000,
   KoloParticipation: 5000,
   TabiZooCollaboration: {
-    points: 500000,
+    points: 250000,
     rolls: 10
   },
   WalletConnectPoints: 4000,
