@@ -280,6 +280,68 @@ export async function updateUserPoints(req: NextRequest) {
       });
     }
 
+    // If the specified task is interact with pinned tweet and the user has done the task, show error
+    if (specifiedTask === Task.INTERACT_WITH_TWITTER_PINNED_POST) {
+      // If the user has done the task, show error
+      if (user.interactedWithTwitterPinnedPost) {
+        return {
+          error: ApplicationError.TaskAlreadyCompleted.Text,
+          errorCode: ApplicationError.TaskAlreadyCompleted.Code,
+          statusCode: StatusCodes.BadRequest,
+        };
+      }
+
+      // if we get here, it means the user has not done the task...
+
+      // increment the user's points
+      await incrementUserTotalPoints(
+        request.points,
+        request.userId,
+        user.totalPoints
+      );
+
+      // update the user's telegram task status
+      await prisma.users.update({
+        where: {
+          userId: request.userId,
+        },
+        data: {
+          interactedWithTwitterPinnedPost: true,
+        },
+      });
+    }
+
+    // If the specified task is join tabi party draw and the user has done the task, show error
+    if (specifiedTask === Task.JOIN_TABI_PARTY_DRAW) {
+      // If the user has done the task, show error
+      if (user.joinedTabiPartyDraw) {
+        return {
+          error: ApplicationError.TaskAlreadyCompleted.Text,
+          errorCode: ApplicationError.TaskAlreadyCompleted.Code,
+          statusCode: StatusCodes.BadRequest,
+        };
+      }
+
+      // if we get here, it means the user has not done the task...
+
+      // increment the user's points
+      await incrementUserTotalPoints(
+        request.points,
+        request.userId,
+        user.totalPoints
+      );
+
+      // update the user's telegram task status
+      await prisma.users.update({
+        where: {
+          userId: request.userId,
+        },
+        data: {
+          joinedTabiPartyDraw: true,
+        },
+      });
+    }
+
     // If the specified task is ton transaction
     if (specifiedTask === Task.TON_TRANSACTION) {
       // If the user has done the task, show error
@@ -313,6 +375,48 @@ export async function updateUserPoints(req: NextRequest) {
           tonSent: {
             increment: request.ton,
           },
+        },
+      });
+
+      return { ...updatedUser };
+    }
+
+    // If the specified task is support tabi zoo collaboration
+    if (specifiedTask === Task.SUPPORT_TABI_ZOO_COLLAB) {
+      // If the user has done the task, show error
+      if (user.supportedTabiZooCollab) {
+        return {
+          error: ApplicationError.TaskAlreadyCompleted.Text,
+          errorCode: ApplicationError.TaskAlreadyCompleted.Code,
+          statusCode: StatusCodes.BadRequest,
+        };
+      }
+
+      // if we get here, it means the user has not done the task...
+
+      // increment the user's points
+      await incrementUserTotalPoints(
+        request.points,
+        request.userId,
+        user.isWalletConnected
+          ? user.totalPoints
+          : user.totalPoints + PointsConfig.WalletConnectPoints
+      );
+
+      // update the user's tabi zoo collab task status
+      const updatedUser = await prisma.users.update({
+        where: {
+          userId: request.userId,
+        },
+        data: {
+          supportedTabiZooCollab: true,
+          isWalletConnected: user.isWalletConnected || true,
+          tonSent: {
+            increment: request.ton,
+          },
+          availableDiceRolls: {
+            increment: PointsConfig.TabiZooCollaboration.rolls,
+          }
         },
       });
 
