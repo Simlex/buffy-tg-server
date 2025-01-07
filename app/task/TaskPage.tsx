@@ -52,7 +52,10 @@ const TaskPage: FunctionComponent = (): ReactElement => {
     const [isJoinEraxBtnClicked, setIsJoinEraxBtnClicked] = useState(false);
     const [isZaeSubBtnClicked, setIsZaeSubBtnClicked] = useState(false);
     const [isKoloSubBtnClicked, setIsKoloSubBtnClicked] = useState(false);
+    const [isTabiZooSupportBtnClicked, setIsTabiZooSupportBtnClicked] = useState(false);
+    const [isJoinTabiPartyDrawBtnClicked, setIsJoinTabiPartyDrawBtnClicked] = useState(false);
     const [isFollowUsBtnClicked, setIsFollowUsBtnClicked] = useState(false);
+    const [isInteractWPPBtnClicked, setIsInteractWPPBtnClicked] = useState(false);
     const [isWalletViewBtnClicked, setIsWalletViewBtnClicked] = useState(false);
 
     const [isVerifyingTask, setIsVerifyingTask] = useState(false);
@@ -64,9 +67,12 @@ const TaskPage: FunctionComponent = (): ReactElement => {
 
     const telegramPoints = PointsConfig.Telegram;
     const twitterPoints = PointsConfig.Twitter;
+    const interactWithPinnedPostPoints = PointsConfig.InteractWithPinnedPostPoints;
     const joinEraxPoints = PointsConfig.JoinErax;
     const zaeSubscriptionPoints = PointsConfig.ZaeSubscription;
     const koloParticipationPoints = PointsConfig.KoloParticipation;
+    const joinedTabiPartyDrawPoints = PointsConfig.JoinedTabiPartyDraw;
+    const tabiZooCollaborationPoints = PointsConfig.TabiZooCollaboration;
     const walletConnectPoints = PointsConfig.WalletConnectPoints;
     const tonTransactionPoints = PointsConfig.TonTransactionPoints;
     const websiteViewPoints = PointsConfig.WebsiteViewPoints;
@@ -92,6 +98,10 @@ const TaskPage: FunctionComponent = (): ReactElement => {
                     return zaeSubscriptionPoints;
                 case Task.PLAY_KOLO_BLOCK:
                     return koloParticipationPoints;
+                case Task.INTERACT_WITH_TWITTER_PINNED_POST:
+                    return interactWithPinnedPostPoints;
+                case Task.JOIN_TABI_PARTY_DRAW:
+                    return joinedTabiPartyDrawPoints;
                 case Task.WEBSITE_VIEW:
                     return websiteViewPoints;
                 case Task.DICE_SPIN_15:
@@ -113,8 +123,8 @@ const TaskPage: FunctionComponent = (): ReactElement => {
         };
 
         await updateUserPoints(data)
-            .then(() => {
-                fetchUserProfileInformation(userProfileInformation?.userId as string);
+            .then(async () => {
+                await fetchUserProfileInformation(userProfileInformation?.userId as string);
 
                 switch (specifiedTask) {
                     case Task.TELEGRAM:
@@ -122,6 +132,12 @@ const TaskPage: FunctionComponent = (): ReactElement => {
                         break;
                     case Task.TWITTER:
                         setIsFollowUsBtnClicked(false);
+                        break;
+                    case Task.INTERACT_WITH_TWITTER_PINNED_POST:
+                        setIsInteractWPPBtnClicked(false);
+                        break;
+                    case Task.JOIN_TABI_PARTY_DRAW:
+                        setIsJoinTabiPartyDrawBtnClicked(false);
                         break;
 
                     default:
@@ -196,7 +212,7 @@ const TaskPage: FunctionComponent = (): ReactElement => {
         console.log("🚀 ~ task:", task)
     };
 
-    const handleMakeATransaction = (depositAmount: number) => {
+    const handleMakeATransaction = (depositAmount: number, task?: Task, points?: number) => {
         if (!depositAmount) {
             console.log("🚀 ~ handleBuyRolls ~ depositAmount:", depositAmount)
             return;
@@ -220,8 +236,8 @@ const TaskPage: FunctionComponent = (): ReactElement => {
 
                     const data: PointsUpdateRequest = {
                         userId: userProfileInformation?.userId as string,
-                        points: tonTransactionPoints,
-                        task: Task.TON_TRANSACTION,
+                        points: points ?? tonTransactionPoints,
+                        task: task ?? Task.TON_TRANSACTION,
                         ton: depositAmount,
                         walletAddress: userFriendlyAddress
                     }
@@ -293,6 +309,32 @@ const TaskPage: FunctionComponent = (): ReactElement => {
         },
         {
             icon: (className?: string) => <Icons.Telegram className={className} />,
+            task: Task.JOIN_TABI_PARTY_DRAW,
+            title: "Join Tabi Party draw and Mininode",
+            points: joinedTabiPartyDrawPoints,
+            action: "Join",
+            isDone: isJoinTabiPartyDrawBtnClicked,
+            actionFunction: () => {
+                setIsJoinTabiPartyDrawBtnClicked(true);
+                window.open("https://t.me/tabizoobot", "_blank");
+            },
+            verificationFunction: () => handleVerifyTask(Task.JOIN_TABI_PARTY_DRAW)
+        },
+        {
+            icon: (className?: string) => <Icons.Telegram className={className} />,
+            task: Task.SUPPORT_TABI_ZOO_COLLAB,
+            title: "Support TON and Tabi Zoo with 0.5 TON",
+            points: tabiZooCollaborationPoints.points,
+            rolls: tabiZooCollaborationPoints.rolls,
+            action: "Support",
+            isDone: isTabiZooSupportBtnClicked,
+            actionFunction: () => {
+                handleMakeATransaction(0.5, Task.SUPPORT_TABI_ZOO_COLLAB, tabiZooCollaborationPoints.points);
+            },
+            verificationFunction: () => handleVerifyTask(Task.SUPPORT_TABI_ZOO_COLLAB)
+        },
+        {
+            icon: (className?: string) => <Icons.Telegram className={className} />,
             task: Task.TELEGRAM,
             title: "Join our telegram channel",
             points: telegramPoints,
@@ -316,6 +358,19 @@ const TaskPage: FunctionComponent = (): ReactElement => {
                 window.open("https://x.com/buffydurov?s=11", "_blank");
             },
             verificationFunction: () => handleVerifyTask(Task.TWITTER)
+        },
+        {
+            icon: (className?: string) => <Icons.Twitter className={className} />,
+            task: Task.INTERACT_WITH_TWITTER_PINNED_POST,
+            title: "RT and like our pinned post",
+            points: interactWithPinnedPostPoints,
+            action: "Interact",
+            isDone: isInteractWPPBtnClicked,
+            actionFunction: () => {
+                setIsInteractWPPBtnClicked(true)
+                window.open("https://x.com/buffydurov?s=11", "_blank");
+            },
+            verificationFunction: () => handleVerifyTask(Task.INTERACT_WITH_TWITTER_PINNED_POST)
         },
         {
             icon: (className?: string) => <Icons.Wallet className={className} />,
@@ -419,7 +474,7 @@ const TaskPage: FunctionComponent = (): ReactElement => {
                         <span className="relative w-6 h-6">
                             <CustomImage src={images.coin} alt="Coin" />
                         </span>
-                        <h5 className="text-xl font-bold">+{selectedTaskInfo?.points.toLocaleString()}</h5>
+                        <h5 className="text-xl font-bold">+{selectedTaskInfo?.points.toLocaleString()} {selectedTaskInfo?.rolls && `& ${selectedTaskInfo.rolls} rolls`}</h5>
                     </div>
                     <div className="flex flex-row gap-4 w-full">
                         <button
@@ -613,6 +668,29 @@ const TaskPage: FunctionComponent = (): ReactElement => {
                                 </button>
                                 <button
                                     onClick={() => {
+                                        setSelectedTask(Task.INTERACT_WITH_TWITTER_PINNED_POST);
+                                        setIsModalVisible(true);
+                                    }}
+                                    className={`bg-gray-700 rounded-3xl flex flex-row items-center justify-between p-4 pr-5 hover:bg-gray-600 ${userProfileInformation.interactedWithTwitterPinnedPost ? "pointer-events-none opacity-70" : ""}`}>
+                                    <div className="flex flex-row items-center gap-3">
+                                        <span className="w-7 h-7 relative grid place-items-center">
+                                            <Icons.Twitter />
+                                        </span>
+                                        <div className="flex flex-col gap-[2px] items-start">
+                                            <h5 className="text-white font-medium leading-3 text-base">RT and Like our pinned post</h5>
+                                            <TaskStatus status={userProfileInformation.interactedWithTwitterPinnedPost} />
+                                        </div>
+                                    </div>
+                                    <span className="w-7 h-7 rounded-full bg-white/30 grid place-items-center">
+                                        {
+                                            userProfileInformation.interactedWithTwitterPinnedPost ?
+                                                <Icons.CheckFill className="fill-white" /> :
+                                                <Icons.CloseFill className="fill-white" />
+                                        }
+                                    </span>
+                                </button>
+                                <button
+                                    onClick={() => {
                                         setSelectedTask(Task.WEBSITE_VIEW);
                                         setIsModalVisible(true);
                                     }}
@@ -799,6 +877,52 @@ const TaskPage: FunctionComponent = (): ReactElement => {
                                     <span className="w-7 h-7 rounded-full bg-white/30 grid place-items-center">
                                         {
                                             userProfileInformation.playedKolo ?
+                                                <Icons.CheckFill className="fill-white" /> :
+                                                <Icons.CloseFill className="fill-white" />
+                                        }
+                                    </span>
+                                </button>
+                                <button
+                                    onClick={() => {
+                                        setSelectedTask(Task.SUPPORT_TABI_ZOO_COLLAB);
+                                        setIsModalVisible(true);
+                                    }}
+                                    className={`bg-gray-700 rounded-3xl flex flex-row items-center justify-between p-4 pr-5 hover:bg-gray-600 ${userProfileInformation.supportedTabiZooCollab ? "pointer-events-none opacity-70" : ""}`}>
+                                    <div className="flex flex-row items-center gap-3">
+                                        <span className="w-7 h-7 rounded-full overflow-hidden relative grid place-items-center">
+                                            <CustomImage src={images.buffyXtabi} alt="buffy and tabi" />
+                                        </span>
+                                        <div className="flex flex-col gap-[2px] items-start">
+                                            <h5 className="text-white font-medium leading-3 text-base">Buffy Durov X Tabi Zoo Collaboration Task [Limited]</h5>
+                                            <TaskStatus status={userProfileInformation.supportedTabiZooCollab} />
+                                        </div>
+                                    </div>
+                                    <span className="w-7 h-7 rounded-full bg-white/30 grid place-items-center">
+                                        {
+                                            userProfileInformation.supportedTabiZooCollab ?
+                                                <Icons.CheckFill className="fill-white" /> :
+                                                <Icons.CloseFill className="fill-white" />
+                                        }
+                                    </span>
+                                </button>
+                                <button
+                                    onClick={() => {
+                                        setSelectedTask(Task.JOIN_TABI_PARTY_DRAW);
+                                        setIsModalVisible(true);
+                                    }}
+                                    className={`bg-gray-700 rounded-3xl flex flex-row items-center justify-between p-4 pr-5 hover:bg-gray-600 ${userProfileInformation.joinedTabiPartyDraw ? "pointer-events-none opacity-70" : ""}`}>
+                                    <div className="flex flex-row items-center gap-3">
+                                        <span className="w-7 h-7 rounded-full overflow-hidden relative grid place-items-center">
+                                            <CustomImage src={images.tabi_party} alt="koloblock" />
+                                        </span>
+                                        <div className="flex flex-col gap-[2px] items-start">
+                                            <h5 className="text-white font-medium leading-3 text-base">Join Tabi Party draw and Mininode</h5>
+                                            <TaskStatus status={userProfileInformation.joinedTabiPartyDraw} />
+                                        </div>
+                                    </div>
+                                    <span className="w-7 h-7 rounded-full bg-white/30 grid place-items-center">
+                                        {
+                                            userProfileInformation.joinedTabiPartyDraw ?
                                                 <Icons.CheckFill className="fill-white" /> :
                                                 <Icons.CloseFill className="fill-white" />
                                         }
