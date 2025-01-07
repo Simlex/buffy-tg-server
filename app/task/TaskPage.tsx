@@ -71,7 +71,7 @@ const TaskPage: FunctionComponent = (): ReactElement => {
     const joinEraxPoints = PointsConfig.JoinErax;
     const zaeSubscriptionPoints = PointsConfig.ZaeSubscription;
     const koloParticipationPoints = PointsConfig.KoloParticipation;
-    const joinedTabiPartyDrawPoints = PointsConfig.JoinedTabiPartyDraw;
+    const joinedTabiPartyDrawPoints = PointsConfig.JoinedTabiPartyDraw.points;
     const tabiZooCollaborationPoints = PointsConfig.TabiZooCollaboration;
     const walletConnectPoints = PointsConfig.WalletConnectPoints;
     const tonTransactionPoints = PointsConfig.TonTransactionPoints;
@@ -312,6 +312,7 @@ const TaskPage: FunctionComponent = (): ReactElement => {
             task: Task.JOIN_TABI_PARTY_DRAW,
             title: "Join Tabi Party draw and Mininode",
             points: joinedTabiPartyDrawPoints,
+            rolls: PointsConfig.JoinedTabiPartyDraw.rolls, 
             action: "Join",
             isDone: isJoinTabiPartyDrawBtnClicked,
             actionFunction: () => {
@@ -368,7 +369,7 @@ const TaskPage: FunctionComponent = (): ReactElement => {
             isDone: isInteractWPPBtnClicked,
             actionFunction: () => {
                 setIsInteractWPPBtnClicked(true)
-                window.open("https://x.com/buffydurov?s=11", "_blank");
+                window.open("https://x.com/buffydurov/status/1876582666713071929?s=46", "_blank");
             },
             verificationFunction: () => handleVerifyTask(Task.INTERACT_WITH_TWITTER_PINNED_POST)
         },
