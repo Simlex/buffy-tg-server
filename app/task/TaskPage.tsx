@@ -139,6 +139,9 @@ const TaskPage: FunctionComponent = (): ReactElement => {
                     case Task.JOIN_TABI_PARTY_DRAW:
                         setIsJoinTabiPartyDrawBtnClicked(false);
                         break;
+                    case Task.SUPPORT_TABI_ZOO_COLLAB:
+                        setIsTabiZooSupportBtnClicked(false);
+                        break;
 
                     default:
                         break;
