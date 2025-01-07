@@ -30,6 +30,8 @@ import jewel from "./images/jewel.jpg";
 
 import buffy_ref from "./images/buffy_ref.png";
 import buffy_santa from "./images/buffy_santa.jpg";
+import tabi_party from "./images/tabi_party.png";
+import buffyXtabi from "./images/buffyXtabi.jpg";
 
 export default {
   avatar,
@@ -58,5 +60,7 @@ export default {
   jewel,
   buffy_ref,
   buffy_santa,
-  koloblock
+  koloblock,
+  tabi_party,
+  buffyXtabi
 };
