@@ -2,12 +2,15 @@ export const PointsConfig = {
   Telegram: 4000,
   Twitter: 4000,
   InteractWithPinnedPostPoints: 25000,
-  JoinedTabiPartyDraw: 50000,
+  JoinedTabiPartyDraw: {
+    points: 50000,
+    rolls: 2
+  },
   JoinErax: 5000,
   ZaeSubscription: 5000,
   KoloParticipation: 5000,
   TabiZooCollaboration: {
-    points: 250000,
+    points: 500000,
     rolls: 10
   },
   WalletConnectPoints: 4000,
