@@ -873,7 +873,7 @@ const TaskPage: FunctionComponent = (): ReactElement => {
                                         <span className="w-7 h-7 rounded-full overflow-hidden relative grid place-items-center">
                                             <CustomImage src={images.koloblock} alt="koloblock" />
                                         </span>
-                                        <div className="flex flex-col gap-[2px] items-start">
+                                        <div className="flex flex-col gap-[2px] items-start text-left">
                                             <h5 className="text-white font-medium leading-3 text-base">Play KoloBok</h5>
                                             <TaskStatus status={userProfileInformation.playedKolo} />
                                         </div>
@@ -896,7 +896,7 @@ const TaskPage: FunctionComponent = (): ReactElement => {
                                         <span className="w-7 h-7 rounded-full overflow-hidden relative grid place-items-center">
                                             <CustomImage src={images.buffyXtabi} alt="buffy and tabi" />
                                         </span>
-                                        <div className="flex flex-col gap-[2px] items-start">
+                                        <div className="flex flex-col gap-[2px] items-start text-left">
                                             <h5 className="text-white font-medium leading-3 text-base">Buffy Durov X Tabi Zoo Collaboration Task [Limited]</h5>
                                             <TaskStatus status={userProfileInformation.supportedTabiZooCollab} />
                                         </div>
@@ -919,7 +919,7 @@ const TaskPage: FunctionComponent = (): ReactElement => {
                                         <span className="w-7 h-7 rounded-full overflow-hidden relative grid place-items-center">
                                             <CustomImage src={images.tabi_party} alt="koloblock" />
                                         </span>
-                                        <div className="flex flex-col gap-[2px] items-start">
+                                        <div className="flex flex-col gap-[2px] items-start text-left">
                                             <h5 className="text-white font-medium leading-3 text-base">Join Tabi Party draw and Mininode</h5>
                                             <TaskStatus status={userProfileInformation.joinedTabiPartyDraw} />
                                         </div>
