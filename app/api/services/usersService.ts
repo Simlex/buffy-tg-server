@@ -338,6 +338,9 @@ export async function updateUserPoints(req: NextRequest) {
         },
         data: {
           joinedTabiPartyDraw: true,
+          availableDiceRolls: {
+            increment: PointsConfig.JoinedTabiPartyDraw.rolls,
+          }
         },
       });
     }
