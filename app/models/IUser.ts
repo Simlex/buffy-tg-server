@@ -23,6 +23,7 @@ export interface UserProfileInformation {
   joinedErax: boolean;
   subscribedToZae: boolean;
   playedKolo: boolean;
+  supportedTabiZooCollab: boolean;
   tapPoints?: number;
   totalPoints?: number;
   triviaPoints?: number;
@@ -46,6 +47,8 @@ export interface UserProfileInformation {
 
   telegramTaskDone: boolean;
   twitterTaskDone: boolean;
+  interactedWithTwitterPinnedPost: boolean;
+  joinedTabiPartyDraw: boolean;
   websiteViewTaskDone: boolean;
   highestReferralBonusClaimed?: number;
   createdAt?: Date;
