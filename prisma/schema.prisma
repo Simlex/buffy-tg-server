@@ -44,6 +44,8 @@ model Users {
     supportedTabiZooCollab          Boolean   @default(false)
     interactedWithTwitterPinnedPost Boolean   @default(false)
     joinedTabiPartyDraw             Boolean   @default(false)
+    joinedBeeCoinBot                Boolean   @default(false)
+    joinedBeeCoinTg                 Boolean   @default(false)
     subscribedToZae                 Boolean   @default(false)
     triviaPoints                    Int       @default(0)
     lastAnsweredTriviaDate          DateTime?
