@@ -49,6 +49,8 @@ export interface UserProfileInformation {
   twitterTaskDone: boolean;
   interactedWithTwitterPinnedPost: boolean;
   joinedTabiPartyDraw: boolean;
+  joinedBeeCoinBot: boolean;
+  joinedBeeCoinTg: boolean;
   websiteViewTaskDone: boolean;
   highestReferralBonusClaimed?: number;
   createdAt?: Date;
