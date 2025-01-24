@@ -54,6 +54,8 @@ const TaskPage: FunctionComponent = (): ReactElement => {
     const [isKoloSubBtnClicked, setIsKoloSubBtnClicked] = useState(false);
     const [isTabiZooSupportBtnClicked, setIsTabiZooSupportBtnClicked] = useState(false);
     const [isJoinTabiPartyDrawBtnClicked, setIsJoinTabiPartyDrawBtnClicked] = useState(false);
+    const [isJoinBeeCoinBotBtnClicked, setIsJoinBeeCoinBotBtnClicked] = useState(false);
+    const [isJoinBeeCoinTgBtnClicked, setIsJoinBeeCoinTgBtnClicked] = useState(false);
     const [isFollowUsBtnClicked, setIsFollowUsBtnClicked] = useState(false);
     const [isInteractWPPBtnClicked, setIsInteractWPPBtnClicked] = useState(false);
     const [isWalletViewBtnClicked, setIsWalletViewBtnClicked] = useState(false);
@@ -72,6 +74,7 @@ const TaskPage: FunctionComponent = (): ReactElement => {
     const zaeSubscriptionPoints = PointsConfig.ZaeSubscription;
     const koloParticipationPoints = PointsConfig.KoloParticipation;
     const joinedTabiPartyDrawPoints = PointsConfig.JoinedTabiPartyDraw.points;
+    const joinedBeeCoinPoints = PointsConfig.JoinedBeeCoinPoints;
     const tabiZooCollaborationPoints = PointsConfig.TabiZooCollaboration;
     const walletConnectPoints = PointsConfig.WalletConnectPoints;
     const tonTransactionPoints = PointsConfig.TonTransactionPoints;
@@ -102,6 +105,10 @@ const TaskPage: FunctionComponent = (): ReactElement => {
                     return interactWithPinnedPostPoints;
                 case Task.JOIN_TABI_PARTY_DRAW:
                     return joinedTabiPartyDrawPoints;
+                case Task.JOIN_BEE_COIN_BOT:
+                    return joinedBeeCoinPoints;
+                case Task.JOIN_BEE_COIN_TG:
+                    return joinedBeeCoinPoints;
                 case Task.WEBSITE_VIEW:
                     return websiteViewPoints;
                 case Task.DICE_SPIN_15:
@@ -323,6 +330,32 @@ const TaskPage: FunctionComponent = (): ReactElement => {
                 window.open("https://t.me/tabizoobot", "_blank");
             },
             verificationFunction: () => handleVerifyTask(Task.JOIN_TABI_PARTY_DRAW)
+        },
+        {
+            icon: (className?: string) => <Icons.Telegram className={className} />,
+            task: Task.JOIN_BEE_COIN_BOT,
+            title: "Join BeeCoin Bot: New listing!",
+            points: joinedBeeCoinPoints,
+            action: "Join",
+            isDone: isJoinBeeCoinBotBtnClicked,
+            actionFunction: () => {
+                setIsJoinBeeCoinBotBtnClicked(true);
+                window.open("https://t.me/Bee_CoinBot/app?startapp=7785", "_blank");
+            },
+            verificationFunction: () => handleVerifyTask(Task.JOIN_BEE_COIN_BOT)
+        },
+        {
+            icon: (className?: string) => <Icons.Telegram className={className} />,
+            task: Task.JOIN_BEE_COIN_TG,
+            title: "Join BeeCoin Channel: New listing!",
+            points: joinedBeeCoinPoints,
+            action: "Join",
+            isDone: isJoinBeeCoinTgBtnClicked,
+            actionFunction: () => {
+                setIsJoinBeeCoinTgBtnClicked(true);
+                window.open("https://t.me/beecoin_official", "_blank");
+            },
+            verificationFunction: () => handleVerifyTask(Task.JOIN_BEE_COIN_TG)
         },
         {
             icon: (className?: string) => <Icons.Telegram className={className} />,
@@ -927,6 +960,52 @@ const TaskPage: FunctionComponent = (): ReactElement => {
                                     <span className="w-7 h-7 rounded-full bg-white/30 grid place-items-center">
                                         {
                                             userProfileInformation.joinedTabiPartyDraw ?
+                                                <Icons.CheckFill className="fill-white" /> :
+                                                <Icons.CloseFill className="fill-white" />
+                                        }
+                                    </span>
+                                </button>
+                                <button
+                                    onClick={() => {
+                                        setSelectedTask(Task.JOIN_BEE_COIN_BOT);
+                                        setIsModalVisible(true);
+                                    }}
+                                    className={`bg-gray-700 rounded-3xl flex flex-row items-center justify-between p-4 pr-5 hover:bg-gray-600 ${userProfileInformation.joinedBeeCoinBot ? "pointer-events-none opacity-70" : ""}`}>
+                                    <div className="flex flex-row items-center gap-3">
+                                        <span className="w-7 h-7 rounded-full overflow-hidden relative grid place-items-center">
+                                            <CustomImage src={images.bee_coin} alt="Bee coin" />
+                                        </span>
+                                        <div className="flex flex-col gap-[2px] items-start text-left">
+                                            <h5 className="text-white font-medium leading-3 text-base">Join BeeCoin BOT: New listing!</h5>
+                                            <TaskStatus status={userProfileInformation.joinedBeeCoinBot} />
+                                        </div>
+                                    </div>
+                                    <span className="w-7 h-7 rounded-full bg-white/30 grid place-items-center">
+                                        {
+                                            userProfileInformation.joinedBeeCoinBot ?
+                                                <Icons.CheckFill className="fill-white" /> :
+                                                <Icons.CloseFill className="fill-white" />
+                                        }
+                                    </span>
+                                </button>
+                                <button
+                                    onClick={() => {
+                                        setSelectedTask(Task.JOIN_BEE_COIN_TG);
+                                        setIsModalVisible(true);
+                                    }}
+                                    className={`bg-gray-700 rounded-3xl flex flex-row items-center justify-between p-4 pr-5 hover:bg-gray-600 ${userProfileInformation.joinedBeeCoinTg ? "pointer-events-none opacity-70" : ""}`}>
+                                    <div className="flex flex-row items-center gap-3">
+                                        <span className="w-7 h-7 rounded-full overflow-hidden relative grid place-items-center">
+                                            <CustomImage src={images.bee_coin} alt="Bee coin" />
+                                        </span>
+                                        <div className="flex flex-col gap-[2px] items-start text-left">
+                                            <h5 className="text-white font-medium leading-3 text-base">Join BeeCoin Telegram Channel</h5>
+                                            <TaskStatus status={userProfileInformation.joinedBeeCoinTg} />
+                                        </div>
+                                    </div>
+                                    <span className="w-7 h-7 rounded-full bg-white/30 grid place-items-center">
+                                        {
+                                            userProfileInformation.joinedBeeCoinTg ?
                                                 <Icons.CheckFill className="fill-white" /> :
                                                 <Icons.CloseFill className="fill-white" />
                                         }

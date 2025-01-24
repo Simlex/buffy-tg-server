@@ -2,6 +2,7 @@ export const PointsConfig = {
   Telegram: 4000,
   Twitter: 4000,
   InteractWithPinnedPostPoints: 25000,
+  JoinedBeeCoinPoints: 5000,
   JoinedTabiPartyDraw: {
     points: 50000,
     rolls: 2
