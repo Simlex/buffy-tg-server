@@ -376,6 +376,37 @@ export async function updateUserPoints(req: NextRequest) {
       });
     }
 
+    // If the specified task is join harry coin bot and the user has done the task, show error
+    if (specifiedTask === Task.JOIN_HARRY_COIN_BOT) {
+      // If the user has done the task, show error
+      if (user.joinedHarryCoinBot) {
+        return {
+          error: ApplicationError.TaskAlreadyCompleted.Text,
+          errorCode: ApplicationError.TaskAlreadyCompleted.Code,
+          statusCode: StatusCodes.BadRequest,
+        };
+      }
+
+      // if we get here, it means the user has not done the task...
+
+      // increment the user's points
+      await incrementUserTotalPoints(
+        request.points,
+        request.userId,
+        user.totalPoints
+      );
+
+      // update the user's telegram task status
+      await prisma.users.update({
+        where: {
+          userId: request.userId,
+        },
+        data: {
+          joinedHarryCoinBot: true
+        },
+      });
+    }
+
     // If the specified task is join bee coin tg and the user has done the task, show error
     if (specifiedTask === Task.JOIN_BEE_COIN_TG) {
       // If the user has done the task, show error
