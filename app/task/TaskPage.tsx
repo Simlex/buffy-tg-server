@@ -39,6 +39,8 @@ const TaskPage: FunctionComponent = (): ReactElement => {
     const claimReferralBonus = useClaimReferralBonus();
     const { userProfileInformation, fetchUserProfileInformation, updateUserProfileInformation } = useContext(ApplicationContext) as ApplicationContextData;
 
+    //#region usestates
+
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [isClaimModalVisible, setIsClaimModalVisible] = useState(false);
     const [isBonusClaimedModalVisible, setIsBonusClaimedModalVisible] = useState(false);
@@ -56,6 +58,7 @@ const TaskPage: FunctionComponent = (): ReactElement => {
     const [isJoinTabiPartyDrawBtnClicked, setIsJoinTabiPartyDrawBtnClicked] = useState(false);
     const [isJoinBeeCoinBotBtnClicked, setIsJoinBeeCoinBotBtnClicked] = useState(false);
     const [isJoinBeeCoinTgBtnClicked, setIsJoinBeeCoinTgBtnClicked] = useState(false);
+    const [isJoinHarryCoinBotBtnClicked, setIsJoinHarryCoinBotBtnClicked] = useState(false);
     const [isFollowUsBtnClicked, setIsFollowUsBtnClicked] = useState(false);
     const [isInteractWPPBtnClicked, setIsInteractWPPBtnClicked] = useState(false);
     const [isWalletViewBtnClicked, setIsWalletViewBtnClicked] = useState(false);
@@ -64,6 +67,10 @@ const TaskPage: FunctionComponent = (): ReactElement => {
     const [isClaimingBonus, setIsClaimingBonus] = useState(false);
     // const [depositAmount, setDepositAmount] = useState<number>();
     const [isMakingATransaction, setIsMakingATransaction] = useState(false);
+
+    //#endregion
+
+    //#region constants
 
     const { open } = useTonConnectModal();
 
@@ -75,6 +82,7 @@ const TaskPage: FunctionComponent = (): ReactElement => {
     const koloParticipationPoints = PointsConfig.KoloParticipation;
     const joinedTabiPartyDrawPoints = PointsConfig.JoinedTabiPartyDraw.points;
     const joinedBeeCoinPoints = PointsConfig.JoinedBeeCoinPoints;
+    const joinedHarryCoinPoints = PointsConfig.JoinedHarryCoinPoints;
     const tabiZooCollaborationPoints = PointsConfig.TabiZooCollaboration;
     const walletConnectPoints = PointsConfig.WalletConnectPoints;
     const tonTransactionPoints = PointsConfig.TonTransactionPoints;
@@ -84,6 +92,10 @@ const TaskPage: FunctionComponent = (): ReactElement => {
 
     const userFriendlyAddress = useTonAddress();
     // const destination = userFriendlyAddress ? Address.parse(userFriendlyAddress).toRawString() : '';
+
+    //#endregion
+
+    //#region functions
 
     async function handleVerifyTask(specifiedTask: Task) {
         // Show loader
@@ -107,6 +119,8 @@ const TaskPage: FunctionComponent = (): ReactElement => {
                     return joinedTabiPartyDrawPoints;
                 case Task.JOIN_BEE_COIN_BOT:
                     return joinedBeeCoinPoints;
+                case Task.JOIN_HARRY_COIN_BOT:
+                    return joinedHarryCoinPoints;
                 case Task.JOIN_BEE_COIN_TG:
                     return joinedBeeCoinPoints;
                 case Task.WEBSITE_VIEW:
@@ -277,6 +291,8 @@ const TaskPage: FunctionComponent = (): ReactElement => {
         }
     };
 
+    //#endregion
+
     const taskInfo = [
         {
             icon: (className?: string) => <Icons.Telegram className={className} />,
@@ -343,6 +359,19 @@ const TaskPage: FunctionComponent = (): ReactElement => {
                 window.open("https://t.me/Bee_CoinBot/app?startapp=7785", "_blank");
             },
             verificationFunction: () => handleVerifyTask(Task.JOIN_BEE_COIN_BOT)
+        },
+        {
+            icon: (className?: string) => <Icons.Telegram className={className} />,
+            task: Task.JOIN_HARRY_COIN_BOT,
+            title: "Join Harry Coin Bot",
+            points: joinedHarryCoinPoints,
+            action: "Join",
+            isDone: isJoinHarryCoinBotBtnClicked,
+            actionFunction: () => {
+                setIsJoinHarryCoinBotBtnClicked(true);
+                window.open("https://t.me/harry_coin_bot?start=2408220614273", "_blank");
+            },
+            verificationFunction: () => handleVerifyTask(Task.JOIN_HARRY_COIN_BOT)
         },
         {
             icon: (className?: string) => <Icons.Telegram className={className} />,
@@ -1006,6 +1035,29 @@ const TaskPage: FunctionComponent = (): ReactElement => {
                                     <span className="w-7 h-7 rounded-full bg-white/30 grid place-items-center">
                                         {
                                             userProfileInformation.joinedBeeCoinTg ?
+                                                <Icons.CheckFill className="fill-white" /> :
+                                                <Icons.CloseFill className="fill-white" />
+                                        }
+                                    </span>
+                                </button>
+                                <button
+                                    onClick={() => {
+                                        setSelectedTask(Task.JOIN_HARRY_COIN_BOT);
+                                        setIsModalVisible(true);
+                                    }}
+                                    className={`bg-gray-700 rounded-3xl flex flex-row items-center justify-between p-4 pr-5 hover:bg-gray-600 ${userProfileInformation.joinedHarryCoinBot ? "pointer-events-none opacity-70" : ""}`}>
+                                    <div className="flex flex-row items-center gap-3">
+                                        <span className="w-7 h-7 rounded-full overflow-hidden relative grid place-items-center">
+                                            <CustomImage src={images.harry_coin} alt="Bee coin" />
+                                        </span>
+                                        <div className="flex flex-col gap-[2px] items-start text-left">
+                                            <h5 className="text-white font-medium leading-3 text-base">Join Harry Coin BOT</h5>
+                                            <TaskStatus status={userProfileInformation.joinedHarryCoinBot} />
+                                        </div>
+                                    </div>
+                                    <span className="w-7 h-7 rounded-full bg-white/30 grid place-items-center">
+                                        {
+                                            userProfileInformation.joinedHarryCoinBot ?
                                                 <Icons.CheckFill className="fill-white" /> :
                                                 <Icons.CloseFill className="fill-white" />
                                         }
