@@ -46,6 +46,7 @@ model Users {
     joinedTabiPartyDraw             Boolean   @default(false)
     joinedBeeCoinBot                Boolean   @default(false)
     joinedBeeCoinTg                 Boolean   @default(false)
+    joinedHarryCoinBot              Boolean   @default(false)
     subscribedToZae                 Boolean   @default(false)
     triviaPoints                    Int       @default(0)
     lastAnsweredTriviaDate          DateTime?
