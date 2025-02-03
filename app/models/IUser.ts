@@ -49,6 +49,7 @@ export interface UserProfileInformation {
   twitterTaskDone: boolean;
   interactedWithTwitterPinnedPost: boolean;
   joinedTabiPartyDraw: boolean;
+  joinedHarryCoinBot: boolean;
   joinedBeeCoinBot: boolean;
   joinedBeeCoinTg: boolean;
   websiteViewTaskDone: boolean;
