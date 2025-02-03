@@ -33,6 +33,7 @@ import buffy_santa from "./images/buffy_santa.jpg";
 import tabi_party from "./images/tabi_party.png";
 import buffyXtabi from "./images/buffyXtabi.jpg";
 import bee_coin from "./images/bee_coin.jpg";
+import harry_coin from "./images/harry_coin.jpg";
 
 export default {
   avatar,
@@ -64,5 +65,6 @@ export default {
   koloblock,
   tabi_party,
   buffyXtabi,
-  bee_coin
+  bee_coin,
+  harry_coin
 };
