@@ -59,6 +59,8 @@ const TaskPage: FunctionComponent = (): ReactElement => {
     const [isJoinBeeCoinBotBtnClicked, setIsJoinBeeCoinBotBtnClicked] = useState(false);
     const [isJoinBeeCoinTgBtnClicked, setIsJoinBeeCoinTgBtnClicked] = useState(false);
     const [isJoinHarryCoinBotBtnClicked, setIsJoinHarryCoinBotBtnClicked] = useState(false);
+    const [isJoinRoarBotBtnClicked, setIsJoinRoarBotBtnClicked] = useState(false);
+    const [isJoinOptimusXBotBtnClicked, setIsJoinOptimusXBotBtnClicked] = useState(false);
     const [isFollowUsBtnClicked, setIsFollowUsBtnClicked] = useState(false);
     const [isInteractWPPBtnClicked, setIsInteractWPPBtnClicked] = useState(false);
     const [isWalletViewBtnClicked, setIsWalletViewBtnClicked] = useState(false);
@@ -83,6 +85,8 @@ const TaskPage: FunctionComponent = (): ReactElement => {
     const joinedTabiPartyDrawPoints = PointsConfig.JoinedTabiPartyDraw.points;
     const joinedBeeCoinPoints = PointsConfig.JoinedBeeCoinPoints;
     const joinedHarryCoinPoints = PointsConfig.JoinedHarryCoinPoints;
+    const joinedRoarCoinPoints = PointsConfig.JoinedRoarBotPoints;
+    const joinedOptimusXCoinPoints = PointsConfig.JoinedOptimusXBotPoints;
     const tabiZooCollaborationPoints = PointsConfig.TabiZooCollaboration;
     const walletConnectPoints = PointsConfig.WalletConnectPoints;
     const tonTransactionPoints = PointsConfig.TonTransactionPoints;
@@ -121,6 +125,10 @@ const TaskPage: FunctionComponent = (): ReactElement => {
                     return joinedBeeCoinPoints;
                 case Task.JOIN_HARRY_COIN_BOT:
                     return joinedHarryCoinPoints;
+                case Task.JOIN_ROAR_BOT:
+                    return joinedRoarCoinPoints;
+                case Task.JOIN_OPTIMUS_X_BOT:
+                    return joinedOptimusXCoinPoints;
                 case Task.JOIN_BEE_COIN_TG:
                     return joinedBeeCoinPoints;
                 case Task.WEBSITE_VIEW:
@@ -372,6 +380,32 @@ const TaskPage: FunctionComponent = (): ReactElement => {
                 window.open("https://t.me/harry_coin_bot?start=2408220614273", "_blank");
             },
             verificationFunction: () => handleVerifyTask(Task.JOIN_HARRY_COIN_BOT)
+        },
+        {
+            icon: (className?: string) => <Icons.Telegram className={className} />,
+            task: Task.JOIN_ROAR_BOT,
+            title: "Join Roar Bot",
+            points: joinedRoarCoinPoints,
+            action: "Join",
+            isDone: isJoinRoarBotBtnClicked,
+            actionFunction: () => {
+                setIsJoinRoarBotBtnClicked(true);
+                window.open("https://t.me/RoarCoinbot/app?startapp=BBH4EMQ", "_blank");
+            },
+            verificationFunction: () => handleVerifyTask(Task.JOIN_ROAR_BOT)
+        },
+        {
+            icon: (className?: string) => <Icons.Telegram className={className} />,
+            task: Task.JOIN_OPTIMUS_X_BOT,
+            title: "Join Optimus X Bot",
+            points: joinedOptimusXCoinPoints,
+            action: "Join",
+            isDone: isJoinOptimusXBotBtnClicked,
+            actionFunction: () => {
+                setIsJoinOptimusXBotBtnClicked(true);
+                window.open("https://t.me/optimus_x_bot/app?startapp=566b7543c6", "_blank");
+            },
+            verificationFunction: () => handleVerifyTask(Task.JOIN_OPTIMUS_X_BOT)
         },
         {
             icon: (className?: string) => <Icons.Telegram className={className} />,
@@ -1058,6 +1092,52 @@ const TaskPage: FunctionComponent = (): ReactElement => {
                                     <span className="w-7 h-7 rounded-full bg-white/30 grid place-items-center">
                                         {
                                             userProfileInformation.joinedHarryCoinBot ?
+                                                <Icons.CheckFill className="fill-white" /> :
+                                                <Icons.CloseFill className="fill-white" />
+                                        }
+                                    </span>
+                                </button>
+                                <button
+                                    onClick={() => {
+                                        setSelectedTask(Task.JOIN_ROAR_BOT);
+                                        setIsModalVisible(true);
+                                    }}
+                                    className={`bg-gray-700 rounded-3xl flex flex-row items-center justify-between p-4 pr-5 hover:bg-gray-600 ${userProfileInformation.joinedRoarBot ? "pointer-events-none opacity-70" : ""}`}>
+                                    <div className="flex flex-row items-center gap-3">
+                                        <span className="w-7 h-7 rounded-full overflow-hidden relative grid place-items-center">
+                                            <CustomImage src={images.roar} alt="Bee coin" />
+                                        </span>
+                                        <div className="flex flex-col gap-[2px] items-start text-left">
+                                            <h5 className="text-white font-medium leading-3 text-base">Join Roar BOT</h5>
+                                            <TaskStatus status={userProfileInformation.joinedRoarBot} />
+                                        </div>
+                                    </div>
+                                    <span className="w-7 h-7 rounded-full bg-white/30 grid place-items-center">
+                                        {
+                                            userProfileInformation.joinedRoarBot ?
+                                                <Icons.CheckFill className="fill-white" /> :
+                                                <Icons.CloseFill className="fill-white" />
+                                        }
+                                    </span>
+                                </button>
+                                <button
+                                    onClick={() => {
+                                        setSelectedTask(Task.JOIN_OPTIMUS_X_BOT);
+                                        setIsModalVisible(true);
+                                    }}
+                                    className={`bg-gray-700 rounded-3xl flex flex-row items-center justify-between p-4 pr-5 hover:bg-gray-600 ${userProfileInformation.joinedOptimusXBot ? "pointer-events-none opacity-70" : ""}`}>
+                                    <div className="flex flex-row items-center gap-3">
+                                        <span className="w-7 h-7 rounded-full overflow-hidden relative grid place-items-center">
+                                            <CustomImage src={images.optimus_x} alt="Bee coin" />
+                                        </span>
+                                        <div className="flex flex-col gap-[2px] items-start text-left">
+                                            <h5 className="text-white font-medium leading-3 text-base">Join Optimus X BOT</h5>
+                                            <TaskStatus status={userProfileInformation.joinedOptimusXBot} />
+                                        </div>
+                                    </div>
+                                    <span className="w-7 h-7 rounded-full bg-white/30 grid place-items-center">
+                                        {
+                                            userProfileInformation.joinedOptimusXBot ?
                                                 <Icons.CheckFill className="fill-white" /> :
                                                 <Icons.CloseFill className="fill-white" />
                                         }
