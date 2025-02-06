@@ -34,6 +34,8 @@ import tabi_party from "./images/tabi_party.png";
 import buffyXtabi from "./images/buffyXtabi.jpg";
 import bee_coin from "./images/bee_coin.jpg";
 import harry_coin from "./images/harry_coin.jpg";
+import roar from "./images/roar.jpg";
+import optimus_x from "./images/optimus_x.jpg";
 
 export default {
   avatar,
@@ -66,5 +68,7 @@ export default {
   tabi_party,
   buffyXtabi,
   bee_coin,
-  harry_coin
+  harry_coin,
+  roar,
+  optimus_x
 };
