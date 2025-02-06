@@ -10,6 +10,8 @@ export enum Task {
     SUPPORT_TABI_ZOO_COLLAB = "supportTabiZooCollab",
     JOIN_TABI_PARTY_DRAW = "joinTabiPartyDraw",
     JOIN_BEE_COIN_BOT = "JoinBeeCoinBot",
+    JOIN_ROAR_BOT = "JoinRoarBot",
+    JOIN_OPTIMUS_X_BOT = "JoinOptimusXBot",
     JOIN_HARRY_COIN_BOT = "JoinHarryCoinBot",
     JOIN_BEE_COIN_TG = "JoinBeeCoinTg",
     WEBSITE_VIEW = "website_view",
