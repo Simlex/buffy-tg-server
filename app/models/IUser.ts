@@ -52,6 +52,8 @@ export interface UserProfileInformation {
   joinedHarryCoinBot: boolean;
   joinedBeeCoinBot: boolean;
   joinedBeeCoinTg: boolean;
+  joinedRoarBot: boolean;
+  joinedOptimusXBot: boolean;
   websiteViewTaskDone: boolean;
   highestReferralBonusClaimed?: number;
   createdAt?: Date;
