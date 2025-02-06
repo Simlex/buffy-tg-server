@@ -4,6 +4,8 @@ export const PointsConfig = {
   InteractWithPinnedPostPoints: 25000,
   JoinedBeeCoinPoints: 5000,
   JoinedHarryCoinPoints: 5000,
+  JoinedRoarBotPoints: 5000,
+  JoinedOptimusXBotPoints: 5000,
   JoinedTabiPartyDraw: {
     points: 50000,
     rolls: 2
